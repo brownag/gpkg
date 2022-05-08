@@ -1,0 +1,174 @@
+#' Read a GeoPackage
+#' @param x Path to GeoPackage
+#' @param connect Connect to database and store connection in result? Default: `FALSE`
+#' @param quiet Hide printing of gdalinfo description to stdout. Default: `TRUE`
+#' @return A `geopackage` object (list containing tables, grids and vector data)
+#' @export
+#' @keywords io
+gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
+  res <- lapply(x, function(xx) {
+    res <- list()
+    
+    # read grids
+    r <- terra::rast(xx)
+    # convert to list of single-layer SpatRaster
+    grids <- as.list(r)
+    # assign raster table names
+    names(grids) <- names(r)
+    
+    # read vector layers (error if there aren't any)
+    v <- try(terra::vector_layers(xx), silent = TRUE)
+    vects <- list()
+    if (!inherits(v, 'try-error')) {
+      vects <- lapply(v, function(xxx)
+          # create SpatVectorProxy
+          try(terra::vect(paste0("GPKG:", xx, ":", xxx), proxy = TRUE), silent = quiet)
+        )
+      vects <- vects[!vapply(vects, FUN.VALUE = logical(1), inherits, 'try-error')]
+    }
+    
+    tables <- list()
+    
+    # spatial results (grid+vect+tabular) in `tables`
+    res$tables <- c(grids, vects, tables)
+    
+    # descriptions in `gdalinfo`
+    res$gdalinfo <- terra::describe(xx)
+    
+    # verbose gdalinfo output
+    if (!quiet) {
+      cat(res$gdalinfo, sep = "\n")
+    }
+    res
+  })
+  
+  res2 <- do.call('c', lapply(res, function(x) x$tables))
+  names(res2) <- do.call('c', lapply(res, function(x) names(x$tables)))
+  g <- geopackage(res2, dsn = x)
+  if (connect) {
+    g <- gpkg_connect(g)
+  }
+  g
+}
+
+#' Write a GeoPackage
+#' Write a grid to a GeoPackage, possibly append as a subdataset.
+#' @param x List of source file path(s), SpatRaster, SpatVector or SpatVectorProxy objects.
+#' @param destfile Character. Path to output GeoPackage
+#' @param datatype Data type. Defaults to `"FLT4S"` for GeoTIFF files, `"INT2U"` otherwise.
+#' @param append Append to existing data source? Default: `FALSE`
+#' @param overwrite Overwrite existing data source? Default `FALSE`. `append=TRUE` overrides `overwrite=TRUE`
+#' @param NoData Value to use as GDAL `NoData` Value
+#' @param gdal_options Additional `gdal_options`, passed to `terra::writeRaster()`
+#' @param ... Additional arguments are passed as GeoPackage creation options. See Details.
+#' @details Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed [here](https://gdal.org/drivers/raster/gpkg.html#creation-options) or in the `gpkg_creation_options` dataset name of the argument is `creation_option` and the value is selected from one of the elements of `values` for that option.
+#' @return Logical. `TRUE` on successful write of at least one grid.
+#' @seealso [gpkg_creation_options]
+#' @export
+#' @keywords io
+gpkg_write <- function(x, 
+                       destfile,
+                       datatype = if (grepl("\\.tif+$", x[1], ignore.case = TRUE)) "FLT4S" else "INT2U",
+                       append = FALSE,
+                       overwrite = FALSE,
+                       NoData = NULL,
+                       gdal_options = NULL,
+                       ...) {
+  
+  # classify source files -> (vector, grid, table)
+  ext <- gsub(".*\\.(.*$)", "\\1", x)
+  ldsn <- split(x, factor(ext, levels = c('shp', 'tif', 'csv')), drop = FALSE)
+  
+  # if any grids are present, write them first
+  grids <- ldsn[['tif']]
+  ngrd <- 0
+  
+  if (length(grids) > 0) {
+    # first grid write with append=FALSE
+    .gpkg_write_grid_subdataset_terra(x = grids[1], 
+                                      destfile = destfile,
+                                      datatype = datatype,
+                                      append = append,
+                                      overwrite = overwrite,
+                                      NoData = NoData,
+                                      gdal_options = gdal_options,
+                                      ...) 
+    ngrd <- 1
+  } 
+  
+  if (length(grids) > 1) {
+    # subsequent grids append=TRUE
+    sds <- lapply(grids[2:length(grids)], .gpkg_write_grid_subdataset_terra, 
+                                                  destfile = destfile,
+                                                  datatype = datatype,
+                                                  append = append,
+                                                  overwrite = overwrite,
+                                                  NoData = NoData,
+                                                  gdal_options = gdal_options,
+                                                  ...) 
+    ngrd <- ngrd + length(sds)
+  }
+  
+  # iterate over vector/table sources and write to database
+  # post processing? validate?
+  
+  # return TRUE if at least one layer written
+  invisible(ngrd > 0)
+}
+
+#' .gpkg_write_grid_subdataset_terra
+#' @return A SpatRaster reference to grid written to GeoPackage, or `NULL` on error
+#' @noRd
+#' @keywords internal
+.gpkg_write_grid_subdataset_terra <- function(x,
+                                              destfile,
+                                              datatype,
+                                              append = FALSE,
+                                              overwrite = FALSE,
+                                              NoData = NULL,
+                                              gdal_options = NULL,
+                                              ...) {
+  res <- NULL
+  if (requireNamespace('terra', quietly = TRUE)) {
+    
+    r <- terra::rast(x)
+  
+    if (!is.null(NoData)) {
+      terra::NAflag(r) <- NoData
+    }
+
+    .lut_gpkg_creation <- function(...) {
+      kv <- list(...)
+      gpkg_creation_options <- get("gpkg_creation_options")
+      kvn <- trimws(names(kv)[names(kv) %in% gpkg_creation_options$creation_option])
+      kvn <- kvn[nchar(kvn) > 0]
+      if (length(kvn) > 0) {
+        return(paste0(kvn, "=", as.character(kv[kvn])))
+      }
+      character(0)
+    }
+    
+    gdal_options <- c(gdal_options, "of=GPKG", .lut_gpkg_creation(...))
+    
+    if (getOption("gpkg.debug", default = FALSE)) {
+      message("DEBUG:\n\n", paste0(gdal_options, collapse = "\n"))
+    }
+    
+    if (append) {
+      overwrite <- FALSE
+      gdal_options <- c(gdal_options, "APPEND_SUBDATASET=YES")
+    }
+    
+    res <- terra::writeRaster(
+      x = r,
+      filename = destfile,
+      datatype = datatype,
+      overwrite = overwrite,
+      gdal = gdal_options
+    )
+  } else {
+    message('.gpkg_write_grid_subdataset_terra: please install the `terra` package')
+    res <- NULL
+  }
+  invisible(res)
+}
