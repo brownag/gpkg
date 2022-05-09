@@ -1,17 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# gpkg
+# gpkg - Utilities for OGC GeoPackages
 
 <!-- badges: start -->
-<!-- badges: end -->
 
-# gpkg - Utilities for OGC GeoPackages
+[![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
+[![gpkg HTML
+Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
+<!-- badges: end -->
 
 {gpkg} provides high-level wrapper functions to build GeoPackages
 containing a variety of different data. Reading and writing of spatial
 ([vector](http://www.gdal.org/drv_geopackage.html) and
-[gridded](http://www.gdal.org/drv_geopackage_raster.html) data) is done
+[gridded](http://www.gdal.org/drv_geopackage_raster.html)) data are done
 via standard [GDAL](http://www.gdal.org/) utilities provided primarily
 by the {terra} package. Additional functions are provided to manipulate
 attributes and tabular data via
@@ -116,7 +118,7 @@ g
 #> <geopackage>
 #> # of Tables: 3
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpT65Kck/file139ed2705a27.gpkg
+#>   Path: /tmp/RtmpoAhYBF/file1444c229b1ebc.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -133,14 +135,14 @@ internal `geopackage` class `SQLiteConnection` with
 ``` r
 # enumerate tables
 gpkg_list_tables(g)
-#>  [1] "DEM1"                               "DEM2"                              
-#>  [3] "file139ed2705a27"                   "gpkg_2d_gridded_coverage_ancillary"
-#>  [5] "gpkg_2d_gridded_tile_ancillary"     "gpkg_contents"                     
-#>  [7] "gpkg_extensions"                    "gpkg_geometry_columns"             
-#>  [9] "gpkg_ogr_contents"                  "gpkg_spatial_ref_sys"              
-#> [11] "gpkg_tile_matrix"                   "gpkg_tile_matrix_set"              
-#> [13] "rtree_file139ed2705a27_geom"        "rtree_file139ed2705a27_geom_node"  
-#> [15] "rtree_file139ed2705a27_geom_parent" "rtree_file139ed2705a27_geom_rowid" 
+#>  [1] "DEM1"                                "DEM2"                               
+#>  [3] "file1444c229b1ebc"                   "gpkg_2d_gridded_coverage_ancillary" 
+#>  [5] "gpkg_2d_gridded_tile_ancillary"      "gpkg_contents"                      
+#>  [7] "gpkg_extensions"                     "gpkg_geometry_columns"              
+#>  [9] "gpkg_ogr_contents"                   "gpkg_spatial_ref_sys"               
+#> [11] "gpkg_tile_matrix"                    "gpkg_tile_matrix_set"               
+#> [13] "rtree_file1444c229b1ebc_geom"        "rtree_file1444c229b1ebc_geom_node"  
+#> [15] "rtree_file1444c229b1ebc_geom_parent" "rtree_file1444c229b1ebc_geom_rowid" 
 #> [17] "sqlite_sequence"
 
 # inspect tables
@@ -151,8 +153,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file139ed2705a27.gpkg:DEM1 
-#> varname     : file139ed2705a27 
+#> source      : file1444c229b1ebc.gpkg:DEM1 
+#> varname     : file1444c229b1ebc 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -161,16 +163,16 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file139ed2705a27.gpkg:DEM2 
-#> varname     : file139ed2705a27 
+#> source      : file1444c229b1ebc.gpkg:DEM2 
+#> varname     : file1444c229b1ebc 
 #> name        : DEM2 
 #> 
-#> $file139ed2705a27
+#> $file1444c229b1ebc
 #>  class       : SpatVectorProxy
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file139ed2705a27.gpkg:file139ed2705a27 (file139ed2705a27)
+#>  source      : file1444c229b1ebc.gpkg:file1444c229b1ebc (file1444c229b1ebc)
 #>  coord. ref. : lon/lat WGS 84
 
 # still connected

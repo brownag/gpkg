@@ -13,13 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-# gpkg
-
-<!-- badges: start -->
-<!-- badges: end -->
 # gpkg - Utilities for OGC GeoPackages
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
+[![gpkg HTML Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
+<!-- badges: end -->
 
-{gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data. Reading and writing of spatial ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html) data) is done via standard [GDAL](http://www.gdal.org/) utilities provided primarily by the {terra} package. Additional functions are provided to manipulate attributes and tabular data via [RSQLite](https://cran.r-project.org/web/packages/RSQLite/index.html).
+{gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data. Reading and writing of spatial ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html)) data are done via standard [GDAL](http://www.gdal.org/) utilities provided primarily by the {terra} package. Additional functions are provided to manipulate attributes and tabular data via [RSQLite](https://cran.r-project.org/web/packages/RSQLite/index.html).
 
 <a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png">
 <img src = "https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" alt = "gpkg hexsticker" title = "gpkg hexsticker: {gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data." width = "35%" height = "35%" hspace="25" vspace="25" align="right"/></a>
