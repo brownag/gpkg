@@ -55,15 +55,10 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
 <div class="section level1">
-<div class="page-header"><h1 id="gpkg">gpkg<a class="anchor" aria-label="anchor" href="#gpkg"></a>
+<div class="page-header"><h1 id="gpkg---utilities-for-ogc-geopackages">gpkg - Utilities for OGC GeoPackages<a class="anchor" aria-label="anchor" href="#gpkg---utilities-for-ogc-geopackages"></a>
 </h1></div>
-<!-- badges: start --><!-- badges: end -->
-</div>
-<div class="section level1">
-<h1 id="gpkg---utilities-for-ogc-geopackages">gpkg - Utilities for OGC GeoPackages<a class="anchor" aria-label="anchor" href="#gpkg---utilities-for-ogc-geopackages"></a>
-</h1>
+<!-- badges: start -->
 <p>{gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data. Reading and writing of spatial (<a href="http://www.gdal.org/drv_geopackage.html" class="external-link">vector</a> and <a href="http://www.gdal.org/drv_geopackage_raster.html" class="external-link">gridded</a> data) is done via standard <a href="http://www.gdal.org/" class="external-link">GDAL</a> utilities provided primarily by the {terra} package. Additional functions are provided to manipulate attributes and tabular data via <a href="https://cran.r-project.org/web/packages/RSQLite/index.html" class="external-link">RSQLite</a>.</p>
 <p><a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" class="external-link"> <img src="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" alt="gpkg hexsticker" title="gpkg hexsticker: {gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data." width="35%" height="35%" hspace="25" vspace="25" align="right"></a></p>
 <div class="section level2">
@@ -146,7 +141,7 @@
 <span class="co">#&gt; &lt;geopackage&gt;</span>
 <span class="co">#&gt; # of Tables: 3</span>
 <span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
-<span class="co">#&gt;   Path: /tmp/RtmpT65Kck/file139ed2705a27.gpkg</span>
+<span class="co">#&gt;   Path: /tmp/RtmpzQEIin/file142077b0f811f.gpkg</span>
 <span class="co">#&gt;   Extensions: TRUE</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span>
 <span class="co">#&gt; [1] "geopackage"</span></code></pre></div>
@@ -158,14 +153,14 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># enumerate tables</span>
 <span class="fu"><a href="reference/gpkg_list_tables.html">gpkg_list_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span>
-<span class="co">#&gt;  [1] "DEM1"                               "DEM2"                              </span>
-<span class="co">#&gt;  [3] "file139ed2705a27"                   "gpkg_2d_gridded_coverage_ancillary"</span>
-<span class="co">#&gt;  [5] "gpkg_2d_gridded_tile_ancillary"     "gpkg_contents"                     </span>
-<span class="co">#&gt;  [7] "gpkg_extensions"                    "gpkg_geometry_columns"             </span>
-<span class="co">#&gt;  [9] "gpkg_ogr_contents"                  "gpkg_spatial_ref_sys"              </span>
-<span class="co">#&gt; [11] "gpkg_tile_matrix"                   "gpkg_tile_matrix_set"              </span>
-<span class="co">#&gt; [13] "rtree_file139ed2705a27_geom"        "rtree_file139ed2705a27_geom_node"  </span>
-<span class="co">#&gt; [15] "rtree_file139ed2705a27_geom_parent" "rtree_file139ed2705a27_geom_rowid" </span>
+<span class="co">#&gt;  [1] "DEM1"                                "DEM2"                               </span>
+<span class="co">#&gt;  [3] "file142077b0f811f"                   "gpkg_2d_gridded_coverage_ancillary" </span>
+<span class="co">#&gt;  [5] "gpkg_2d_gridded_tile_ancillary"      "gpkg_contents"                      </span>
+<span class="co">#&gt;  [7] "gpkg_extensions"                     "gpkg_geometry_columns"              </span>
+<span class="co">#&gt;  [9] "gpkg_ogr_contents"                   "gpkg_spatial_ref_sys"               </span>
+<span class="co">#&gt; [11] "gpkg_tile_matrix"                    "gpkg_tile_matrix_set"               </span>
+<span class="co">#&gt; [13] "rtree_file142077b0f811f_geom"        "rtree_file142077b0f811f_geom_node"  </span>
+<span class="co">#&gt; [15] "rtree_file142077b0f811f_geom_parent" "rtree_file142077b0f811f_geom_rowid" </span>
 <span class="co">#&gt; [17] "sqlite_sequence"</span>
 
 <span class="co"># inspect tables</span>
@@ -176,8 +171,8 @@
 <span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span>
 <span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
-<span class="co">#&gt; source      : file139ed2705a27.gpkg:DEM1 </span>
-<span class="co">#&gt; varname     : file139ed2705a27 </span>
+<span class="co">#&gt; source      : file142077b0f811f.gpkg:DEM1 </span>
+<span class="co">#&gt; varname     : file142077b0f811f </span>
 <span class="co">#&gt; name        : DEM1 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $DEM2</span>
@@ -186,16 +181,16 @@
 <span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span>
 <span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
-<span class="co">#&gt; source      : file139ed2705a27.gpkg:DEM2 </span>
-<span class="co">#&gt; varname     : file139ed2705a27 </span>
+<span class="co">#&gt; source      : file142077b0f811f.gpkg:DEM2 </span>
+<span class="co">#&gt; varname     : file142077b0f811f </span>
 <span class="co">#&gt; name        : DEM2 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $file139ed2705a27</span>
+<span class="co">#&gt; $file142077b0f811f</span>
 <span class="co">#&gt;  class       : SpatVectorProxy</span>
 <span class="co">#&gt;  geometry    : polygons </span>
 <span class="co">#&gt;  dimensions  : 1, 0  (geometries, attributes)</span>
 <span class="co">#&gt;  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt;  source      : file139ed2705a27.gpkg:file139ed2705a27 (file139ed2705a27)</span>
+<span class="co">#&gt;  source      : file142077b0f811f.gpkg:file142077b0f811f (file142077b0f811f)</span>
 <span class="co">#&gt;  coord. ref. : lon/lat WGS 84</span>
 
 <span class="co"># still connected</span>
@@ -206,7 +201,6 @@
 <span class="fu"><a href="reference/gpkg-connnection.html">gpkg_disconnect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -234,7 +228,13 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml" class="external-link"><img src="https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main&amp;event=status" alt="R-CMD-check"></a></li>
+<li><a href="http://humus.rocks/gpkg/" class="external-link"><img src="https://img.shields.io/badge/docs-HTML-informational" alt="gpkg HTML Manual"></a></li>
+</ul>
+</div>
 
   </div>
 </div>
