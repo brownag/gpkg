@@ -28,8 +28,9 @@ knitr::opts_chunk$set(
 
 The package can be installed from GitHub with {remotes}
 
-``` r
-if (!requireNamespace("remotes")) install.packages("remotes")
+```r
+if (!requireNamespace("remotes")) 
+  install.packages("remotes")
 remotes::install_github("brownag/gpkg")
 ```
 
@@ -37,10 +38,14 @@ remotes::install_github("brownag/gpkg")
 ### What is a GeoPackage?
 
 [GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standards/geopackage) describes a set of conventions for storing the following within an SQLite database:
-  -  vector features
-  -  tile matrix sets of imagery and raster maps at various scales
-  -  attributes (non-spatial data)
-  -  extensions
+
+  *  vector features
+  
+  *  tile matrix sets of imagery and raster maps at various scales
+  
+  *  attributes (non-spatial data)
+  
+  *  extensions
 
 ## Create a Geopackage
 

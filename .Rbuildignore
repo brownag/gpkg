@@ -5,3 +5,4 @@ man/figures
 data-raw
 misc
 ^data-raw$
+^\.github$
