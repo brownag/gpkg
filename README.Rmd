@@ -44,6 +44,8 @@ remotes::install_github("brownag/gpkg")
 
 ## Create a Geopackage
 
+`gpkg_write()` can handle a variety of different input types. Here we start by adding two DEM (GeoTIFF) files.
+
 ```{r}
 library(gpkg)
 library(terra)
@@ -70,8 +72,25 @@ gpkg_write(
   FIELD_NAME = "Elevation"
 )
 ```
+## Insert Vector Layers
+
+We can also write vector data to GeoPackage. Here we use `terra::writeVector(..., insert = TRUE)` to add a bounding box polygon layer derived from `"DEM1"`.
+
+```{r}
+# add bounding polygon vector layer
+# TODO: wrap this into gpkg_write() and add support for in-memory rasters
+terra::writeVector(
+  terra::set.crs(terra::as.polygons(terra::ext(
+    gpkg_tables(geopackage(gpkg_tmp))[['DEM1']])
+  ), "OGC:CRS84"),
+  filename = gpkg_tmp,
+  insert = TRUE
+)
+```
 
 ## Read a GeoPackage
+
+`geopackage()` is a constructor that can create a simple container for working with geopackages from several types of inputs. Often you will have a _character_ file path to a GeoPackage (.gpkg) file. Other times you may have a list of tables and layers you want to be in a GeoPackage that does not exist yet. Or, you may have a connection to a GeoPackage database already opened that you want to use. In any case (`character`, `list`, `SQLiteConnection`) there is an S3 method to facilitate creating the basic `geopackage` class provided by {gpkg}.
 
 ```{r}
 g <- geopackage(gpkg_tmp, connect = TRUE)
@@ -79,25 +98,16 @@ g
 class(g)
 ```
 
-## Insert Vector Layers
+## Inspect Contents of GeoPackage
 
-```{r}
-# add bounding polygon vector layer
-writeVector(
-  terra::set.crs(terra::as.polygons(terra::ext(
-    gpkg_tables(g)[['DEM1']])
-  ), "OGC:CRS84"),
-  filename = g$dsn,
-  insert = TRUE
-)
-
-```
-
-## Read a GeoPackage
+We can list the table names in a GeoPackage with `gpkg_list_tables()` and fetch pointers (SpatRaster, SpatVectorProxy, and lazy data.frame) to the data in them with `gpkg_table()`. We can check the status of the internal `geopackage` class `SQLiteConnection` with `gpkg_is_connected()` and disconnect it with `gpkg_disconnect()`.
 
 ```{r}
 # enumerate tables
 gpkg_list_tables(g)
+
+# inspect tables
+gpkg_tables(g)
 
 # still connected
 gpkg_is_connected(g)

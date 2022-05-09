@@ -62,4 +62,7 @@ geopackage.character <- function(x, connect = FALSE, ...) {
 print.geopackage <- function(x, ...) {
   cat("<geopackage>", sep = "\n")
   cat(paste0("# of Tables: ", length(x$tables)), sep = "\n")
+  if (!is.null(x$con)) {
+    show(x$con)
+  }
 }

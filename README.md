@@ -12,8 +12,9 @@
 containing a variety of different data. Reading and writing of spatial
 ([vector](http://www.gdal.org/drv_geopackage.html) and
 [gridded](http://www.gdal.org/drv_geopackage_raster.html) data) is done
-via standard [GDAL](http://www.gdal.org/) utilities. Additional
-functions are provided to manipulate attributes and tabular data via
+via standard [GDAL](http://www.gdal.org/) utilities provided primarily
+by the {terra} package. Additional functions are provided to manipulate
+attributes and tabular data via
 [RSQLite](https://cran.r-project.org/web/packages/RSQLite/index.html).
 
 <a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png">
@@ -41,6 +42,9 @@ vector features - tile matrix sets of imagery and raster maps at various
 scales - attributes (non-spatial data) - extensions
 
 ## Create a Geopackage
+
+`gpkg_write()` can handle a variety of different input types. Here we
+start by adding two DEM (GeoTIFF) files.
 
 ``` r
 library(gpkg)
@@ -70,44 +74,97 @@ gpkg_write(
 )
 ```
 
-## Read a GeoPackage
-
-``` r
-g <- geopackage(gpkg_tmp, connect = TRUE)
-g
-#> <geopackage>
-#> # of Tables: 2
-class(g)
-#> [1] "geopackage"
-```
-
 ## Insert Vector Layers
+
+We can also write vector data to GeoPackage. Here we use
+`terra::writeVector(..., insert = TRUE)` to add a bounding box polygon
+layer derived from `"DEM1"`.
 
 ``` r
 # add bounding polygon vector layer
-writeVector(
+# TODO: wrap this into gpkg_write() and add support for in-memory rasters
+terra::writeVector(
   terra::set.crs(terra::as.polygons(terra::ext(
-    gpkg_tables(g)[['DEM1']])
+    gpkg_tables(geopackage(gpkg_tmp))[['DEM1']])
   ), "OGC:CRS84"),
-  filename = g$dsn,
+  filename = gpkg_tmp,
   insert = TRUE
 )
 ```
 
 ## Read a GeoPackage
 
+`geopackage()` is a constructor that can create a simple container for
+working with geopackages from several types of inputs. Often you will
+have a *character* file path to a GeoPackage (.gpkg) file. Other times
+you may have a list of tables and layers you want to be in a GeoPackage
+that does not exist yet. Or, you may have a connection to a GeoPackage
+database already opened that you want to use. In any case (`character`,
+`list`, `SQLiteConnection`) there is an S3 method to facilitate creating
+the basic `geopackage` class provided by {gpkg}.
+
+``` r
+g <- geopackage(gpkg_tmp, connect = TRUE)
+g
+#> <geopackage>
+#> # of Tables: 3
+#> <SQLiteConnection>
+#>   Path: /tmp/Rtmp3Armhx/file138a052668ab6.gpkg
+#>   Extensions: TRUE
+class(g)
+#> [1] "geopackage"
+```
+
+## Inspect Contents of GeoPackage
+
+We can list the table names in a GeoPackage with `gpkg_list_tables()`
+and fetch pointers (SpatRaster, SpatVectorProxy, and lazy data.frame) to
+the data in them with `gpkg_table()`. We can check the status of the
+internal `geopackage` class `SQLiteConnection` with
+`gpkg_is_connected()` and disconnect it with `gpkg_disconnect()`.
+
 ``` r
 # enumerate tables
 gpkg_list_tables(g)
 #>  [1] "DEM1"                                "DEM2"                               
-#>  [3] "file131871f0ae809"                   "gpkg_2d_gridded_coverage_ancillary" 
+#>  [3] "file138a052668ab6"                   "gpkg_2d_gridded_coverage_ancillary" 
 #>  [5] "gpkg_2d_gridded_tile_ancillary"      "gpkg_contents"                      
 #>  [7] "gpkg_extensions"                     "gpkg_geometry_columns"              
 #>  [9] "gpkg_ogr_contents"                   "gpkg_spatial_ref_sys"               
 #> [11] "gpkg_tile_matrix"                    "gpkg_tile_matrix_set"               
-#> [13] "rtree_file131871f0ae809_geom"        "rtree_file131871f0ae809_geom_node"  
-#> [15] "rtree_file131871f0ae809_geom_parent" "rtree_file131871f0ae809_geom_rowid" 
+#> [13] "rtree_file138a052668ab6_geom"        "rtree_file138a052668ab6_geom_node"  
+#> [15] "rtree_file138a052668ab6_geom_parent" "rtree_file138a052668ab6_geom_rowid" 
 #> [17] "sqlite_sequence"
+
+# inspect tables
+gpkg_tables(g)
+#> $DEM1
+#> class       : SpatRaster 
+#> dimensions  : 30, 31, 1  (nrow, ncol, nlyr)
+#> resolution  : 0.008333333, 0.008333333  (x, y)
+#> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> source      : file138a052668ab6.gpkg:DEM1 
+#> varname     : file138a052668ab6 
+#> name        : DEM1 
+#> 
+#> $DEM2
+#> class       : SpatRaster 
+#> dimensions  : 30, 31, 1  (nrow, ncol, nlyr)
+#> resolution  : 0.008333333, 0.008333333  (x, y)
+#> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> source      : file138a052668ab6.gpkg:DEM2 
+#> varname     : file138a052668ab6 
+#> name        : DEM2 
+#> 
+#> $file138a052668ab6
+#>  class       : SpatVectorProxy
+#>  geometry    : polygons 
+#>  dimensions  : 1, 0  (geometries, attributes)
+#>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
+#>  source      : file138a052668ab6.gpkg:file138a052668ab6 (file138a052668ab6)
+#>  coord. ref. : lon/lat WGS 84
 
 # still connected
 gpkg_is_connected(g)

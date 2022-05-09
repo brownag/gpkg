@@ -24,6 +24,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
           # create SpatVectorProxy
           try(terra::vect(paste0("GPKG:", xx, ":", xxx), proxy = TRUE), silent = quiet)
         )
+      names(vects) <- v
       vects <- vects[!vapply(vects, FUN.VALUE = logical(1), inherits, 'try-error')]
     }
     
