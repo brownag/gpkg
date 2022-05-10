@@ -59,6 +59,7 @@ geopackage.character <- function(x, connect = FALSE, ...) {
 }
 
 #' @export
+#' @importFrom methods show
 print.geopackage <- function(x, ...) {
   cat("<geopackage>", sep = "\n")
   cat(paste0("# of Tables: ", length(x$tables)), sep = "\n")
