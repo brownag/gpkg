@@ -10,7 +10,7 @@ gpkg_tables(x)
 \method{gpkg_tables}{geopackage}(x)
 }
 \arguments{
-\item{x}{a \code{geopackage}}
+\item{x}{a \code{geopackage} object}
 }
 \value{
 a list of SpatVectorProxy, SpatRaster, data.frame (lazy tbl?)

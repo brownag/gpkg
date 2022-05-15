@@ -31,8 +31,7 @@ gpkg_connect.character <- function(x) {
     }
     
   } else {
-    message('gpkg_connect_sqlite: please install the `RSQLite` package')
-    return(NULL)
+    stop('package `RSQLite` is required to open a connection to a GeoPackage', call. = FALSE)
   }
   geopackage(con)
 }
@@ -77,4 +76,34 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
     }
   }
   invisible(FALSE)
+}
+
+
+
+#' .gpkg_connection_from_x
+#' 
+#' @param x A `geopackage` object, a path to a GeoPackage or an `SQLiteConnection`
+#' @return An SQLiteConnection with logical attribute `"disconnect"` indicating whether it should be disconnected after use.
+#' @noRd
+#' @keywords internal
+.gpkg_connection_from_x <- function(x) {
+  disconnect <- TRUE
+  if (is.character(x)) {
+    con <- gpkg_connect(x)$con
+  } else if (inherits(x, 'geopackage')) {
+    if (!gpkg_is_connected(x)) {
+      p <- x$dsn
+      con <- gpkg_connect(p)$con
+    } else {
+      con <- x$con
+      disconnect <- FALSE
+    }
+  } else if (inherits(x, 'SQLiteConnection')) {
+    con <- x
+    disconnect <- FALSE
+  } else {
+    stop('`x` should be a `geopackage` object, a path to a GeoPackage or an `SQLiteConnection`')
+  }
+  attr(con, 'disconnect') <- disconnect
+  con
 }
