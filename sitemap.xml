@@ -22,6 +22,9 @@
     <loc>/reference/gpkg-package.html</loc>
   </url>
   <url>
+    <loc>/reference/gpkg_2d_gridded_coverage_ancillary.html</loc>
+  </url>
+  <url>
     <loc>/reference/gpkg_creation_options.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>/reference/gpkg_tables.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gpkg_tile_set_data_null.html</loc>
   </url>
   <url>
     <loc>/reference/gpkg_validate.html</loc>
