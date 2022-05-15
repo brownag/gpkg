@@ -45,11 +45,13 @@ geopackage.character <- function(x, connect = FALSE, ...) {
 # basic geopackage structure
 .geopackage <- function(dsn = NULL, connect = FALSE, ...) {
   con <- NULL
+  # existing sqliteconnection
   if (inherits(dsn, 'SQLiteConnection')) {
     con <- dsn
     dsn <- con@dbname
+  # create a connection when geopackage object is constructed
   } else if (connect) {
-    
+    # TODO: connect to dsn, store in con
   }
   obj <- structure(list(
     tables = list(),
@@ -63,6 +65,7 @@ geopackage.character <- function(x, connect = FALSE, ...) {
 print.geopackage <- function(x, ...) {
   cat("<geopackage>", sep = "\n")
   cat(paste0("# of Tables: ", length(x$tables)), sep = "\n")
+  cat("\t", paste0(x$tables, collapse = ", "), sep = "\n")
   if (!is.null(x$con)) {
     show(x$con)
   }

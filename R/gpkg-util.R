@@ -41,21 +41,20 @@ gpkg_list_tables <- function(x) {
 #' @importFrom DBI dbDisconnect
 #' @export
 gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
-  if (!requireNamespace("RSQLite", quietly = TRUE)) {
-    stop('package `RSQLite` is required to set `data_null`', call. = FALSE)
-  }
+    if (!requireNamespace("RSQLite", quietly = TRUE)) {
+      stop('package `RSQLite` is required to set `data_null`', call. = FALSE)
+    }
   
-  con <- .gpkg_connection_from_x(x)
-  # TODO: general function for T table name to set column X to scalar A where column Y is in vector B 
-  q <- sprintf("UPDATE gpkg_2d_gridded_coverage_ancillary SET data_null = %s WHERE tile_matrix_set_name IN %s", 
-               value, paste0("(", paste0(paste0("'", name, "'"), collapse = ","), ")"))
-  if (query_string) return(q)
-  res <- RSQLite::dbExecute(con, q)
-  if (attr(con, 'disconnect')) {
-    DBI::dbDisconnect(con)
+    invisible(
+      .gpkg_update_table(x,
+        tablename = "gpkg_2d_gridded_coverage_ancillary",
+        updatecol = "data_null",
+        updatevalue = value,
+        wherecol = "tile_matrix_set_name",
+        wherevector = name
+      )
+    )
   }
-  invisible(res)
-}
 
 #' Get `gpkg_2d_gridded_coverage_ancillary` Table
 #' 
@@ -67,10 +66,5 @@ gpkg_2d_gridded_coverage_ancillary <- function(x) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop('package `RSQLite` is required to get the `gpkg_2d_gridded_coverage_ancillary` table', call. = FALSE)
   }
-  con <- .gpkg_connection_from_x(x)
-  res <- RSQLite::dbGetQuery(con, "SELECT * FROM gpkg_2d_gridded_coverage_ancillary")
-  if (attr(con, 'disconnect')) {
-    DBI::dbDisconnect(con)
-  }
-  res
+  .gpkg_get_table(x, "gpkg_2d_gridded_coverage_ancillary")
 }

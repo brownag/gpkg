@@ -2,13 +2,12 @@
 % Please edit documentation in R/gpkg-io.R
 \name{gpkg_write}
 \alias{gpkg_write}
-\title{Write a GeoPackage
-Write a grid to a GeoPackage, possibly append as a subdataset.}
+\title{Write a GeoPackage}
 \usage{
 gpkg_write(
   x,
   destfile,
-  datatype = if (grepl("\\\\.tif+$", x[1], ignore.case = TRUE)) "FLT4S" else "INT2U",
+  datatype = "FLT4S",
   append = FALSE,
   overwrite = FALSE,
   NoData = NULL,
@@ -17,28 +16,27 @@ gpkg_write(
 )
 }
 \arguments{
-\item{x}{List of source file path(s), SpatRaster, SpatVector or SpatVectorProxy objects.}
+\item{x}{Vector of source file path(s), or a list containing one or more SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.}
 
 \item{destfile}{Character. Path to output GeoPackage}
 
-\item{datatype}{Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"} otherwise.}
+\item{datatype}{Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"} otherwise. See documentation for \code{terra::writeRaster()}.}
 
-\item{append}{Append to existing data source? Default: \code{FALSE}}
+\item{append}{Append to existing data source? Default: \code{FALSE}. Setting \code{append=TRUE} overrides \code{overwrite=TRUE}}
 
-\item{overwrite}{Overwrite existing data source? Default \code{FALSE}. \code{append=TRUE} overrides \code{overwrite=TRUE}}
+\item{overwrite}{Overwrite existing data source? Default \code{FALSE}.}
 
 \item{NoData}{Value to use as GDAL \code{NoData} Value}
 
 \item{gdal_options}{Additional \code{gdal_options}, passed to \code{terra::writeRaster()}}
 
-\item{...}{Additional arguments are passed as GeoPackage creation options. See Details.}
+\item{...}{Additional arguments are passed as GeoPackage "creation options." See Details.}
 }
 \value{
 Logical. \code{TRUE} on successful write of at least one grid.
 }
 \description{
 Write a GeoPackage
-Write a grid to a GeoPackage, possibly append as a subdataset.
 }
 \details{
 Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed \href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{here} or in the \code{gpkg_creation_options} dataset name of the argument is \code{creation_option} and the value is selected from one of the elements of \code{values} for that option.
