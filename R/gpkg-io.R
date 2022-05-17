@@ -206,7 +206,13 @@ gpkg_write <- function(x,
     gdal = gdal_options
   )
 
+  if (!is.null(NoData)) {
+    # TODO: handle custom table name
+    gpkg_tile_set_data_null(destfile, gsub("(.*?)\\..*", "\\1", basename(x)), NoData)
+  }
+
   invisible(res)
+
 }
 
 #' .gpkg_write_vector_terra
