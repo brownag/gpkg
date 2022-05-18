@@ -15,9 +15,9 @@ containing a variety of different data. Reading and writing of spatial
 ([vector](http://www.gdal.org/drv_geopackage.html) and
 [gridded](http://www.gdal.org/drv_geopackage_raster.html)) data are done
 via standard [GDAL](http://www.gdal.org/) utilities provided primarily
-by the {terra} package. Additional functions are provided to manipulate
-attributes and tabular data via
-[RSQLite](https://cran.r-project.org/web/packages/RSQLite/index.html).
+by the {[terra](https://cran.r-project.org/package=terra)} package.
+Additional functions are provided to manipulate attributes and tabular
+data via {[RSQLite](https://cran.r-project.org/package=RSQLite)}.
 
 <a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png">
 <img src = "https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" alt = "gpkg hexsticker" title = "gpkg hexsticker: {gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data." width = "35%" height = "35%" hspace="25" vspace="25" align="right"/></a>
@@ -37,10 +37,10 @@ remotes::install_github("brownag/gpkg")
 ### What is a GeoPackage?
 
 [GeoPackage](https://www.geopackage.org/) is an open, standards-based,
-platform-independent, portable, self-describing, compact format for
-transferring geospatial information. The [GeoPackage Encoding
-Standard](https://www.ogc.org/standards/geopackage) describes a set of
-conventions for storing the following within an SQLite database:
+non-proprietary, platform-independent, portable, self-describing,
+compact format for transferring geospatial information. The [GeoPackage
+Encoding Standard](https://www.ogc.org/standards/geopackage) describes a
+set of conventions for storing the following within an SQLite database:
 
 -   vector features
 
@@ -58,7 +58,7 @@ start by adding two DEM (GeoTIFF) files.
 ``` r
 library(gpkg)
 library(terra)
-#> terra 1.5.29
+#> terra 1.5.31
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -91,14 +91,11 @@ layer derived from `"DEM1"`.
 
 ``` r
 # add bounding polygon vector layer
-# TODO: wrap this into gpkg_write() and add support for in-memory rasters
-terra::writeVector(
-  terra::set.crs(terra::as.polygons(terra::ext(
-    gpkg_tables(geopackage(gpkg_tmp))[['DEM1']])
-  ), "OGC:CRS84"),
-  filename = gpkg_tmp,
-  insert = TRUE
-)
+gpkg_write(list(bbox = terra::set.crs(
+  terra::as.polygons(terra::ext(gpkg_tables(
+    geopackage(gpkg_tmp)
+  )[['DEM1']])), "OGC:CRS84"
+)), destfile = gpkg_tmp)
 ```
 
 ## Read a GeoPackage
@@ -116,9 +113,11 @@ the basic `geopackage` class provided by {gpkg}.
 g <- geopackage(gpkg_tmp, connect = TRUE)
 g
 #> <geopackage>
-#> # of Tables: 3
+#> # of Tables: 2
+#>  
+#> new("SpatRaster", ptr = new("Rcpp_SpatRaster", .xData = <environment>)), new("SpatRaster", ptr = new("Rcpp_SpatRaster", .xData = <environment>))
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpoAhYBF/file1444c229b1ebc.gpkg
+#>   Path: /tmp/Rtmp4jgz1T/file1815496c340e.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -135,15 +134,12 @@ internal `geopackage` class `SQLiteConnection` with
 ``` r
 # enumerate tables
 gpkg_list_tables(g)
-#>  [1] "DEM1"                                "DEM2"                               
-#>  [3] "file1444c229b1ebc"                   "gpkg_2d_gridded_coverage_ancillary" 
-#>  [5] "gpkg_2d_gridded_tile_ancillary"      "gpkg_contents"                      
-#>  [7] "gpkg_extensions"                     "gpkg_geometry_columns"              
-#>  [9] "gpkg_ogr_contents"                   "gpkg_spatial_ref_sys"               
-#> [11] "gpkg_tile_matrix"                    "gpkg_tile_matrix_set"               
-#> [13] "rtree_file1444c229b1ebc_geom"        "rtree_file1444c229b1ebc_geom_node"  
-#> [15] "rtree_file1444c229b1ebc_geom_parent" "rtree_file1444c229b1ebc_geom_rowid" 
-#> [17] "sqlite_sequence"
+#>  [1] "DEM1"                               "DEM2"                              
+#>  [3] "gpkg_2d_gridded_coverage_ancillary" "gpkg_2d_gridded_tile_ancillary"    
+#>  [5] "gpkg_contents"                      "gpkg_extensions"                   
+#>  [7] "gpkg_geometry_columns"              "gpkg_ogr_contents"                 
+#>  [9] "gpkg_spatial_ref_sys"               "gpkg_tile_matrix"                  
+#> [11] "gpkg_tile_matrix_set"               "sqlite_sequence"
 
 # inspect tables
 gpkg_tables(g)
@@ -153,8 +149,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file1444c229b1ebc.gpkg:DEM1 
-#> varname     : file1444c229b1ebc 
+#> source      : file1815496c340e.gpkg:DEM1 
+#> varname     : file1815496c340e 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -163,17 +159,9 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file1444c229b1ebc.gpkg:DEM2 
-#> varname     : file1444c229b1ebc 
-#> name        : DEM2 
-#> 
-#> $file1444c229b1ebc
-#>  class       : SpatVectorProxy
-#>  geometry    : polygons 
-#>  dimensions  : 1, 0  (geometries, attributes)
-#>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file1444c229b1ebc.gpkg:file1444c229b1ebc (file1444c229b1ebc)
-#>  coord. ref. : lon/lat WGS 84
+#> source      : file1815496c340e.gpkg:DEM2 
+#> varname     : file1815496c340e 
+#> name        : DEM2
 
 # still connected
 gpkg_is_connected(g)

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![gpkg HTML Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
 <!-- badges: end -->
 
-{gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data. Reading and writing of spatial ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html)) data are done via standard [GDAL](http://www.gdal.org/) utilities provided primarily by the {terra} package. Additional functions are provided to manipulate attributes and tabular data via [RSQLite](https://cran.r-project.org/web/packages/RSQLite/index.html).
+{gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data. Reading and writing of spatial ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html)) data are done via standard [GDAL](http://www.gdal.org/) utilities provided primarily by the {[terra](https://cran.r-project.org/package=terra)} package. Additional functions are provided to manipulate attributes and tabular data via {[RSQLite](https://cran.r-project.org/package=RSQLite)}.
 
 <a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png">
 <img src = "https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" alt = "gpkg hexsticker" title = "gpkg hexsticker: {gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data." width = "35%" height = "35%" hspace="25" vspace="25" align="right"/></a>
@@ -37,7 +37,7 @@ remotes::install_github("brownag/gpkg")
 ## Background
 ### What is a GeoPackage?
 
-[GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standards/geopackage) describes a set of conventions for storing the following within an SQLite database:
+[GeoPackage](https://www.geopackage.org/) is an open, standards-based, non-proprietary, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standards/geopackage) describes a set of conventions for storing the following within an SQLite database:
 
   *  vector features
   
@@ -83,14 +83,11 @@ We can also write vector data to GeoPackage. Here we use `terra::writeVector(...
 
 ```{r}
 # add bounding polygon vector layer
-# TODO: wrap this into gpkg_write() and add support for in-memory rasters
-terra::writeVector(
-  terra::set.crs(terra::as.polygons(terra::ext(
-    gpkg_tables(geopackage(gpkg_tmp))[['DEM1']])
-  ), "OGC:CRS84"),
-  filename = gpkg_tmp,
-  insert = TRUE
-)
+gpkg_write(list(bbox = terra::set.crs(
+  terra::as.polygons(terra::ext(gpkg_tables(
+    geopackage(gpkg_tmp)
+  )[['DEM1']])), "OGC:CRS84"
+)), destfile = gpkg_tmp)
 ```
 
 ## Read a GeoPackage
