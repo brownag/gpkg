@@ -1,4 +1,4 @@
-#' Add metadata extension
+#' Add Metadata extension
 #'
 #' @param x a `geopackage`
 #' @export
@@ -32,7 +32,7 @@ gpkg_add_metadata_extension <- function(x) {
   );")
 }
 
-#' Add metadata extension
+#' Add Related Tables extension
 #'
 #' @param x a `geopackage`
 #' @export
