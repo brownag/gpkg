@@ -1,7 +1,7 @@
 Package: gpkg
 Type: Package
 Title: Utilities for OGC GeoPackages
-Version: 0.0.1.9002
+Version: 0.0.1.9003
 Author: Andrew G. Brown
 Maintainer: Andrew Brown <brown.andrewg@gmail.com>
 Description: High-level wrapper functions to build GeoPackages containing a variety of different data. Read/write of spatial vector and gridded data is performed using standard GDAL utilities. Additional functions are provided to manipulate attributes and tabular data.

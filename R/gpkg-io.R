@@ -8,26 +8,27 @@
 gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
   res <- lapply(x, function(xx) {
     res <- list()
-
+    contents <- gpkg_contents(x)
     # read grids
-    r <- terra::rast(xx)
-    # convert to list of single-layer SpatRaster
-    grids <- as.list(r)
-    # assign raster table names
-    names(grids) <- names(r)
+    if (any(contents$data_type != "features")) {
+        r <- terra::rast(xx)
+        # convert to list of single-layer SpatRaster
+        grids <- as.list(r)
+        # assign raster table names
+        names(grids) <- names(r)
+    } else grids <- list()
 
     # read vector layers (error if there aren't any)
-    v <- try(terra::vector_layers(xx), silent = TRUE)
-    vects <- list()
-    if (!inherits(v, 'try-error')) {
-      vects <- lapply(v, function(xxx)
-          # create SpatVectorProxy
-          try(terra::vect(paste0("GPKG:", xx, ":", xxx), proxy = TRUE), silent = quiet)
-        )
-      names(vects) <- v
-      vects <- vects[!vapply(vects, FUN.VALUE = logical(1), inherits, 'try-error')]
-    }
+    if (any(contents$data_type == "features")) {
+        vects <- lapply(contents$table_name, function(xxx){
+            # create SpatVectorProxy
+            try(terra::vect(path.expand(xx), xxx, proxy = TRUE), silent = quiet)
+          })
+        names(vects) <- contents$table_name
+        vects <- vects[!vapply(vects, FUN.VALUE = logical(1), inherits, 'try-error')]
+    } else vects <- list()
 
+    # TODO: get table references
     tables <- list()
 
     # spatial results (grid+vect+tabular) in `tables`
