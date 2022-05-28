@@ -115,9 +115,9 @@ g
 #> <geopackage>
 #> # of Tables: 2
 #>  
-#> new("SpatRaster", ptr = new("Rcpp_SpatRaster", .xData = <environment>)), new("SpatRaster", ptr = new("Rcpp_SpatRaster", .xData = <environment>))
+#> DEM1, DEM2
 #> <SQLiteConnection>
-#>   Path: /tmp/Rtmp4jgz1T/file1815496c340e.gpkg
+#>   Path: /tmp/RtmpwjSLwj/file88313a1b313.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -149,8 +149,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file1815496c340e.gpkg:DEM1 
-#> varname     : file1815496c340e 
+#> source      : file88313a1b313.gpkg:DEM1 
+#> varname     : file88313a1b313 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -159,8 +159,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file1815496c340e.gpkg:DEM2 
-#> varname     : file1815496c340e 
+#> source      : file88313a1b313.gpkg:DEM2 
+#> varname     : file88313a1b313 
 #> name        : DEM2
 
 # still connected
