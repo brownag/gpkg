@@ -3,6 +3,7 @@
 \name{geopackage}
 \alias{geopackage}
 \alias{geopackage.list}
+\alias{geopackage.missing}
 \alias{geopackage.SQLiteConnection}
 \alias{geopackage.geopackage}
 \alias{geopackage.character}
@@ -12,6 +13,14 @@ geopackage(x, ...)
 
 \method{geopackage}{list}(x, dsn = NULL, connect = FALSE, ...)
 
+\method{geopackage}{missing}(
+  x = NULL,
+  connect = FALSE,
+  pattern = "Rgpkg",
+  tempdir = tempdir(),
+  ...
+)
+
 \method{geopackage}{SQLiteConnection}(x, connect = FALSE, ...)
 
 \method{geopackage}{geopackage}(x, ...)
@@ -19,13 +28,17 @@ geopackage(x, ...)
 \method{geopackage}{character}(x, connect = FALSE, ...)
 }
 \arguments{
-\item{x}{list of SpatVectorProxy, SpatRaster, data.frame; or a character containing path to a GeoPackage file; or an SQLiteConnection to a GeoPackage}
+\item{x}{list of SpatVectorProxy, SpatRaster, data.frame; or a character containing path to a GeoPackage file; or an SQLiteConnection to a GeoPackage. If missing, a temporary file with .gpkg extension is created in \code{tempdir}.}
 
 \item{...}{Additional arguments [not currently used]}
 
 \item{dsn}{Path to GeoPackage File (may not exist)}
 
 \item{connect}{Connect to database and store connection in result? Default: \code{FALSE}}
+
+\item{pattern}{used only when \code{x} is missing (creating temporary file GeoPackage), passed to \code{tempfile()}}
+
+\item{tempdir}{used only when \code{x} is missing (creating temporary file GeoPackage), passed to \code{tempfile()}}
 }
 \value{
 A \code{geopackage} Object

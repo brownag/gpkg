@@ -2,8 +2,10 @@
 
 #' `geopackage` Constructors
 #'
-#' @param x list of SpatVectorProxy, SpatRaster, data.frame; or a character containing path to a GeoPackage file; or an SQLiteConnection to a GeoPackage
+#' @param x list of SpatVectorProxy, SpatRaster, data.frame; or a character containing path to a GeoPackage file; or an SQLiteConnection to a GeoPackage. If missing, a temporary file with .gpkg extension is created in `tempdir`.
 #' @param dsn Path to GeoPackage File (may not exist)
+#' @param pattern used only when `x` is missing (creating temporary file GeoPackage), passed to `tempfile()`; default `"Rgpkg"`
+#' @param tmpdir used only when `x` is missing (creating temporary file GeoPackage), passed to `tempfile()`; default `tempdir()`
 #' @param connect Connect to database and store connection in result? Default: `FALSE`
 #' @param ... Additional arguments \[not currently used\]
 #'
@@ -11,20 +13,31 @@
 #' @rdname geopackage-class
 #' @export
 geopackage <- function(x, ...)
-  UseMethod("geopackage", x)
+  if (missing(x)) geopackage.missing(...) else UseMethod("geopackage", x)
 
 #' @rdname geopackage-class
 #' @export
 geopackage.list <- function(x, dsn = NULL, connect = FALSE, ...) {
-  obj <- .geopackage(dsn = dsn, connect = FALSE, ...)
+  obj <- .geopackage(dsn = dsn, connect = connect, ...)
   obj$tables <- x
   obj
 }
 
 #' @rdname geopackage-class
 #' @export
+geopackage.missing <- function(x, connect = FALSE, pattern = "Rgpkg", tmpdir = tempdir(), ...) {
+  tf <- tempfile(pattern = pattern, tmpdir = tmpdir, fileext = ".gpkg")
+  tft <- try(file.create(tempfile(pattern = pattern, tmpdir = tmpdir, fileext = ".gpkg")))
+  if (inherits(tft, 'try-error')) stop('could not create temporary geopackage in ', tmpdir, call. = FALSE)
+  obj <- .geopackage(dsn = tf, connect = connect, ...)
+  obj$tables <- list()
+  obj
+}
+
+#' @rdname geopackage-class
+#' @export
 geopackage.SQLiteConnection <- function(x, connect = FALSE, ...) {
-  obj <- .geopackage(dsn = x, connect = FALSE, ...)
+  obj <- .geopackage(dsn = x, connect = connect, ...)
   obj$tables <- x
   obj
 }
