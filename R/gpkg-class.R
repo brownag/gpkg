@@ -81,8 +81,9 @@ geopackage.character <- function(x, connect = FALSE, ...) {
 #' @importFrom methods show
 print.geopackage <- function(x, ...) {
   cat("<geopackage>", sep = "\n")
-  cat(paste0("# of Tables: ", length(x$tables)), sep = "\n")
-  cat("\t", paste0(names(x$tables), collapse = ", "), sep = "\n")
+  xx <- gpkg_list_tables(x)
+  cat(paste0("# of Tables: ", length(xx)), sep = "\n")
+  cat("\t", paste0(xx, collapse = ", "), sep = "\n")
   if (!is.null(x$con)) {
     show(x$con)
   }
