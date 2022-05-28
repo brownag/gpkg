@@ -50,13 +50,7 @@
 <span class="fu">geopackage</span><span class="op">(</span><span class="va">x</span>, dsn <span class="op">=</span> <span class="cn">NULL</span>, connect <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for missing</span>
-<span class="fu">geopackage</span><span class="op">(</span>
-  x <span class="op">=</span> <span class="cn">NULL</span>,
-  connect <span class="op">=</span> <span class="cn">FALSE</span>,
-  pattern <span class="op">=</span> <span class="st">"Rgpkg"</span>,
-  tempdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
+<span class="fu">geopackage</span><span class="op">(</span><span class="va">x</span>, connect <span class="op">=</span> <span class="cn">FALSE</span>, pattern <span class="op">=</span> <span class="st">"Rgpkg"</span>, tmpdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for SQLiteConnection</span>
 <span class="fu">geopackage</span><span class="op">(</span><span class="va">x</span>, connect <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
@@ -79,9 +73,9 @@
 <dt>connect</dt>
 <dd><p>Connect to database and store connection in result? Default: <code>FALSE</code></p></dd>
 <dt>pattern</dt>
-<dd><p>used only when <code>x</code> is missing (creating temporary file GeoPackage), passed to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile()</a></code></p></dd>
-<dt>tempdir</dt>
-<dd><p>used only when <code>x</code> is missing (creating temporary file GeoPackage), passed to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile()</a></code></p></dd>
+<dd><p>used only when <code>x</code> is missing (creating temporary file GeoPackage), passed to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile()</a></code>; default <code>"Rgpkg"</code></p></dd>
+<dt>tmpdir</dt>
+<dd><p>used only when <code>x</code> is missing (creating temporary file GeoPackage), passed to <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile()</a></code>; default <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code></p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
