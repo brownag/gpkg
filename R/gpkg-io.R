@@ -85,7 +85,7 @@ gpkg_write <- function(x,
       } else if (inherits(xx, 'SpatRaster')) {
         return(terra::sources(xx))
       } else if (inherits(xx, 'SpatVectorProxy')) {
-        # TODO: is there an alternate way to do this?
+        # TODO: rspatial/terra#646 sources(<SpatVectorProxy>) added terra 1.5-32+
         return(xx@ptr$v$source)
       } else {
         if (is.character(xx)) {
@@ -174,9 +174,9 @@ gpkg_write <- function(x,
 
   r <- terra::rast(x)
 
-  if (!is.null(NoData)) {
-    terra::NAflag(r) <- NoData
-  }
+  # if (!is.null(NoData)) {
+  #   terra::NAflag(r) <- NoData
+  # }
 
   .lut_gpkg_creation <- function(...) {
     kv <- list(...)
@@ -189,7 +189,7 @@ gpkg_write <- function(x,
     character(0)
   }
 
-  gdal_options <- c(gdal_options, "of=GPKG", .lut_gpkg_creation(...))
+  gdal_options <- c(gdal_options, .lut_gpkg_creation(...))
 
   if (getOption("gpkg.debug", default = FALSE)) {
     message("DEBUG:\n\n", paste0(gdal_options, collapse = "\n"))
