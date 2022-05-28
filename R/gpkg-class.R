@@ -27,7 +27,7 @@ geopackage.list <- function(x, dsn = NULL, connect = FALSE, ...) {
 #' @export
 geopackage.missing <- function(x, connect = FALSE, pattern = "Rgpkg", tmpdir = tempdir(), ...) {
   tf <- tempfile(pattern = pattern, tmpdir = tmpdir, fileext = ".gpkg")
-  tft <- try(file.create(tempfile(pattern = pattern, tmpdir = tmpdir, fileext = ".gpkg")))
+  tft <- try(file.create(tf))
   if (inherits(tft, 'try-error')) stop('could not create temporary geopackage in ', tmpdir, call. = FALSE)
   obj <- .geopackage(dsn = tf, connect = connect, ...)
   obj$tables <- list()
@@ -64,7 +64,11 @@ geopackage.character <- function(x, connect = FALSE, ...) {
     dsn <- con@dbname
   # create a connection when geopackage object is constructed
   } else if (connect) {
-    # TODO: connect to dsn, store in con
+    if (requireNamespace("RSQLite")) {
+      con <- RSQLite::dbConnect(RSQLite::SQLite(), dsn)
+    } else { 
+      stop('package `RSQLite` is required to connect to GeoPackages', call. = FALSE)
+    }
   }
   obj <- structure(list(
     tables = list(),

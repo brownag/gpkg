@@ -13,13 +13,7 @@ geopackage(x, ...)
 
 \method{geopackage}{list}(x, dsn = NULL, connect = FALSE, ...)
 
-\method{geopackage}{missing}(
-  x = NULL,
-  connect = FALSE,
-  pattern = "Rgpkg",
-  tempdir = tempdir(),
-  ...
-)
+\method{geopackage}{missing}(x, connect = FALSE, pattern = "Rgpkg", tmpdir = tempdir(), ...)
 
 \method{geopackage}{SQLiteConnection}(x, connect = FALSE, ...)
 
@@ -36,9 +30,9 @@ geopackage(x, ...)
 
 \item{connect}{Connect to database and store connection in result? Default: \code{FALSE}}
 
-\item{pattern}{used only when \code{x} is missing (creating temporary file GeoPackage), passed to \code{tempfile()}}
+\item{pattern}{used only when \code{x} is missing (creating temporary file GeoPackage), passed to \code{tempfile()}; default \code{"Rgpkg"}}
 
-\item{tempdir}{used only when \code{x} is missing (creating temporary file GeoPackage), passed to \code{tempfile()}}
+\item{tmpdir}{used only when \code{x} is missing (creating temporary file GeoPackage), passed to \code{tempfile()}; default \code{tempdir()}}
 }
 \value{
 A \code{geopackage} Object
