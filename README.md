@@ -58,7 +58,7 @@ start by adding two DEM (GeoTIFF) files.
 ``` r
 library(gpkg)
 library(terra)
-#> terra 1.5.31
+#> terra 1.5.37
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -113,11 +113,11 @@ the basic `geopackage` class provided by {gpkg}.
 g <- geopackage(gpkg_tmp, connect = TRUE)
 g
 #> <geopackage>
-#> # of Tables: 2
+#> # of Tables: 12
 #>  
-#> DEM1, DEM2
+#> DEM1, DEM2, gpkg_2d_gridded_coverage_ancillary, gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions, gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys, gpkg_tile_matrix, gpkg_tile_matrix_set, sqlite_sequence
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpwjSLwj/file88313a1b313.gpkg
+#>   Path: /tmp/Rtmpo3LCkk/file96fb3122380.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -149,8 +149,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file88313a1b313.gpkg:DEM1 
-#> varname     : file88313a1b313 
+#> source      : file96fb3122380.gpkg:DEM1 
+#> varname     : file96fb3122380 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -159,8 +159,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file88313a1b313.gpkg:DEM2 
-#> varname     : file88313a1b313 
+#> source      : file96fb3122380.gpkg:DEM2 
+#> varname     : file96fb3122380 
 #> name        : DEM2
 
 # still connected
