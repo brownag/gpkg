@@ -16,6 +16,21 @@ gpkg_tables.geopackage <- function(x) {
   x$tables
 }
 
+#' Get Source File of a `geopackage` Object
+#'
+#' @param x a `geopackage` object
+#' @return character path
+#' @export
+#' @rdname gpkg_source
+gpkg_source <- function(x)
+  UseMethod("gpkg_source", x)
+
+#' @export
+#' @rdname gpkg_source
+gpkg_source.geopackage <- function(x) {
+  x$dsn
+}
+
 #' List Tables in a GeoPackage
 #'
 #' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
