@@ -20,16 +20,16 @@ gpkg_connect.geopackage <- function(x) {
 #' @importFrom DBI dbConnect
 #' @rdname gpkg-connnection
 gpkg_connect.character <- function(x) {
-  
+
   if (requireNamespace("RSQLite", quietly = TRUE)) {
-    
+
     con <- try(DBI::dbConnect(RSQLite::SQLite(), x), silent = TRUE)
-    
+
     if (inherits(con, 'try-error')) {
       message(con[1])
       return(NULL)
     }
-    
+
   } else {
     stop('package `RSQLite` is required to open a connection to a GeoPackage', call. = FALSE)
   }
@@ -44,13 +44,13 @@ gpkg_is_connected <- function(x)
 #' @export
 #' @rdname gpkg-connnection
 gpkg_is_connected.geopackage <- function(x) {
-  !is.null(x$dsn)
+  !is.null(x$con)
 }
 
 #' Create SQLite Connection to GeoPackage
 #'
 #' @param x A `geopackage` or `SQLiteConnection` object
-#' @return Logical (invisible). `FALSE` if connection cannot be closed. 
+#' @return Logical (invisible). `FALSE` if connection cannot be closed.
 #' @export
 #' @importFrom DBI dbDisconnect
 #' @rdname gpkg-connnection
@@ -81,7 +81,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
 
 
 #' .gpkg_connection_from_x
-#' 
+#'
 #' @param x A `geopackage` object, a path to a GeoPackage or an `SQLiteConnection`
 #' @return An SQLiteConnection with logical attribute `"disconnect"` indicating whether it should be disconnected after use.
 #' @noRd
@@ -104,6 +104,8 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
   } else {
     stop('`x` should be a `geopackage` object, a path to a GeoPackage or an `SQLiteConnection`')
   }
-  attr(con, 'disconnect') <- disconnect
+  if (!is.null(con)) {
+    attr(con, 'disconnect') <- disconnect
+  }
   con
 }

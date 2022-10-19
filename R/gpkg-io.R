@@ -10,7 +10,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
     res <- list()
     contents <- gpkg_contents(x)
     # read grids
-    if (any(contents$data_type != "features")) {
+    if (!any(contents$data_type %in%  c("attributes", "features"))) {
         r <- terra::rast(xx)
         # convert to list of single-layer SpatRaster
         grids <- as.list(r)

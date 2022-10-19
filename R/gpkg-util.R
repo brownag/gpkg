@@ -39,9 +39,12 @@ gpkg_source.geopackage <- function(x) {
 #' @export
 gpkg_list_tables <- function(x) {
   con <- .gpkg_connection_from_x(x)
-  res <- DBI::dbListTables(con)
-  if (attr(con, 'disconnect')) {
-    DBI::dbDisconnect(con)
+  res <- NULL
+  if (!is.null(con)) {
+    res <- DBI::dbListTables(con)
+    if (attr(con, 'disconnect')) {
+      DBI::dbDisconnect(con)
+    }
   }
   res
 }
