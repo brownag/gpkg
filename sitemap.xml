@@ -37,10 +37,19 @@
     <loc>/reference/gpkg_creation_options.html</loc>
   </url>
   <url>
+    <loc>/reference/gpkg_execute.html</loc>
+  </url>
+  <url>
     <loc>/reference/gpkg_list_tables.html</loc>
   </url>
   <url>
+    <loc>/reference/gpkg_query.html</loc>
+  </url>
+  <url>
     <loc>/reference/gpkg_read.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gpkg_source.html</loc>
   </url>
   <url>
     <loc>/reference/gpkg_sqlite_tables.html</loc>

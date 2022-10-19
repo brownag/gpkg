@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9004</span>
       </span>
     </div>
 
@@ -66,9 +66,9 @@
 </h2>
 <p>The package can be installed from GitHub with {remotes}</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span><span class="op">)</span> 
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"brownag/gpkg"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span><span class="op">)</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"brownag/gpkg"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
@@ -90,103 +90,103 @@
 </h2>
 <p><code><a href="reference/gpkg_write.html">gpkg_write()</a></code> can handle a variety of different input types. Here we start by adding two DEM (GeoTIFF) files.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gpkg</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra 1.5.37</span>
-
-<span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dem.tif"</span>, package <span class="op">=</span> <span class="st">"gpkg"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">dem</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>
-<span class="va">gpkg_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".gpkg"</span><span class="op">)</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span>
-
-<span class="co"># write a gpkg with two DEMs in it</span>
-<span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span>
-  <span class="va">dem</span>,
-  destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>,
-  RASTER_TABLE <span class="op">=</span> <span class="st">"DEM1"</span>,
-  FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span>
-<span class="op">)</span>
-<span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span>
-  <span class="va">dem</span>,
-  destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>,
-  append <span class="op">=</span> <span class="cn">TRUE</span>,
-  RASTER_TABLE <span class="op">=</span> <span class="st">"DEM2"</span>,
-  FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gpkg</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.5.37</span></span>
+<span></span>
+<span><span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dem.tif"</span>, package <span class="op">=</span> <span class="st">"gpkg"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">dem</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">gpkg_tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".gpkg"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># write a gpkg with two DEMs in it</span></span>
+<span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span></span>
+<span>  <span class="va">dem</span>,</span>
+<span>  destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>,</span>
+<span>  RASTER_TABLE <span class="op">=</span> <span class="st">"DEM1"</span>,</span>
+<span>  FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span></span>
+<span>  <span class="va">dem</span>,</span>
+<span>  destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>,</span>
+<span>  append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  RASTER_TABLE <span class="op">=</span> <span class="st">"DEM2"</span>,</span>
+<span>  FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="insert-vector-layers">Insert Vector Layers<a class="anchor" aria-label="anchor" href="#insert-vector-layers"></a>
 </h2>
 <p>We can also write vector data to GeoPackage. Here we use <code>terra::writeVector(..., insert = TRUE)</code> to add a bounding box polygon layer derived from <code>"DEM1"</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># add bounding polygon vector layer</span>
-<span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inplace.html" class="external-link">set.crs</a></span><span class="op">(</span>
-  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span>
-    <span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span>
-  <span class="op">)</span><span class="op">[[</span><span class="st">'DEM1'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="st">"OGC:CRS84"</span>
-<span class="op">)</span><span class="op">)</span>, destfile <span class="op">=</span> <span class="va">gpkg_tmp</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># add bounding polygon vector layer</span></span>
+<span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inplace.html" class="external-link">set.crs</a></span><span class="op">(</span></span>
+<span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/ext.html" class="external-link">ext</a></span><span class="op">(</span><span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">[[</span><span class="st">'DEM1'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="st">"OGC:CRS84"</span></span>
+<span><span class="op">)</span><span class="op">)</span>, destfile <span class="op">=</span> <span class="va">gpkg_tmp</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="read-a-geopackage">Read a GeoPackage<a class="anchor" aria-label="anchor" href="#read-a-geopackage"></a>
 </h2>
 <p><code><a href="reference/geopackage-class.html">geopackage()</a></code> is a constructor that can create a simple container for working with geopackages from several types of inputs. Often you will have a <em>character</em> file path to a GeoPackage (.gpkg) file. Other times you may have a list of tables and layers you want to be in a GeoPackage that does not exist yet. Or, you may have a connection to a GeoPackage database already opened that you want to use. In any case (<code>character</code>, <code>list</code>, <code>SQLiteConnection</code>) there is an S3 method to facilitate creating the basic <code>geopackage</code> class provided by {gpkg}.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span>, connect <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">g</span>
-<span class="co">#&gt; &lt;geopackage&gt;</span>
-<span class="co">#&gt; # of Tables: 12</span>
-<span class="co">#&gt;  </span>
-<span class="co">#&gt; DEM1, DEM2, gpkg_2d_gridded_coverage_ancillary, gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions, gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys, gpkg_tile_matrix, gpkg_tile_matrix_set, sqlite_sequence</span>
-<span class="co">#&gt; &lt;SQLiteConnection&gt;</span>
-<span class="co">#&gt;   Path: /tmp/Rtmpo3LCkk/file96fb3122380.gpkg</span>
-<span class="co">#&gt;   Extensions: TRUE</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span>
-<span class="co">#&gt; [1] "geopackage"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span>, connect <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">g</span></span>
+<span><span class="co">#&gt; &lt;geopackage&gt;</span></span>
+<span><span class="co">#&gt; # of Tables: 12</span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; DEM1, DEM2, gpkg_2d_gridded_coverage_ancillary, gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions, gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys, gpkg_tile_matrix, gpkg_tile_matrix_set, sqlite_sequence</span></span>
+<span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
+<span><span class="co">#&gt;   Path: /tmp/Rtmpo3LCkk/file96fb3122380.gpkg</span></span>
+<span><span class="co">#&gt;   Extensions: TRUE</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "geopackage"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="inspect-contents-of-geopackage">Inspect Contents of GeoPackage<a class="anchor" aria-label="anchor" href="#inspect-contents-of-geopackage"></a>
 </h2>
 <p>We can list the table names in a GeoPackage with <code><a href="reference/gpkg_list_tables.html">gpkg_list_tables()</a></code> and fetch pointers (SpatRaster, SpatVectorProxy, and lazy data.frame) to the data in them with <code>gpkg_table()</code>. We can check the status of the internal <code>geopackage</code> class <code>SQLiteConnection</code> with <code><a href="reference/gpkg-connnection.html">gpkg_is_connected()</a></code> and disconnect it with <code><a href="reference/gpkg-connnection.html">gpkg_disconnect()</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># enumerate tables</span>
-<span class="fu"><a href="reference/gpkg_list_tables.html">gpkg_list_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span>
-<span class="co">#&gt;  [1] "DEM1"                               "DEM2"                              </span>
-<span class="co">#&gt;  [3] "gpkg_2d_gridded_coverage_ancillary" "gpkg_2d_gridded_tile_ancillary"    </span>
-<span class="co">#&gt;  [5] "gpkg_contents"                      "gpkg_extensions"                   </span>
-<span class="co">#&gt;  [7] "gpkg_geometry_columns"              "gpkg_ogr_contents"                 </span>
-<span class="co">#&gt;  [9] "gpkg_spatial_ref_sys"               "gpkg_tile_matrix"                  </span>
-<span class="co">#&gt; [11] "gpkg_tile_matrix_set"               "sqlite_sequence"</span>
-
-<span class="co"># inspect tables</span>
-<span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span>
-<span class="co">#&gt; $DEM1</span>
-<span class="co">#&gt; class       : SpatRaster </span>
-<span class="co">#&gt; dimensions  : 30, 31, 1  (nrow, ncol, nlyr)</span>
-<span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span>
-<span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
-<span class="co">#&gt; source      : file96fb3122380.gpkg:DEM1 </span>
-<span class="co">#&gt; varname     : file96fb3122380 </span>
-<span class="co">#&gt; name        : DEM1 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $DEM2</span>
-<span class="co">#&gt; class       : SpatRaster </span>
-<span class="co">#&gt; dimensions  : 30, 31, 1  (nrow, ncol, nlyr)</span>
-<span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span>
-<span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
-<span class="co">#&gt; source      : file96fb3122380.gpkg:DEM2 </span>
-<span class="co">#&gt; varname     : file96fb3122380 </span>
-<span class="co">#&gt; name        : DEM2</span>
-
-<span class="co"># still connected</span>
-<span class="fu"><a href="reference/gpkg-connnection.html">gpkg_is_connected</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span>
-<span class="co">#&gt; [1] TRUE</span>
-
-<span class="co"># disconnect geopackage</span>
-<span class="fu"><a href="reference/gpkg-connnection.html">gpkg_disconnect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># enumerate tables</span></span>
+<span><span class="fu"><a href="reference/gpkg_list_tables.html">gpkg_list_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "DEM1"                               "DEM2"                              </span></span>
+<span><span class="co">#&gt;  [3] "gpkg_2d_gridded_coverage_ancillary" "gpkg_2d_gridded_tile_ancillary"    </span></span>
+<span><span class="co">#&gt;  [5] "gpkg_contents"                      "gpkg_extensions"                   </span></span>
+<span><span class="co">#&gt;  [7] "gpkg_geometry_columns"              "gpkg_ogr_contents"                 </span></span>
+<span><span class="co">#&gt;  [9] "gpkg_spatial_ref_sys"               "gpkg_tile_matrix"                  </span></span>
+<span><span class="co">#&gt; [11] "gpkg_tile_matrix_set"               "sqlite_sequence"</span></span>
+<span></span>
+<span><span class="co"># inspect tables</span></span>
+<span><span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $DEM1</span></span>
+<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; dimensions  : 30, 31, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
+<span><span class="co">#&gt; source      : file96fb3122380.gpkg:DEM1 </span></span>
+<span><span class="co">#&gt; varname     : file96fb3122380 </span></span>
+<span><span class="co">#&gt; name        : DEM1 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $DEM2</span></span>
+<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; dimensions  : 30, 31, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
+<span><span class="co">#&gt; source      : file96fb3122380.gpkg:DEM2 </span></span>
+<span><span class="co">#&gt; varname     : file96fb3122380 </span></span>
+<span><span class="co">#&gt; name        : DEM2</span></span>
+<span></span>
+<span><span class="co"># still connected</span></span>
+<span><span class="fu"><a href="reference/gpkg-connnection.html">gpkg_is_connected</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span></span>
+<span><span class="co"># disconnect geopackage</span></span>
+<span><span class="fu"><a href="reference/gpkg-connnection.html">gpkg_disconnect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -235,7 +235,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
