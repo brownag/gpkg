@@ -11,5 +11,5 @@ gpkg_execute <- function(x, statement) {
   if (attr(con, 'disconnect')) {
     DBI::dbDisconnect(con)
   }
-  res
+  x
 }

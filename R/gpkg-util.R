@@ -66,7 +66,7 @@ gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
   invisible(
     .gpkg_update_table(
       x,
-      tablename = "gpkg_2d_gridded_coverage_ancillary",
+      table_name = "gpkg_2d_gridded_coverage_ancillary",
       updatecol = "data_null",
       updatevalue = value,
       wherecol = "tile_matrix_set_name",
@@ -85,7 +85,7 @@ gpkg_2d_gridded_coverage_ancillary <- function(x) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop('package `RSQLite` is required to get the `gpkg_2d_gridded_coverage_ancillary` table', call. = FALSE)
   }
-  .gpkg_get_table(x, "gpkg_2d_gridded_coverage_ancillary")
+  gpkg_table(x, "gpkg_2d_gridded_coverage_ancillary")
 }
 
 #' Get `gpkg_contents` Table
@@ -98,5 +98,5 @@ gpkg_contents <- function(x) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop('package `RSQLite` is required to get the `gpkg_contents` table', call. = FALSE)
   }
-  .gpkg_get_table(x, "gpkg_contents")
+  gpkg_table(x, "gpkg_contents")
 }

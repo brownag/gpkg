@@ -1,8 +1,8 @@
 # gpkg sqlite tools
 
-#' general function for table `tablename` set column X to scalar A where column Y is in vector B
+#' general function for table `table_name` set column X to scalar A where column Y is in vector B
 #' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
-#' @param tablename character. table name
+#' @param table_name character. table name
 #' @param updatecol character. column to update
 #' @param updatevalue scalar value to set
 #' @param wherecol character. column to constrain update
@@ -10,10 +10,10 @@
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
 #' @noRd
 #' @keywords internal
-.gpkg_update_table <- function(x, tablename, updatecol, updatevalue, wherecol, wherevector, query_string = FALSE) {
+.gpkg_update_table <- function(x, table_name, updatecol, updatevalue, wherecol, wherevector, query_string = FALSE) {
   con <- .gpkg_connection_from_x(x)
   q <- sprintf("UPDATE %s SET %s = %s WHERE %s IN %s",
-               tablename, updatecol, updatevalue, wherecol,
+               table_name, updatecol, updatevalue, wherecol,
                paste0("(", paste0(paste0("'", wherevector, "'"), collapse = ","), ")"))
   if (query_string) return(q)
   res <- RSQLite::dbExecute(con, q)
@@ -25,12 +25,12 @@
 
 #' general function to get table by table name
 #' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
-#' @param tablename character. table name
+#' @param table_name character. table name
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
-#' @noRd
-#' @keywords internal
-.gpkg_get_table <- function(x, tablename, query_string = FALSE) {
-  q <- sprintf("SELECT * FROM %s", tablename)
+#' @return A data.frame
+#' @export
+gpkg_table <- function(x, table_name, query_string = FALSE) {
+  q <- sprintf("SELECT * FROM %s", table_name)
   if (query_string) {
     return(q)
   }

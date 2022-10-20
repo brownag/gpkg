@@ -56,6 +56,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #' Write a GeoPackage
 #' @param x Vector of source file path(s), or a list containing one or more SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.
 #' @param destfile Character. Path to output GeoPackage
+#' @param table_name Character. Default `NULL` name is derived from source file. Required if `x` is a _data.frame_.
 #' @param datatype Data type. Defaults to `"FLT4S"` for GeoTIFF files, `"INT2U"` otherwise. See documentation for `terra::writeRaster()`.
 #' @param append Append to existing data source? Default: `FALSE`. Setting `append=TRUE` overrides `overwrite=TRUE`
 #' @param overwrite Overwrite existing data source? Default `FALSE`.
@@ -69,12 +70,21 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #' @keywords io
 gpkg_write <- function(x,
                        destfile,
+                       table_name = NULL,
                        datatype = "FLT4S",
                        append = FALSE,
                        overwrite = FALSE,
                        NoData = NULL,
                        gdal_options = NULL,
                        ...) {
+  # attribute tables
+  if (inherits(x, 'data.frame')) {
+    if (is.null(table_name)) {
+      stop("`table_name` must be specified if `x` is a data.frame", call. = FALSE)
+    }  
+    return(gpkg_write_attributes(geopackage(destfile), x, table_name = table_name, overwrite = overwrite, append = append))
+  } 
+  
   if (!is.list(x) || is.character(x)) {
     x <- list(x)
   }
@@ -88,7 +98,7 @@ gpkg_write <- function(x,
         # TODO: rspatial/terra#646 sources(<SpatVectorProxy>) added terra 1.5-32+
         return(xx@ptr$v$source)
       } else {
-        if (is.character(xx)) {
+       if (is.character(xx)) {
           return(xx)
         } else {
           return(character())
@@ -234,14 +244,4 @@ gpkg_write <- function(x,
 
   res <- terra::writeVector(terra::vect(x), destfile, layer = layername, insert = insert)
   invisible(res)
-}
-
-#' .gpkg_write_vector_terra
-#' @return A SpatVectorProxy reference to grid written to GeoPackage, or `NULL` on error
-#' @noRd
-#' @keywords internal
-.gpkg_write_table_RSQLite <- function(x,
-                                      destfile,
-                                      tablename) {
-
 }

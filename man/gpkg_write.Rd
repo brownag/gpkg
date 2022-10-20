@@ -7,6 +7,7 @@
 gpkg_write(
   x,
   destfile,
+  table_name = NULL,
   datatype = "FLT4S",
   append = FALSE,
   overwrite = FALSE,
@@ -19,6 +20,8 @@ gpkg_write(
 \item{x}{Vector of source file path(s), or a list containing one or more SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.}
 
 \item{destfile}{Character. Path to output GeoPackage}
+
+\item{table_name}{Character. Default \code{NULL} name is derived from source file. Required if \code{x} is a \emph{data.frame}.}
 
 \item{datatype}{Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"} otherwise. See documentation for \code{terra::writeRaster()}.}
 
