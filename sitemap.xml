@@ -25,6 +25,9 @@
     <loc>/reference/gpkg_2d_gridded_coverage_ancillary.html</loc>
   </url>
   <url>
+    <loc>/reference/gpkg_add_contents.html</loc>
+  </url>
+  <url>
     <loc>/reference/gpkg_add_metadata_extension.html</loc>
   </url>
   <url>
@@ -55,16 +58,25 @@
     <loc>/reference/gpkg_sqlite_tables.html</loc>
   </url>
   <url>
+    <loc>/reference/gpkg_table.html</loc>
+  </url>
+  <url>
     <loc>/reference/gpkg_tables.html</loc>
   </url>
   <url>
     <loc>/reference/gpkg_tile_set_data_null.html</loc>
   </url>
   <url>
+    <loc>/reference/gpkg_update_contents.html</loc>
+  </url>
+  <url>
     <loc>/reference/gpkg_validate.html</loc>
   </url>
   <url>
     <loc>/reference/gpkg_write.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gpkg_write_attributes.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
