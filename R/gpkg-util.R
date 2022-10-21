@@ -13,7 +13,22 @@ gpkg_tables <- function(x)
 #' @export
 #' @rdname gpkg_tables
 gpkg_tables.geopackage <- function(x) {
-  x$tables
+  t1 <- names(x$tables)
+  t2 <- gpkg_contents(x)$table_name
+  
+  # update if needed
+  idx <- which(!t2 %in% t1)
+  if (length(idx) > 0) {
+    newtn <- t2[idx]
+    newt <- lapply(newtn, function(y) {
+      lazy.frame(x, y)
+    })
+    names(newt) <- newtn
+    x$tables <- c(x$tables, newt)
+    x$tables <- x$tables[match(names(x$tables), t2)]
+  }
+  
+  x
 }
 
 #' Get Source File of a `geopackage` Object

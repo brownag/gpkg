@@ -11,14 +11,14 @@ lazy.frame(x, ...)
 
 \method{lazy.frame}{character}(x, ...)
 
-\method{lazy.frame}{geopackage}(x, table = NULL, ...)
+\method{lazy.frame}{geopackage}(x, table_name = NULL, ...)
 }
 \arguments{
 \item{x}{a geopackage object or character path to GeoPcakge}
 
 \item{...}{additional arguments not used}
 
-\item{table}{one or more table names}
+\item{table_name}{one or more table names}
 }
 \description{
 lazy data.frame

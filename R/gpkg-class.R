@@ -37,9 +37,7 @@ geopackage.missing <- function(x, connect = FALSE, pattern = "Rgpkg", tmpdir = t
 #' @rdname geopackage-class
 #' @export
 geopackage.SQLiteConnection <- function(x, connect = FALSE, ...) {
-  obj <- .geopackage(dsn = x, connect = connect, ...)
-  obj$tables <- x
-  obj
+  .geopackage(dsn = x, connect = connect, ...)
 }
 
 #' @rdname geopackage-class

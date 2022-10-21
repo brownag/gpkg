@@ -15,21 +15,21 @@ lazy.frame.character <- function(x, ...) {
 #' lazy data.frame
 #' get information on a table in a GeoPackage (without returning the whole table)
 #' @param x a geopackage object or character path to GeoPcakge
-#' @param table one or more table names
+#' @param table_name one or more table names
 #' @param ... additional arguments not used
 #' @export
 #' @rdname lazy.frame
 #' @importFrom DBI dbGetQuery dbDisconnect
-lazy.frame.geopackage <- function(x, table = NULL, ...) {
+lazy.frame.geopackage <- function(x, table_name = NULL, ...) {
   con <- .gpkg_connection_from_x(x)
   tbls <- gpkg_list_tables(con)
   dsn <- gpkg_source(x)
-  if (is.null(table)){
-    table <- tbls
+  if (is.null(table_name)){
+    table_name <- tbls
   }
-  if (!all(table %in% tbls))
-    stop("no table with name: '", paste0(table[!table %in% tbls], collapse="', '"), "' in ", dsn)
-  res <- do.call('rbind', lapply(table, function(xx) {
+  if (!all(table_name %in% tbls))
+    stop("no table with name: '", paste0(table_name[!table_name %in% tbls], collapse="', '"), "' in ", dsn)
+  res <- do.call('rbind', lapply(table_name, function(xx) {
     data.frame(
       dsn = dsn,
       table_name = xx,

@@ -6,6 +6,9 @@
 #' @export
 #' @keywords io
 gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
+  if (inherits(x, 'geopackage')) {
+    x <- x$dsn
+  }
   res <- lapply(x, function(xx) {
     res <- list()
     contents <- gpkg_contents(x)
