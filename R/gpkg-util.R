@@ -28,7 +28,7 @@ gpkg_tables.geopackage <- function(x) {
     x$tables <- x$tables[match(names(x$tables), t2)]
   }
   
-  x
+  x$tables
 }
 
 #' Get Source File of a `geopackage` Object
