@@ -49,8 +49,8 @@ expect_true(gpkg_disconnect(g))
 g <- geopackage(gpkg_tmp, connect = TRUE)
 
 # add bounding polygon vector dataset
-terra::writeVector(terra::set.crs(terra::as.polygons(terra::ext(g$tables[[1]])),
-                                  "OGC:CRS84"), g$dsn, insert = TRUE)
+b <- terra::as.polygons(g$tables[[1]], ext = TRUE)
+terra::writeVector(b, g$dsn, insert = TRUE)
 
 # enumerate tables
 tl <- gpkg_list_tables(g)
