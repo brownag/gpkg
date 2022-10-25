@@ -3,17 +3,19 @@
 \docType{data}
 \name{gpkg_sqlite_tables}
 \alias{gpkg_sqlite_tables}
-\title{GeoPackage SQLite Tables}
+\title{GeoPackage Dataset}
 \format{
 a \code{data.frame} with 1 column (\code{"table_name"}) and 10 rows
 }
 \source{
-\href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{GDAL - GPKG – GeoPackage raster}
+\href{https://gdal.org/drivers/raster/gpkg.html}{GDAL - GPKG – GeoPackage raster}, \href{https://gdal.org/drivers/vector/gpkg.html}{GDAL - GPKG – GeoPackage vector}
 }
 \usage{
 gpkg_sqlite_tables
 }
 \description{
+GeoPackage Dataset
+
 GeoPackage SQLite Tables
 }
 \keyword{datasets}

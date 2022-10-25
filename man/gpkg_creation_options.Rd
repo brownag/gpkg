@@ -5,10 +5,10 @@
 \alias{gpkg_creation_options}
 \title{GeoPackage Creation Options}
 \format{
-An object of class \code{data.frame} with 21 rows and 4 columns.
+An object of class \code{data.frame} with 32 rows and 4 columns.
 }
 \source{
-\href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{GDAL - GPKG – GeoPackage raster}
+\href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{GDAL - GPKG – GeoPackage raster}, \href{https://gdal.org/drivers/vector/gpkg.html}{GDAL - GPKG – GeoPackage vector}
 }
 \usage{
 gpkg_creation_options

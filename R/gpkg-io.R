@@ -152,10 +152,7 @@ gpkg_write <- function(x,
   }
   nvct <- 0
   lapply(names(vects), function(vv) {
-    # TODO: vector dataset open options -oo name=value <https://gdal.org/drivers/vector/gpkg.html#dataset-open-options>
-    #                    creation options <https://gdal.org/drivers/vector/gpkg.html#dataset-creation-options>
-    #                                     <https://gdal.org/drivers/vector/gpkg.html#layer-creation-options>
-    .gpkg_write_vector_terra(vects[[vv]],
+  .gpkg_write_vector_terra(vects[[vv]],
                              layername = vv,
                              destfile = destfile,
                              insert = TRUE,
@@ -166,6 +163,17 @@ gpkg_write <- function(x,
 
   # return TRUE if at least one layer written
   invisible(ngrd > 0)
+}
+
+.lut_gpkg_creation <- function(...) {
+  kv <- list(...)
+  gpkg_creation_options <- get("gpkg_creation_options")
+  kvn <- trimws(names(kv)[names(kv) %in% gpkg_creation_options$creation_option])
+  kvn <- kvn[nchar(kvn) > 0]
+  if (length(kvn) > 0) {
+    return(paste0(kvn, "=", as.character(kv[kvn])))
+  }
+  character(0)
 }
 
 #' .gpkg_write_grid_subdataset_terra
@@ -187,22 +195,7 @@ gpkg_write <- function(x,
 
   r <- terra::rast(x)
 
-  # if (!is.null(NoData)) {
-  #   terra::NAflag(r) <- NoData
-  # }
-
-  .lut_gpkg_creation <- function(...) {
-    kv <- list(...)
-    gpkg_creation_options <- get("gpkg_creation_options")
-    kvn <- trimws(names(kv)[names(kv) %in% gpkg_creation_options$creation_option])
-    kvn <- kvn[nchar(kvn) > 0]
-    if (length(kvn) > 0) {
-      return(paste0(kvn, "=", as.character(kv[kvn])))
-    }
-    character(0)
-  }
-
-  gdal_options <- c(gdal_options, .lut_gpkg_creation(...))
+  gdal_options <- unique(c(gdal_options, .lut_gpkg_creation(...)))
 
   if (getOption("gpkg.debug", default = FALSE)) {
     message("DEBUG:\n\n", paste0(gdal_options, collapse = "\n"))
@@ -210,8 +203,11 @@ gpkg_write <- function(x,
 
   if (append) {
     overwrite <- FALSE
-    gdal_options <- c(gdal_options, "APPEND_SUBDATASET=YES")
+    if (!any(grepl("APPEND_SUBDATASET", gdal_options, ignore.case = TRUE))) {
+      gdal_options <- c(gdal_options, "APPEND_SUBDATASET=YES")
+    }
   }
+  
   res <- terra::writeRaster(
     x = r,
     filename = destfile,
@@ -238,13 +234,22 @@ gpkg_write <- function(x,
                                      layername,
                                      insert = FALSE,
                                      overwrite = FALSE,
-                                     gdal_options = NULL) {
+                                     gdal_options = NULL,
+                                     ...) {
 
-  # TODO: handle GDAL options
+  gdal_options <- unique(c(gdal_options, .lut_gpkg_creation(...)))
+  
   if (insert) {
     overwrite <- FALSE
   }
-
-  res <- terra::writeVector(terra::vect(x), destfile, layer = layername, insert = insert)
+  
+  res <- terra::writeVector(
+            terra::vect(x),
+            destfile,
+            layer = layername,
+            insert = insert,
+            overwrite = overwrite,
+            options = gdal_options
+          )
   invisible(res)
 }
