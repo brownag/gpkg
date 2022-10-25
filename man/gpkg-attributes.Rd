@@ -2,7 +2,8 @@
 % Please edit documentation in R/gpkg-attributes.R
 \name{gpkg_write_attributes}
 \alias{gpkg_write_attributes}
-\title{Write an attribute table to GeoPackage}
+\alias{gpkg_remove_attributes}
+\title{Write or Remove Attribute Table in a GeoPackage}
 \usage{
 gpkg_write_attributes(
   x,
@@ -13,6 +14,8 @@ gpkg_write_attributes(
   overwrite = FALSE,
   append = FALSE
 )
+
+gpkg_remove_attributes(x, table_name)
 }
 \arguments{
 \item{x}{a geopackage object}
@@ -30,5 +33,7 @@ gpkg_write_attributes(
 \item{append}{append? Default \code{FALSE}}
 }
 \description{
-Specify a target geopackage, data.frame of input data, and name for table.
+\code{gpkg_write_attributes()}: Specify a target geopackage and name for new table. For adding attributes, specify the new data as data.frame. The table name will be registered in the \code{gpkg_contents} table. Optionally include a description and/or a template terra object that can be used to define the extent of the attribute data.
+
+\code{gpkg_remove_attributes()}: Remove an attribute table and corresponding \code{gpkg_contents} record
 }
