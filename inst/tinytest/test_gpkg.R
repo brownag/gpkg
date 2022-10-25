@@ -49,7 +49,7 @@ expect_true(gpkg_disconnect(g))
 g <- geopackage(gpkg_tmp, connect = TRUE)
 
 # add bounding polygon vector dataset
-b <- terra::as.polygons(gpkg_tables(g)[[1]], ext = TRUE)
+b <- terra::as.polygons(gpkg_tables(g)[["DEM"]], ext = TRUE)
 terra::writeVector(b, g$dsn, insert = TRUE)
 
 # enumerate tables
