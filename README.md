@@ -58,7 +58,7 @@ start by adding two DEM (GeoTIFF) files.
 ``` r
 library(gpkg)
 library(terra)
-#> terra 1.5.37
+#> terra 1.6.17
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -74,6 +74,7 @@ gpkg_write(
   RASTER_TABLE = "DEM1",
   FIELD_NAME = "Elevation"
 )
+
 gpkg_write(
   dem,
   destfile = gpkg_tmp,
@@ -85,17 +86,14 @@ gpkg_write(
 
 ## Insert Vector Layers
 
-We can also write vector data to GeoPackage. Here we use
-`terra::writeVector(..., insert = TRUE)` to add a bounding box polygon
-layer derived from `"DEM1"`.
+We can also write vector data to GeoPackage. Here we use `gpkg_write()`
+to add a bounding box polygon layer derived from extent of `"DEM1"`.
 
 ``` r
-# add bounding polygon vector layer
-gpkg_write(list(bbox = terra::set.crs(
-  terra::as.polygons(terra::ext(gpkg_tables(
-    geopackage(gpkg_tmp)
-  )[['DEM1']])), "OGC:CRS84"
-)), destfile = gpkg_tmp)
+# add bounding polygon vector layer via named list
+r <- gpkg_tables(geopackage(gpkg_tmp))[['DEM1']]
+v <- terra::as.polygons(r, ext = TRUE)
+gpkg_write(list(bbox = v), destfile = gpkg_tmp)
 ```
 
 ## Read a GeoPackage
@@ -117,7 +115,7 @@ g
 #>  
 #> DEM1, DEM2, gpkg_2d_gridded_coverage_ancillary, gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions, gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys, gpkg_tile_matrix, gpkg_tile_matrix_set, sqlite_sequence
 #> <SQLiteConnection>
-#>   Path: /tmp/Rtmpo3LCkk/file96fb3122380.gpkg
+#>   Path: /tmp/RtmpFVIye3/file4a54224961741.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -149,8 +147,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file96fb3122380.gpkg:DEM1 
-#> varname     : file96fb3122380 
+#> source      : file4a54224961741.gpkg:DEM1 
+#> varname     : file4a54224961741 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -159,8 +157,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file96fb3122380.gpkg:DEM2 
-#> varname     : file96fb3122380 
+#> source      : file4a54224961741.gpkg:DEM2 
+#> varname     : file4a54224961741 
 #> name        : DEM2
 
 # still connected

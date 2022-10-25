@@ -69,6 +69,7 @@ gpkg_write(
   RASTER_TABLE = "DEM1",
   FIELD_NAME = "Elevation"
 )
+
 gpkg_write(
   dem,
   destfile = gpkg_tmp,
@@ -79,15 +80,13 @@ gpkg_write(
 ```
 ## Insert Vector Layers
 
-We can also write vector data to GeoPackage. Here we use `terra::writeVector(..., insert = TRUE)` to add a bounding box polygon layer derived from `"DEM1"`.
+We can also write vector data to GeoPackage. Here we use `gpkg_write()` to add a bounding box polygon layer derived from extent of `"DEM1"`.
 
 ```{r}
-# add bounding polygon vector layer
-gpkg_write(list(bbox = terra::set.crs(
-  terra::as.polygons(terra::ext(gpkg_tables(
-    geopackage(gpkg_tmp)
-  )[['DEM1']])), "OGC:CRS84"
-)), destfile = gpkg_tmp)
+# add bounding polygon vector layer via named list
+r <- gpkg_tables(geopackage(gpkg_tmp))[['DEM1']]
+v <- terra::as.polygons(r, ext = TRUE)
+gpkg_write(list(bbox = v), destfile = gpkg_tmp)
 ```
 
 ## Read a GeoPackage
