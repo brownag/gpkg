@@ -2,7 +2,7 @@
 % Please edit documentation in R/gpkg-sqlite.R
 \name{gpkg_table}
 \alias{gpkg_table}
-\title{general function to get table by table name}
+\title{Get table from a GeoPackage by table name}
 \usage{
 gpkg_table(x, table_name, query_string = FALSE)
 }
@@ -17,5 +17,5 @@ gpkg_table(x, table_name, query_string = FALSE)
 A data.frame
 }
 \description{
-general function to get table by table name
+Get table from a GeoPackage by table name
 }

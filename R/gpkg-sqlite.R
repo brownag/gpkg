@@ -23,7 +23,7 @@
   res
 }
 
-#' general function to get table by table name
+#' Get table from a GeoPackage by table name
 #' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
 #' @param table_name character. table name
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`

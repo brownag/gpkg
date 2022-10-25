@@ -1,4 +1,4 @@
-#' Read a GeoPackage
+#' Read data from a GeoPackage
 #' @param x Path to GeoPackage
 #' @param connect Connect to database and store connection in result? Default: `FALSE`
 #' @param quiet Hide printing of gdalinfo description to stdout. Default: `TRUE`
@@ -56,7 +56,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
   g
 }
 
-#' Write a GeoPackage
+#' Write data to a GeoPackage
 #' @param x Vector of source file path(s), or a list containing one or more SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.
 #' @param destfile Character. Path to output GeoPackage
 #' @param table_name Character. Default `NULL` name is derived from source file. Required if `x` is a _data.frame_.

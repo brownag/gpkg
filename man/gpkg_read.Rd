@@ -2,7 +2,7 @@
 % Please edit documentation in R/gpkg-io.R
 \name{gpkg_read}
 \alias{gpkg_read}
-\title{Read a GeoPackage}
+\title{Read data from a GeoPackage}
 \usage{
 gpkg_read(x, connect = FALSE, quiet = TRUE)
 }
@@ -17,6 +17,6 @@ gpkg_read(x, connect = FALSE, quiet = TRUE)
 A \code{geopackage} object (list containing tables, grids and vector data)
 }
 \description{
-Read a GeoPackage
+Read data from a GeoPackage
 }
 \keyword{io}
