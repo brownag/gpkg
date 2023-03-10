@@ -96,7 +96,7 @@ gpkg_update_contents <- function(x) {
 #' @rdname gpkg-contents
 #' @export
 gpkg_delete_contents <- function(x, table_name) {
-  gpkg_execute(x, paste0("DELETE FROM gpkg_contents WHERE table_name = ", table_name))
+  gpkg_execute(x, paste0("DELETE FROM gpkg_contents WHERE table_name = '", table_name, "'"))
 }
 
 #' @description `gpkg_create_contents()`: Create an empty `gpkg_contents` table
