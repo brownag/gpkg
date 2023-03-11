@@ -22,7 +22,7 @@ dplyr.frame(x, table_name, ...)
 \method{dplyr.frame}{geopackage}(x, table_name, ...)
 }
 \arguments{
-\item{x}{A geopackage object or character path to GeoPcakge}
+\item{x}{A geopackage object or character path to GeoPackage}
 
 \item{table_name}{One or more table names; for \code{lazy.frame()} if \code{table_name=NULL} returns a record for each table. \code{dplyr.frame()} requires \code{table_name} be specified}
 

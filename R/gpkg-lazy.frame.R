@@ -17,7 +17,7 @@ lazy.frame.character <- function(x, table_name = NULL, ...) {
 #' 
 #' `lazy.frame()`: Get information on a table in a GeoPackage (without returning the whole table).
 #' 
-#' @param x A geopackage object or character path to GeoPcakge
+#' @param x A geopackage object or character path to GeoPackage
 #' @param table_name One or more table names; for `lazy.frame()` if `table_name=NULL` returns a record for each table. `dplyr.frame()` requires `table_name` be specified
 #' @param ... Additional arguments. In `dplyr.frame()` arguments in `...` are passed to `dplyr::tbl()`. For `lazy.frame()`, `...` arguments are (currently) not used. 
 #' @export
