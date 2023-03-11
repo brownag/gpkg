@@ -5,25 +5,44 @@
 \alias{lazy.frame.character}
 \alias{lazy.frame.geopackage}
 \alias{dplyr.frame}
-\title{lazy data.frame
-get information on a table in a GeoPackage (without returning the whole table)}
+\alias{dplyr.frame.character}
+\alias{dplyr.frame.geopackage}
+\title{Lazy Access to Table Information}
 \usage{
-lazy.frame(x, ...)
+lazy.frame(x, table_name = NULL, ...)
 
-\method{lazy.frame}{character}(x, ...)
+\method{lazy.frame}{character}(x, table_name = NULL, ...)
 
 \method{lazy.frame}{geopackage}(x, table_name = NULL, ...)
 
-dplyr.frame(x, ...)
+dplyr.frame(x, table_name, ...)
+
+\method{dplyr.frame}{character}(x, table_name, ...)
+
+\method{dplyr.frame}{geopackage}(x, table_name, ...)
 }
 \arguments{
-\item{x}{a geopackage object or character path to GeoPcakge}
+\item{x}{A geopackage object or character path to GeoPcakge}
 
-\item{...}{additional arguments not used}
+\item{table_name}{One or more table names; for \code{lazy.frame()} if \code{table_name=NULL} returns a record for each table. \code{dplyr.frame()} requires \code{table_name} be specified}
 
-\item{table_name}{one or more table names}
+\item{...}{Additional arguments. In \code{dplyr.frame()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{lazy.frame()}, \code{...} arguments are (currently) not used.}
 }
 \description{
-lazy data.frame
-get information on a table in a GeoPackage (without returning the whole table)
+\code{lazy.frame()}: Get information on a table in a GeoPackage (without returning the whole table).
+
+\code{dplyr.frame()}: access a specific table (by name) and get a "lazy" \code{tibble} object referencing that table
+}
+\examples{
+\dontshow{if (!inherits(try(requireNamespace("dbplyr", quietly = TRUE), 'try-error'))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+# inspect gpkg_contents table
+dplyr.frame(g, "gpkg_contents")
+
+# materialize a data.frame in memory by querying gpkg_2d_gridded_tile_ancillary
+library(dplyr, warn.conflicts = FALSE)
+dplyr.frame(g, "gpkg_2d_gridded_tile_ancillary") \%>\% 
+  filter(tpudt_name == "DEM2") \%>\% 
+  select(mean, std_dev) \%>\% 
+  collect()
 }
