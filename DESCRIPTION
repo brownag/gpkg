@@ -1,7 +1,7 @@
 Package: gpkg
 Type: Package
 Title: Utilities for OGC GeoPackages
-Version: 0.0.1.9007
+Version: 0.0.2.9000
 Author: Andrew G. Brown
 Maintainer: Andrew Brown <brown.andrewg@gmail.com>
 Description: High-level wrapper functions to build GeoPackages containing a variety of different data. Read/write of spatial vector and gridded data is performed using standard GDAL utilities. Additional functions are provided to manipulate attributes and tabular data.
@@ -11,10 +11,12 @@ Imports:
 Suggests: 
     RSQLite,
     terra (>= 1.6),
-    tinytest
+    tinytest,
+    dplyr,
+    dbplyr
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.1.0)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 LazyData: true

@@ -4,6 +4,7 @@
 \alias{lazy.frame}
 \alias{lazy.frame.character}
 \alias{lazy.frame.geopackage}
+\alias{dplyr.frame}
 \title{lazy data.frame
 get information on a table in a GeoPackage (without returning the whole table)}
 \usage{
@@ -12,6 +13,8 @@ lazy.frame(x, ...)
 \method{lazy.frame}{character}(x, ...)
 
 \method{lazy.frame}{geopackage}(x, table_name = NULL, ...)
+
+dplyr.frame(x, ...)
 }
 \arguments{
 \item{x}{a geopackage object or character path to GeoPcakge}

@@ -24,14 +24,16 @@ lazy.frame.geopackage <- function(x, table_name = NULL, ...) {
   con <- .gpkg_connection_from_x(x)
   tbls <- gpkg_list_tables(con)
   dsn <- gpkg_source(x)
-  if (is.null(table_name)){
+  if (is.null(table_name)) {
     table_name <- tbls
   }
   if (!all(table_name %in% tbls))
-    stop("no table with name: '", paste0(table_name[!table_name %in% tbls], collapse="', '"), "' in ", dsn)
+    stop("no table with name: '",
+         paste0(table_name[!table_name %in% tbls], collapse = "', '"),
+         "' in ",
+         dsn)
   res <- do.call('rbind', lapply(table_name, function(xx) {
-    data.frame(
-      dsn = dsn,
+    data.frame(dsn = dsn, 
       table_name = xx,
       n_row = DBI::dbGetQuery(con, paste("SELECT COUNT(*) AS nrow FROM", xx)[[1]]),
       table_info = I(list(DBI::dbGetQuery(con, paste0(
@@ -44,4 +46,30 @@ lazy.frame.geopackage <- function(x, table_name = NULL, ...) {
   }
   attr(res, 'class') <- c("lazy.frame", "data.frame")
   res
+}
+
+#' @export
+#' @rdname lazy.frame
+dplyr.frame <- function(x, ...)
+  UseMethod("dplyr.frame", x)
+
+#' @export
+dplyr.frame.character <- function(x, table_name, ...) {
+  dplyr.frame(geopackage(x), table_name, ...)
+}
+
+#' @export
+dplyr.frame.geopackage <- function(x, table_name, ...) {
+  stopifnot(requireNamespace("dbplyr"))
+  
+  con <- .gpkg_connection_from_x(x)
+  tbls <- gpkg_list_tables(con)
+  # dsn <- gpkg_source(x)
+  if (missing(table_name) || length(table_name) == 0) {
+    stop("table name should be one of:",
+         paste0(tbls, collapse = ", "),
+         call = FALSE)
+  }
+  
+  dplyr::tbl(con, table_name, ...)
 }
