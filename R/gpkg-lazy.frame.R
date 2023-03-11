@@ -5,6 +5,7 @@ lazy.frame <- function(x, table_name = NULL, ...)
   UseMethod("lazy.frame", x)
 
 #' @rdname lazy.frame
+#' @export
 lazy.frame.character <- function(x, table_name = NULL, ...) {
   g <- geopackage(x, connect = TRUE)
   res <- lazy.frame(g, table_name = table_name, ...)
