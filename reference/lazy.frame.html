@@ -75,7 +75,7 @@ dplyr.frame(): access a specific table (by name) and get a "lazy" tibble object 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>A geopackage object or character path to GeoPcakge</p></dd>
+<dd><p>A geopackage object or character path to GeoPackage</p></dd>
 
 
 <dt>table_name</dt>
@@ -110,7 +110,7 @@ dplyr.frame(): access a specific table (by name) and get a "lazy" tibble object 
 <span class="r-in"><span><span class="co"># inspect gpkg_contents table</span></span></span>
 <span class="r-in"><span><span class="fu">dplyr.frame</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;gpkg_contents&gt; [2 x 10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.40.1 [/tmp/RtmpUMsB43/file19bf4ce4eb9.gpkg]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.40.1 [/tmp/Rtmp4M7P4K/file1967318cc106.gpkg]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   table_name data_type    ident…¹ descr…² last_…³ min_x min_y max_x max_y srs_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-… DEM1    <span style="color: #949494;">""</span>      2023-0…  6.01  49.7  6.27  49.9   <span style="text-decoration: underline;">4</span>326</span>
