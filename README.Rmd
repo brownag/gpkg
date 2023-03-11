@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
 [![gpkg HTML Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
+[![CRAN status](https://www.r-pkg.org/badges/version/gpkg)](https://CRAN.R-project.org/package=gpkg)
 <!-- badges: end -->
 
 {gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data. Reading and writing of spatial ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html)) data are done via standard [GDAL](http://www.gdal.org/) utilities provided primarily by the {[terra](https://cran.r-project.org/package=terra)} package. Additional functions are provided to manipulate attributes and tabular data via {[RSQLite](https://cran.r-project.org/package=RSQLite)}.

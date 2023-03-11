@@ -8,6 +8,8 @@
 [![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
 [![gpkg HTML
 Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/gpkg)](https://CRAN.R-project.org/package=gpkg)
 <!-- badges: end -->
 
 {gpkg} provides high-level wrapper functions to build GeoPackages
@@ -42,13 +44,13 @@ compact format for transferring geospatial information. The [GeoPackage
 Encoding Standard](https://www.ogc.org/standards/geopackage) describes a
 set of conventions for storing the following within an SQLite database:
 
--   vector features
+- vector features
 
--   tile matrix sets of imagery and raster maps at various scales
+- tile matrix sets of imagery and raster maps at various scales
 
--   attributes (non-spatial data)
+- attributes (non-spatial data)
 
--   extensions
+- extensions
 
 ## Create a Geopackage
 
@@ -58,7 +60,7 @@ start by adding two DEM (GeoTIFF) files.
 ``` r
 library(gpkg)
 library(terra)
-#> terra 1.6.17
+#> terra 1.7.19
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -115,7 +117,7 @@ g
 #>  
 #> DEM1, DEM2, gpkg_2d_gridded_coverage_ancillary, gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions, gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys, gpkg_tile_matrix, gpkg_tile_matrix_set, sqlite_sequence
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpFVIye3/file4a54224961741.gpkg
+#>   Path: /tmp/Rtmpxi9Cnm/file1074b23eab5ab.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -147,8 +149,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file4a54224961741.gpkg:DEM1 
-#> varname     : file4a54224961741 
+#> source      : file1074b23eab5ab.gpkg:DEM1 
+#> varname     : file1074b23eab5ab 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -157,8 +159,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file4a54224961741.gpkg:DEM2 
-#> varname     : file4a54224961741 
+#> source      : file1074b23eab5ab.gpkg:DEM2 
+#> varname     : file1074b23eab5ab 
 #> name        : DEM2
 
 # still connected
