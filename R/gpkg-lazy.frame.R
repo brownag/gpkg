@@ -52,18 +52,37 @@ lazy.frame.geopackage <- function(x, table_name = NULL, ...) {
 
 #' @export
 #' @rdname lazy.frame
-#' @examplesIf !inherits(try(requireNamespace("dbplyr", quietly = TRUE), 'try-error'))
+#' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
 #' @description `dplyr.frame()`: access a specific table (by name) and get a "lazy" `tibble` object referencing that table
 #' @examples 
+#' 
+#' tf <- tempfile(fileext = ".gpkg")
+#' 
+#' r <- terra::rast(system.file("extdata", "dem.tif", package = "gpkg"))
+#'
+#' gpkg_write(r,
+#'            destfile = tf,
+#'            RASTER_TABLE = "DEM1",
+#'            FIELD_NAME = "Elevation")
+#' 
+#' gpkg_write(r,
+#'            destfile = tf,
+#'            append = TRUE,
+#'            RASTER_TABLE = "DEM2",
+#'            FIELD_NAME = "Elevation")
+#'
+#' g <- geopackage(tf)
+#' 
 #' # inspect gpkg_contents table
 #' dplyr.frame(g, "gpkg_contents")
 #' 
-#' # materialize a data.frame in memory by querying gpkg_2d_gridded_tile_ancillary
+#' # materialize a data.frame from gpkg_2d_gridded_tile_ancillary
 #' library(dplyr, warn.conflicts = FALSE)
+#' 
 #' dplyr.frame(g, "gpkg_2d_gridded_tile_ancillary") %>% 
-#'   filter(tpudt_name == "DEM2") %>% 
-#'   select(mean, std_dev) %>% 
-#'   collect()
+#'   dplyr::filter(tpudt_name == "DEM2") %>% 
+#'   dplyr::select(mean, std_dev) %>% 
+#'   dplyr::collect()
 dplyr.frame <- function(x, table_name, ...)
   UseMethod("dplyr.frame", x)
 

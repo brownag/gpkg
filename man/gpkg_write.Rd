@@ -42,7 +42,7 @@ Logical. \code{TRUE} on successful write of at least one grid.
 Write data to a GeoPackage
 }
 \details{
-Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed \href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{here} or in the \code{gpkg_creation_options} dataset name of the argument is \code{creation_option} and the value is selected from one of the elements of \code{values} for that option.
+Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed \href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{here} or in the \code{gpkg_creation_options} dataset. The name of the argument is \code{creation_option} and the value is selected from one of the elements of \code{values} for that option.
 }
 \seealso{
 \link{gpkg_creation_options}

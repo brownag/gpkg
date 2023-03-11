@@ -80,8 +80,12 @@ geopackage.character <- function(x, connect = FALSE, ...) {
 print.geopackage <- function(x, ...) {
   cat("<geopackage>", sep = "\n")
   xx <- gpkg_list_tables(x)
-  cat(paste0("# of Tables: ", length(xx)), sep = "\n")
-  cat("\t", paste0(xx, collapse = ", "), sep = "\n")
+  y <- paste0(rep("-", getOption("width")), collapse = "")
+  cat(y, sep = "\n")
+  cat(paste0("# of Tables: ", length(xx)), "", sep = "\n\t")
+  cat("\t")
+  cat(strwrap(paste0(xx, collapse = ", ")), sep = "\n\t")
+  cat(y, sep = "\n")
   if (!is.null(x$con)) {
     show(x$con)
   }

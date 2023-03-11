@@ -66,7 +66,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #' @param NoData Value to use as GDAL `NoData` Value
 #' @param gdal_options Additional `gdal_options`, passed to `terra::writeRaster()`
 #' @param ... Additional arguments are passed as GeoPackage "creation options." See Details.
-#' @details Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed [here](https://gdal.org/drivers/raster/gpkg.html#creation-options) or in the `gpkg_creation_options` dataset name of the argument is `creation_option` and the value is selected from one of the elements of `values` for that option.
+#' @details Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed [here](https://gdal.org/drivers/raster/gpkg.html#creation-options) or in the `gpkg_creation_options` dataset. The name of the argument is `creation_option` and the value is selected from one of the elements of `values` for that option.
 #' @return Logical. `TRUE` on successful write of at least one grid.
 #' @seealso [gpkg_creation_options]
 #' @export

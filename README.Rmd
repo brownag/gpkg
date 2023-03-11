@@ -13,14 +13,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-# gpkg - Utilities for OGC GeoPackages
+# gpkg - Utilities for the OGC 'GeoPackage' Format
+
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
 [![gpkg HTML Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
 [![CRAN status](https://www.r-pkg.org/badges/version/gpkg)](https://CRAN.R-project.org/package=gpkg)
 <!-- badges: end -->
 
-{gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data. Reading and writing of spatial ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html)) data are done via standard [GDAL](http://www.gdal.org/) utilities provided primarily by the {[terra](https://cran.r-project.org/package=terra)} package. Additional functions are provided to manipulate attributes and tabular data via {[RSQLite](https://cran.r-project.org/package=RSQLite)}.
+High-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://geopackage.org). [GDAL](http://www.gdal.org/) utilities for read and write of spatial data ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
+
 
 <a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png">
 <img src = "https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" alt = "gpkg hexsticker" title = "gpkg hexsticker: {gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data." width = "35%" height = "35%" hspace="25" vspace="25" align="right"/></a>
@@ -38,7 +40,7 @@ remotes::install_github("brownag/gpkg")
 ## Background
 ### What is a GeoPackage?
 
-[GeoPackage](https://www.geopackage.org/) is an open, standards-based, non-proprietary, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standards/geopackage) describes a set of conventions for storing the following within an SQLite database:
+[GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standards/geopackage) describes a set of conventions for storing the following within an SQLite database:
 
   *  vector features
   
@@ -79,6 +81,7 @@ gpkg_write(
   FIELD_NAME = "Elevation"
 )
 ```
+
 ## Insert Vector Layers
 
 We can also write vector data to GeoPackage. Here we use `gpkg_write()` to add a bounding box polygon layer derived from extent of `"DEM1"`.
@@ -110,10 +113,58 @@ gpkg_list_tables(g)
 
 # inspect tables
 gpkg_tables(g)
+```
 
+### Lazy Tables and {dplyr} Integration
+
+Two methods for 'lazy' access of table contents are available:
+
+
+#### Method 1: `lazy.frame()`
+
+`lazy.frame()` is a low-frills `data.frame` result containing important table information, but not values.  The `PRAGMA table_info()` is stored as a nested data.frame `table_info`. This representation has no dependencies beyond {RSQLite} and is efficient for inspection of table structure and attributes. Though it is less useful for data analysis.
+
+```{r}
+head(lazy.frame(g))
+```
+
+#### Method 2: `dplyr.frame()`
+
+With the `dplyr.frame()` method you access a specific table (by name) and get a "lazy" `tibble` object referencing that table. This is achieved via {dplyr} and the {dbplyr} database connection to the GeoPackage via the {RSQLite} driver. The resulting object's data can be used in more complex analyses by using other {dbplyr}/{tidyverse} functions.
+
+For example, we inspect the contents of the `gpkg_contents` table that contains critical information on the data contained in a GeoPackage.
+
+```{r}
+dplyr.frame(g, "gpkg_contents")
+```
+
+As a more complicated example we access the `gpkg_2d_gridded_tile_ancillary` table, and perform some data processing.
+
+We `dplyr::select()` `mean` and `std_dev` columns from the `dplyr::filter()`ed rows where `tpudt_name == "DEM2"`. Finally we materialize a `tibble`  with `dplyr::collect()`:
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+
+dplyr.frame(g, "gpkg_2d_gridded_tile_ancillary") %>% 
+  filter(tpudt_name == "DEM2") %>% 
+  select(mean, std_dev) %>% 
+  collect()
+```
+
+### Managing Connections
+
+Several helper methods are available for checking GeoPackage `SQLiteConnection` status, as well as connecting and disconnecting an existing `geopackage` object (`g`).
+
+```{r}
 # still connected
 gpkg_is_connected(g)
 
 # disconnect geopackage
+gpkg_disconnect(g)
+
+# reconnect
+g <- gpkg_connect(g)
+
+# disconnect
 gpkg_disconnect(g)
 ```

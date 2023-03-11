@@ -1,10 +1,12 @@
 Package: gpkg
 Type: Package
-Title: Utilities for OGC GeoPackages
-Version: 0.0.2.9000
-Author: Andrew G. Brown
+Title: Utilities for the OGC 'GeoPackage' Format
+Version: 0.0.2.9001
+Authors@R: person(given="Andrew", family="Brown", email="brown.andrewg@gmail.com", role = c("aut", "cre"))
 Maintainer: Andrew Brown <brown.andrewg@gmail.com>
-Description: High-level wrapper functions to build GeoPackages containing a variety of different data. Read/write of spatial vector and gridded data is performed using standard GDAL utilities. Additional functions are provided to manipulate attributes and tabular data.
+Description: High-level wrapper functions to build Open Geospatial Consortium (OGC) 'GeoPackage' files (<https://geopackage.org>). 'GDAL' utilities for read and write of spatial data are provided via the 'terra' package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the 'RSQLite' package.
+URL: https://humus.rocks/gpkg, https://github.com/brownag/gpkg
+BugReports: https://github.com/brownag/gpkg/issues 
 Imports:
     methods,
     DBI
