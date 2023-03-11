@@ -38,7 +38,7 @@ lazy.frame.geopackage <- function(x, table_name = NULL, ...) {
       n_row = DBI::dbGetQuery(con, paste("SELECT COUNT(*) AS nrow FROM", xx)[[1]]),
       table_info = I(list(DBI::dbGetQuery(con, paste0(
         "PRAGMA table_info(", xx, ")"
-      )))) #TODO: custom print method for PRAGMA table_info?
+      ))))[[1]] #TODO: custom print method for PRAGMA table_info?
     )
   }))
   if (attr(con, 'disconnect')) {
