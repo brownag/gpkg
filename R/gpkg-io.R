@@ -1,4 +1,7 @@
 #' Read data from a GeoPackage
+#'
+#' Experimental: This function is being evaluated for its scope compared to other more general functions that perform similar operations (i.e. `gpkg_tables()`).
+#'
 #' @param x Path to GeoPackage
 #' @param connect Connect to database and store connection in result? Default: `FALSE`
 #' @param quiet Hide printing of gdalinfo description to stdout. Default: `TRUE`
@@ -41,9 +44,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
     res$gdalinfo <- terra::describe(xx)
 
     # verbose gdalinfo output
-    if (!quiet) {
-      cat(res$gdalinfo, sep = "\n")
-    }
+    if (!quiet) cat(res$gdalinfo, sep = "\n")
     res
   })
 
@@ -212,12 +213,11 @@ gpkg_write <- function(x,
   character(0)
 }
 
+.gpkg_debug <- function(x, ...) if (getOption("gpkg.debug", default = FALSE)) message("DEBUG:\n\n", x, ...)
+
 .gpkg_gdaloptions_add <- function(gdal_options, key, value, force = FALSE) {
   # add a gdaloption (if 'key' not already defined)
-  if (force || !any(grepl(key, gdal_options, ignore.case = TRUE)) ) {
-    return(c(gdal_options, paste0(key, "=", value)))
-  }
-  NULL
+  if (force || !any(grepl(key, gdal_options, ignore.case = TRUE))) return(c(gdal_options, paste0(key, "=", value)))
 }
 
 #' .gpkg_write_grid_subdataset_terra
@@ -233,9 +233,7 @@ gpkg_write <- function(x,
                                               gdal_options = NULL,
                                               ...) {
   res <- NULL
-  if (!requireNamespace('terra', quietly = TRUE)) {
-    stop('the `terra` package is required to write gridded data to GeoPackage', call. = FALSE)
-  }
+  if (!requireNamespace('terra', quietly = TRUE)) stop('the `terra` package is required to write gridded data to GeoPackage', call. = FALSE)
 
   if (!inherits(x, 'SpatRaster')) {
     r <- terra::rast(x)
@@ -245,9 +243,7 @@ gpkg_write <- function(x,
 
   gdal_options <- unique(c(gdal_options, .lut_gpkg_creation(...)))
 
-  if (getOption("gpkg.debug", default = FALSE)) {
-    message("DEBUG:\n\n", paste0(gdal_options, collapse = "\n"))
-  }
+  .gpkg_debug(paste0(gdal_options, collapse = "\n"))
 
   if (append) {
     if (!any(grepl("APPEND_SUBDATASET", gdal_options, ignore.case = TRUE))) {
@@ -266,10 +262,9 @@ gpkg_write <- function(x,
   if (!is.null(NoData)) {
     ctn <- gsub("RASTER_TABLE=(.*)|.*", "\\1", gdal_options)
     ctn <- ctn[nchar(ctn) > 0]
-    if (length(ctn) == 0) {
-      ctn <- basename(tempfile(pattern = "raster"))
-    }
-    gpkg_tile_set_data_null(destfile, ctn, NoData)
+    if (length(ctn) > 0) {
+      gpkg_tile_set_data_null(destfile, ctn, NoData)
+    } else message("NOTE: NoData specified without setting RASTER_TABLE")
   }
 
   invisible(res)

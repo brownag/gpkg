@@ -17,6 +17,6 @@ gpkg_read(x, connect = FALSE, quiet = TRUE)
 A \code{geopackage} object (list containing tables, grids and vector data)
 }
 \description{
-Read data from a GeoPackage
+Experimental: This function is being evaluated for its scope compared to other more general functions that perform similar operations (i.e. \code{gpkg_tables()}).
 }
 \keyword{io}

@@ -4,7 +4,7 @@ if (interactive())
 
 # RSQLite and terra used heavily in tests
 # d(b)plyr used conditionally
-stopifnot(requireNamespace("tinytest", quietly = TRUE))
+if (requireNamespace("tinytest", quietly = TRUE)) library(tinytest)
 stopifnot(requireNamespace("RSQLite", quietly = TRUE))
 stopifnot(requireNamespace("terra", quietly = TRUE))
 
@@ -12,8 +12,10 @@ dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
 gpkg_tmp <- tempfile(fileext = ".gpkg")
 
-expect_error(.gpkg_connection_from_x(NULL))
-expect_true(inherits(gpkg_execute(gpkg_tmp, "select * from foo"), 'try-error'))
+# basic error conditions
+expect_error(suppressWarnings(geopackage(connect = TRUE, tmpdir = ""))) # permission denied
+expect_error(.gpkg_connection_from_x(NULL)) # empty reference
+expect_true(inherits(gpkg_execute(gpkg_tmp, "select * from foo", silent = TRUE), 'try-error')) # nonexistent table
 
 if (file.exists(gpkg_tmp))
   unlink(gpkg_tmp)
@@ -40,6 +42,7 @@ gpkg_write(
 
 # create geopackage
 g <- gpkg_connect(gpkg_tmp)
+expect_message(geopackage(g))
 expect_true(gpkg_is_connected(g))
 
 # expected tables are present
@@ -70,17 +73,20 @@ expect_true(inherits(g1, 'geopackage'))
 tfcsv <- tempfile(fileext = ".csv")
 tfgpkg <- tempfile(fileext = ".gpkg")
 v <- terra::as.polygons(terra::rast(dem), ext = TRUE)
-terra::writeVector(v, tfgpkg)
+expect_error(gpkg_write(list(testgpkg = tfgpkg), destfile = tfgpkg))
+expect_silent(gpkg_write(list(testgpkg = v), destfile = tfgpkg))
+expect_true(is.character(gpkg_list_tables(tfgpkg)))
 write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
 g2 <- geopackage(list(
-    dem1 = dem,
-    dem2 = dem,
-    bbox1 = v,
-    bbox2 = tfgpkg,
-    data1 = data.frame(id = 1:3, code = LETTERS[1:3]),
-    data2 = tfcsv
-  ), connect = TRUE)
+  dem1 = dem,
+  dem2 = terra::rast(dem),
+  bbox1 = v,
+  bbox2 = tfgpkg,
+  data1 = data.frame(id = 1:3, code = LETTERS[1:3]),
+  data2 = tfcsv
+), connect = TRUE)
 expect_true(inherits(g2, 'geopackage'))
+expect_true(inherits(lazy.frame(g2), 'data.frame'))
 expect_error(lazy.frame(g2, "dem3"))
 expect_error(dplyr.frame(g2, "dem3"))
 expect_true(is.character(gpkg_table(g2, "dem2", query_string = TRUE)))
@@ -106,6 +112,9 @@ expect_true(gpkg_add_contents(g3, "foo", "bar",
                                 srsid = 4326
                               )))
 
+# add dummy attribute table
+expect_true(gpkg_write_attributes(g3, data.frame(id=1), "A", "the letter A"))
+
 # try various 'lazy' accessor methods
 expect_warning({d1 <- lazy.frame(g3$dsn, "gpkg_contents")})
 expect_true(inherits(d1, 'data.frame'))
@@ -117,8 +126,8 @@ if (!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error')) {
   expect_true(inherits(d2, 'tbl_SQLiteConnection'))
 }
 
-# verify insert/delete of dummy gpkg_contents row
-expect_equal(nrow(gpkg_query(g3, "select * from gpkg_contents;")), 1)
+# verify insert/delete of dummy gpkg_contents rows
+expect_equal(nrow(gpkg_query(g3, "select * from gpkg_contents;")), 2)
 expect_true(gpkg_update_contents(g3))
 expect_true(gpkg_delete_contents(g3, "foo"))
 expect_equal(gpkg_execute(g3, "select * from gpkg_contents;"), 0)
@@ -164,6 +173,11 @@ expect_stdout(gpkg_read(g))
 
 # TODO: validator
 expect_error(gpkg_validate(g))
+
+# TODO: why?
+expect_error(gpkg_update_contents(g))
+# RSQLite::dbRemoveTable(g, "gpkg_contents")
+# RSQLite::dbWriteTable(g, "bar", data.frame(b = 2))
 
 # disconnect it
 expect_true(g <- gpkg_disconnect(g))

@@ -69,9 +69,7 @@ geopackage.character <- function(x, connect = FALSE, ...) {
   } else if (connect) {
     if (requireNamespace("RSQLite", quietly = TRUE)) {
       con <- RSQLite::dbConnect(RSQLite::SQLite(), dsn)
-    } else { 
-      stop('package `RSQLite` is required to connect to GeoPackages', call. = FALSE)
-    }
+    } else stop('package `RSQLite` is required to connect to GeoPackages', call. = FALSE)
   }
   obj <- structure(list(
     tables = list(),
