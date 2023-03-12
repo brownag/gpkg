@@ -10,6 +10,8 @@
 Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/gpkg)](https://CRAN.R-project.org/package=gpkg)
+[![Codecov test
+coverage](https://codecov.io/gh/brownag/gpkg/branch/main/graph/badge.svg)](https://app.codecov.io/gh/brownag/gpkg?branch=main)
 <!-- badges: end -->
 
 High-level wrapper functions to build [Open Geospatial Consortium (OGC)
@@ -96,7 +98,6 @@ to add a bounding box polygon layer derived from extent of `"DEM1"`.
 ``` r
 # add bounding polygon vector layer via named list
 r <- gpkg_tables(geopackage(gpkg_tmp))[['DEM1']]
-#> Loading required namespace: dbplyr
 v <- terra::as.polygons(r, ext = TRUE)
 gpkg_write(list(bbox = v), destfile = gpkg_tmp, append = TRUE)
 ```
@@ -137,7 +138,7 @@ g
 #>  sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg
+#>   Path: /tmp/RtmpVUC88S/file1c9564177c110.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -172,8 +173,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file176ea3ca834ff.gpkg:DEM1 
-#> varname     : file176ea3ca834ff 
+#> source      : file1c9564177c110.gpkg:DEM1 
+#> varname     : file1c9564177c110 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -182,15 +183,15 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file176ea3ca834ff.gpkg:DEM2 
-#> varname     : file176ea3ca834ff 
+#> source      : file1c9564177c110.gpkg:DEM2 
+#> varname     : file1c9564177c110 
 #> name        : DEM2 
 #> min value   :  195 
 #> max value   :  500 
 #> 
 #> $myattr
 #> # Source:   table<myattr> [10 x 2]
-#> # Database: sqlite 3.40.1 [/tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg]
+#> # Database: sqlite 3.40.1 [/tmp/RtmpVUC88S/file1c9564177c110.gpkg]
 #>        a b    
 #>    <int> <chr>
 #>  1     1 A    
@@ -209,7 +210,7 @@ gpkg_tables(g)
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file176ea3ca834ff.gpkg (bbox)
+#>  source      : file1c9564177c110.gpkg (bbox)
 #>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 ```
 
@@ -228,12 +229,12 @@ structure and attributes. Though it is less useful for data analysis.
 ``` r
 head(lazy.frame(g))
 #>                                      dsn table_name nrow table_info.cid
-#> 1 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              0
-#> 2 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              1
-#> 3 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              2
-#> 4 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              3
-#> 5 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              4
-#> 6 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM2    1              0
+#> 1 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              0
+#> 2 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              1
+#> 3 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              2
+#> 4 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              3
+#> 5 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              4
+#> 6 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM2    1              0
 #>   table_info.name table_info.type table_info.notnull table_info.dflt_value
 #> 1              id         INTEGER                  0                  <NA>
 #> 2      zoom_level         INTEGER                  1                  <NA>
@@ -265,7 +266,7 @@ contains critical information on the data contained in a GeoPackage.
 ``` r
 dplyr.frame(g, "gpkg_contents")
 #> # Source:   table<gpkg_contents> [4 x 10]
-#> # Database: sqlite 3.40.1 [/tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg]
+#> # Database: sqlite 3.40.1 [/tmp/RtmpVUC88S/file1c9564177c110.gpkg]
 #>   table_name data_type ident…¹ descr…² last_…³   min_x min_y  max_x max_y srs_id
 #>   <chr>      <chr>     <chr>   <chr>   <chr>     <dbl> <dbl>  <dbl> <dbl>  <int>
 #> 1 DEM1       2d-gridd… DEM1    ""      2023-0…    6.01  49.7   6.27  49.9   4326

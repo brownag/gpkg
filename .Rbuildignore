@@ -6,3 +6,4 @@ data-raw
 misc
 ^data-raw$
 ^\.github$
+^codecov\.yml$
