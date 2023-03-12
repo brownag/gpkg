@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9002</span>
       </span>
     </div>
 
@@ -125,7 +125,8 @@
 <span>  destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  RASTER_TABLE <span class="op">=</span> <span class="st">"DEM2"</span>,</span>
-<span>  FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span></span>
+<span>  FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span>,</span>
+<span>  NoData <span class="op">=</span> <span class="op">-</span><span class="fl">9999</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -135,27 +136,38 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add bounding polygon vector layer via named list</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span><span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="st">'DEM1'</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">#&gt; Loading required namespace: dbplyr</span></span>
 <span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span>, ext <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="va">v</span><span class="op">)</span>, destfile <span class="op">=</span> <span class="va">gpkg_tmp</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="va">v</span><span class="op">)</span>, destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="insert-attribute-table">Insert Attribute Table<a class="anchor" aria-label="anchor" href="#insert-attribute-table"></a>
+</h2>
+<p>Similarly, <code>data.frame</code>-like objects (non-spatial “attributes”) can be written to GeoPackage.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, b <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>myattr <span class="op">=</span> <span class="va">z</span><span class="op">)</span>, destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="read-a-geopackage">Read a GeoPackage<a class="anchor" aria-label="anchor" href="#read-a-geopackage"></a>
 </h2>
 <p><code><a href="reference/geopackage-class.html">geopackage()</a></code> is a constructor that can create a simple container for working with geopackages from several types of inputs. Often you will have a <em>character</em> file path to a GeoPackage (.gpkg) file. Other times you may have a list of tables and layers you want to be in a GeoPackage that does not exist yet. Or, you may have a connection to a GeoPackage database already opened that you want to use. In any case (<code>character</code>, <code>list</code>, <code>SQLiteConnection</code>) there is an S3 method to facilitate creating the basic <code>geopackage</code> class provided by {gpkg}.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span>, connect <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">g</span></span>
 <span><span class="co">#&gt; &lt;geopackage&gt;</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; # of Tables: 12</span></span>
+<span><span class="co">#&gt; # of Tables: 18</span></span>
 <span><span class="co">#&gt;  </span></span>
-<span><span class="co">#&gt;  DEM1, DEM2, gpkg_2d_gridded_coverage_ancillary,</span></span>
+<span><span class="co">#&gt;  DEM1, DEM2, bbox, gpkg_2d_gridded_coverage_ancillary,</span></span>
 <span><span class="co">#&gt;  gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions,</span></span>
 <span><span class="co">#&gt;  gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys,</span></span>
-<span><span class="co">#&gt;  gpkg_tile_matrix, gpkg_tile_matrix_set, sqlite_sequence</span></span>
+<span><span class="co">#&gt;  gpkg_tile_matrix, gpkg_tile_matrix_set, myattr, rtree_bbox_geom,</span></span>
+<span><span class="co">#&gt;  rtree_bbox_geom_node, rtree_bbox_geom_parent, rtree_bbox_geom_rowid,</span></span>
+<span><span class="co">#&gt;  sqlite_sequence</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
-<span><span class="co">#&gt;   Path: /tmp/RtmppawdAD/file13d6338772963.gpkg</span></span>
+<span><span class="co">#&gt;   Path: /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg</span></span>
 <span><span class="co">#&gt;   Extensions: TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "geopackage"</span></span></code></pre></div>
@@ -164,15 +176,18 @@
 <h2 id="inspect-contents-of-geopackage">Inspect Contents of GeoPackage<a class="anchor" aria-label="anchor" href="#inspect-contents-of-geopackage"></a>
 </h2>
 <p>We can list the table names in a GeoPackage with <code><a href="reference/gpkg_list_tables.html">gpkg_list_tables()</a></code> and fetch pointers (SpatRaster, SpatVectorProxy, and lazy data.frame) to the data in them with <code><a href="reference/gpkg_table.html">gpkg_table()</a></code>. We can check the status of the internal <code>geopackage</code> class <code>SQLiteConnection</code> with <code><a href="reference/gpkg-connnection.html">gpkg_is_connected()</a></code> and disconnect it with <code><a href="reference/gpkg-connnection.html">gpkg_disconnect()</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># enumerate tables</span></span>
 <span><span class="fu"><a href="reference/gpkg_list_tables.html">gpkg_list_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  [1] "DEM1"                               "DEM2"                              </span></span>
-<span><span class="co">#&gt;  [3] "gpkg_2d_gridded_coverage_ancillary" "gpkg_2d_gridded_tile_ancillary"    </span></span>
-<span><span class="co">#&gt;  [5] "gpkg_contents"                      "gpkg_extensions"                   </span></span>
-<span><span class="co">#&gt;  [7] "gpkg_geometry_columns"              "gpkg_ogr_contents"                 </span></span>
-<span><span class="co">#&gt;  [9] "gpkg_spatial_ref_sys"               "gpkg_tile_matrix"                  </span></span>
-<span><span class="co">#&gt; [11] "gpkg_tile_matrix_set"               "sqlite_sequence"</span></span>
+<span><span class="co">#&gt;  [3] "bbox"                               "gpkg_2d_gridded_coverage_ancillary"</span></span>
+<span><span class="co">#&gt;  [5] "gpkg_2d_gridded_tile_ancillary"     "gpkg_contents"                     </span></span>
+<span><span class="co">#&gt;  [7] "gpkg_extensions"                    "gpkg_geometry_columns"             </span></span>
+<span><span class="co">#&gt;  [9] "gpkg_ogr_contents"                  "gpkg_spatial_ref_sys"              </span></span>
+<span><span class="co">#&gt; [11] "gpkg_tile_matrix"                   "gpkg_tile_matrix_set"              </span></span>
+<span><span class="co">#&gt; [13] "myattr"                             "rtree_bbox_geom"                   </span></span>
+<span><span class="co">#&gt; [15] "rtree_bbox_geom_node"               "rtree_bbox_geom_parent"            </span></span>
+<span><span class="co">#&gt; [17] "rtree_bbox_geom_rowid"              "sqlite_sequence"</span></span>
 <span></span>
 <span><span class="co"># inspect tables</span></span>
 <span><span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
@@ -182,8 +197,8 @@
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file13d6338772963.gpkg:DEM1 </span></span>
-<span><span class="co">#&gt; varname     : file13d6338772963 </span></span>
+<span><span class="co">#&gt; source      : file176ea3ca834ff.gpkg:DEM1 </span></span>
+<span><span class="co">#&gt; varname     : file176ea3ca834ff </span></span>
 <span><span class="co">#&gt; name        : DEM1 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $DEM2</span></span>
@@ -192,9 +207,35 @@
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file13d6338772963.gpkg:DEM2 </span></span>
-<span><span class="co">#&gt; varname     : file13d6338772963 </span></span>
-<span><span class="co">#&gt; name        : DEM2</span></span></code></pre></div>
+<span><span class="co">#&gt; source      : file176ea3ca834ff.gpkg:DEM2 </span></span>
+<span><span class="co">#&gt; varname     : file176ea3ca834ff </span></span>
+<span><span class="co">#&gt; name        : DEM2 </span></span>
+<span><span class="co">#&gt; min value   :  195 </span></span>
+<span><span class="co">#&gt; max value   :  500 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $myattr</span></span>
+<span><span class="co">#&gt; # Source:   table&lt;myattr&gt; [10 x 2]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 [/tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg]</span></span>
+<span><span class="co">#&gt;        a b    </span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1     1 A    </span></span>
+<span><span class="co">#&gt;  2     2 B    </span></span>
+<span><span class="co">#&gt;  3     3 C    </span></span>
+<span><span class="co">#&gt;  4     4 D    </span></span>
+<span><span class="co">#&gt;  5     5 E    </span></span>
+<span><span class="co">#&gt;  6     6 F    </span></span>
+<span><span class="co">#&gt;  7     7 G    </span></span>
+<span><span class="co">#&gt;  8     8 H    </span></span>
+<span><span class="co">#&gt;  9     9 I    </span></span>
+<span><span class="co">#&gt; 10    10 J    </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $bbox</span></span>
+<span><span class="co">#&gt;  class       : SpatVector </span></span>
+<span><span class="co">#&gt;  geometry    : polygons </span></span>
+<span><span class="co">#&gt;  dimensions  : 1, 0  (geometries, attributes)</span></span>
+<span><span class="co">#&gt;  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt;  source      : file176ea3ca834ff.gpkg (bbox)</span></span>
+<span><span class="co">#&gt;  coord. ref. : lon/lat WGS 84 (EPSG:4326)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="lazy-tables-and-dplyr-integration">Lazy Tables and {dplyr} Integration<a class="anchor" aria-label="anchor" href="#lazy-tables-and-dplyr-integration"></a>
 </h3>
@@ -204,15 +245,15 @@
 <a class="anchor" aria-label="anchor" href="#method-1-lazyframe"></a>
 </h4>
 <p><code><a href="reference/lazy.frame.html">lazy.frame()</a></code> is a low-frills <code>data.frame</code> result containing important table information, but not values. The <code>PRAGMA table_info()</code> is stored as a nested data.frame <code>table_info</code>. This representation has no dependencies beyond {RSQLite} and is efficient for inspection of table structure and attributes. Though it is less useful for data analysis.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/lazy.frame.html">lazy.frame</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                      dsn table_name nrow table_info.cid</span></span>
-<span><span class="co">#&gt; 1 /tmp/RtmppawdAD/file13d6338772963.gpkg       DEM1    1              0</span></span>
-<span><span class="co">#&gt; 2 /tmp/RtmppawdAD/file13d6338772963.gpkg       DEM1    1              1</span></span>
-<span><span class="co">#&gt; 3 /tmp/RtmppawdAD/file13d6338772963.gpkg       DEM1    1              2</span></span>
-<span><span class="co">#&gt; 4 /tmp/RtmppawdAD/file13d6338772963.gpkg       DEM1    1              3</span></span>
-<span><span class="co">#&gt; 5 /tmp/RtmppawdAD/file13d6338772963.gpkg       DEM1    1              4</span></span>
-<span><span class="co">#&gt; 6 /tmp/RtmppawdAD/file13d6338772963.gpkg       DEM2    1              0</span></span>
+<span><span class="co">#&gt; 1 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              0</span></span>
+<span><span class="co">#&gt; 2 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              1</span></span>
+<span><span class="co">#&gt; 3 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              2</span></span>
+<span><span class="co">#&gt; 4 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              3</span></span>
+<span><span class="co">#&gt; 5 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM1    1              4</span></span>
+<span><span class="co">#&gt; 6 /tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg       DEM2    1              0</span></span>
 <span><span class="co">#&gt;   table_info.name table_info.type table_info.notnull table_info.dflt_value</span></span>
 <span><span class="co">#&gt; 1              id         INTEGER                  0                  &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2      zoom_level         INTEGER                  1                  &lt;NA&gt;</span></span>
@@ -234,19 +275,20 @@
 </h4>
 <p>With the <code><a href="reference/lazy.frame.html">dplyr.frame()</a></code> method you access a specific table (by name) and get a “lazy” <code>tibble</code> object referencing that table. This is achieved via {dplyr} and the {dbplyr} database connection to the GeoPackage via the {RSQLite} driver. The resulting object’s data can be used in more complex analyses by using other {dbplyr}/{tidyverse} functions.</p>
 <p>For example, we inspect the contents of the <code>gpkg_contents</code> table that contains critical information on the data contained in a GeoPackage.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/lazy.frame.html">dplyr.frame</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required namespace: dbplyr</span></span>
-<span><span class="co">#&gt; # Source:   table&lt;gpkg_contents&gt; [2 x 10]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.40.1 [/tmp/RtmppawdAD/file13d6338772963.gpkg]</span></span>
-<span><span class="co">#&gt;   table_name data_type    ident…¹ descr…² last_…³ min_x min_y max_x max_y srs_id</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 DEM1       2d-gridded-… DEM1    ""      2023-0…  6.01  49.7  6.27  49.9   4326</span></span>
-<span><span class="co">#&gt; 2 DEM2       2d-gridded-… DEM2    ""      2023-0…  6.01  49.7  6.27  49.9   4326</span></span>
+<span><span class="co">#&gt; # Source:   table&lt;gpkg_contents&gt; [4 x 10]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 [/tmp/Rtmp1Q5hCk/file176ea3ca834ff.gpkg]</span></span>
+<span><span class="co">#&gt;   table_name data_type ident…¹ descr…² last_…³   min_x min_y  max_x max_y srs_id</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 DEM1       2d-gridd… DEM1    ""      2023-0…    6.01  49.7   6.27  49.9   4326</span></span>
+<span><span class="co">#&gt; 2 DEM2       2d-gridd… DEM2    ""      2023-0…    6.01  49.7   6.27  49.9   4326</span></span>
+<span><span class="co">#&gt; 3 bbox       features  bbox    ""      2023-0…    6.01  49.7   6.27  49.9   4326</span></span>
+<span><span class="co">#&gt; 4 myattr     attribut… myattr  ""      2023-0… -180    -90   180     90     4326</span></span>
 <span><span class="co">#&gt; # … with abbreviated variable names ¹​identifier, ²​description, ³​last_change</span></span></code></pre></div>
 <p>As a more complicated example we access the <code>gpkg_2d_gridded_tile_ancillary</code> table, and perform some data processing.</p>
 <p>We <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> <code>mean</code> and <code>std_dev</code> columns from the <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>ed rows where <code>tpudt_name == "DEM2"</code>. Finally we materialize a <code>tibble</code> with <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">dplyr::collect()</a></code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/lazy.frame.html">dplyr.frame</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_2d_gridded_tile_ancillary"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -263,7 +305,7 @@
 <h3 id="managing-connections">Managing Connections<a class="anchor" aria-label="anchor" href="#managing-connections"></a>
 </h3>
 <p>Several helper methods are available for checking GeoPackage <code>SQLiteConnection</code> status, as well as connecting and disconnecting an existing <code>geopackage</code> object (<code>g</code>).</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># still connected</span></span>
 <span><span class="fu"><a href="reference/gpkg-connnection.html">gpkg_is_connected</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
