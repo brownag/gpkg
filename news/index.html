@@ -57,6 +57,10 @@
 <li><p><code>RASTER_TABLE</code> name is now properly injected into GDAL options from named list input (when not otherwise specified)</p></li>
 </ul></li>
 <li><p>Bug fix in <code>geopackage(&lt;list&gt;)</code> related to appending v.s. overwriting raster data</p></li>
+<li>
+<p><code><a href="../reference/gpkg-contents.html">gpkg_update_contents()</a></code>: Handle <code>gpkgext_</code> and <code>sqlite_sequence</code> as standard GPKG table prefixes</p>
+<ul><li>fixes error with updating contents of GPKG with extensions loaded</li>
+</ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.2" id="gpkg-002">gpkg 0.0.2<a class="anchor" aria-label="anchor" href="#gpkg-002"></a></h2>
