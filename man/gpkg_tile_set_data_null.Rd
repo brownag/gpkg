@@ -16,7 +16,7 @@ gpkg_tile_set_data_null(x, name, value, query_string = FALSE)
 \item{query_string}{logical. Return SQLite query rather than executing it? Default: \code{FALSE}}
 }
 \value{
-(invisibly) a scalar numeric that specifies the number of rows where \code{data_null} was updated
+logical. \code{TRUE} if number of \code{data_null} records updated is greater than \code{0}.
 }
 \description{
 Set \code{data_null} Metadata for a GeoPackage Tile Dataset

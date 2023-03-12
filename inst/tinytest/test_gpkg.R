@@ -45,6 +45,54 @@ expect_true(gpkg_disconnect(g))
 
 # create a geopackage then connect it
 g <- geopackage(gpkg_tmp, connect = TRUE)
+expect_true(inherits(g, 'geopackage'))
+expect_stdout(print(g))
+
+# without connecting
+g0 <- geopackage(gpkg_tmp)
+expect_true(inherits(g0, 'geopackage'))
+
+# from existing connection
+g1 <- geopackage(gpkg_source(g))
+expect_true(inherits(g1, 'geopackage'))
+
+# from list
+g2 <- geopackage(list(dem=dem, data=data.frame(id=1:3,code=LETTERS[1:3])))
+expect_true(inherits(g2, 'geopackage'))
+
+# missing input
+g3 <- geopackage(connect = TRUE)
+expect_true(inherits(g3, 'geopackage'))
+
+# manipulating an empty gpkg_contents table
+expect_true(gpkg_create_contents(g3))
+
+# add dummy row
+expect_true(gpkg_add_contents(g3, "foo", "bar",
+                              template = list(
+                                ext = c(0, 0, 0, 0),
+                                srsid = 4326
+                              )))
+
+# try various 'lazy' accessor methods
+expect_warning({d1 <- lazy.frame(g3$dsn, "gpkg_contents")})
+expect_true(inherits(d1, 'data.frame'))
+expect_true(inherits(lazy.frame(g3$con, "gpkg_contents"), 'data.frame'))
+
+if (!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error')) {
+  expect_warning({d2 <- dplyr.frame(g3$dsn, "gpkg_contents")})
+  expect_true(inherits(dplyr.frame(g3$con, "gpkg_contents"), 'tbl_SQLiteConnection'))
+  expect_true(inherits(d2, 'tbl_SQLiteConnection'))
+}
+
+# verify insert/delete of dummy gpkg_contents row
+expect_equal(nrow(gpkg_query(g3, "select * from gpkg_contents;")), 1)
+expect_true(gpkg_update_contents(g3))
+expect_true(gpkg_delete_contents(g3, "foo"))
+expect_equal(gpkg_execute(g3, "select * from gpkg_contents;"), 0)
+
+# disconnect sqliteconnection directly
+expect_true(gpkg_disconnect(g3$con))
 
 # add bounding polygon vector dataset
 b <- terra::as.polygons(gpkg_tables(g)[["DEM1"]], ext = TRUE)
@@ -57,15 +105,21 @@ expect_silent(gpkg_write(list(myattr = d), destfile = gpkg_tmp, append = TRUE))
 tl <- gpkg_list_tables(g)
 expect_true(is.character(tl) && all(c("layer1", "myattr") %in% tl))
 
+# force low-dependency view
 options(gpkg.use_dplyr = FALSE)
 tlex <- gpkg_tables(g)
 expect_equal(length(tlex), 4)
 
+# if avaiable test default dbplyr view
 if (!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error')) {
   options(gpkg.use_dplyr = TRUE)
   tlex2 <- gpkg_tables(g)
   expect_equal(length(tlex2), 4)
 }
+
+expect_true(inherits(gpkg_2d_gridded_coverage_ancillary(g), 'data.frame'))
+
+expect_true(gpkg_remove_attributes(g, "myattr"))
 
 # still connected
 expect_true(gpkg_is_connected(g))
@@ -74,7 +128,7 @@ expect_true(gpkg_is_connected(g))
 expect_equal(gpkg_add_metadata_extension(g), 0)
 expect_equal(gpkg_add_relatedtables_extension(g), 0)
 
-# TODO
+# TODO: validator
 expect_error(gpkg_validate(g))
 
 # disconnect it

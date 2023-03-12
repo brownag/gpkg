@@ -25,7 +25,7 @@ gpkg_create_contents(x)
 \item{template}{Default \code{NULL} uses global EPSG:4326 with bounds -180,-90:180,90}
 }
 \value{
-A \emph{geopackage}
+logical. TRUE on successful execution of SQL statements.
 }
 \description{
 \code{gpkg_add_contents()}: Add a record to \code{gpkg_contents}

@@ -75,7 +75,7 @@ gpkg_list_tables <- function(x) {
 #' @param name character. Tile matrix set name(s) (`tile_matrix_set_name`)
 #' @param value numeric. Value to use as "NoData" (`data_null` value)
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
-#' @return (invisibly) a scalar numeric that specifies the number of rows where `data_null` was updated
+#' @return logical. `TRUE` if number of `data_null` records updated is greater than `0`.
 #' @importFrom DBI dbDisconnect
 #' @export
 gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
@@ -91,7 +91,7 @@ gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
       updatevalue = value,
       wherecol = "tile_matrix_set_name",
       wherevector = name
-    )
+    ) > 0
   )
 }
 

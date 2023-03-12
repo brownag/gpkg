@@ -4,15 +4,19 @@
 \alias{gpkg_execute}
 \title{Execute an SQL statement in a GeoPackage}
 \usage{
-gpkg_execute(x, statement)
+gpkg_execute(x, statement, ..., silent = FALSE)
 }
 \arguments{
 \item{x}{a \emph{geopackage} object}
 
 \item{statement}{a SQLite statement}
+
+\item{...}{Additional arguments to \code{RSQLite::dbExecute()}}
+
+\item{silent}{Used to suppress error messages, passed to \code{try()}. Default: \code{FALSE}.}
 }
 \value{
-result of \code{RSQLite::dbExecute()}
+Invisible result of \code{RSQLite::dbExecute()}; or \code{try-error} on error.
 }
 \description{
 Execute an SQL statement in a GeoPackage

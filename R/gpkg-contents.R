@@ -6,7 +6,7 @@
 #' @param description Default `""`
 #' @param template Default `NULL` uses global EPSG:4326 with bounds -180,-90:180,90
 #'
-#' @return A _geopackage_
+#' @return logical. TRUE on successful execution of SQL statements.
 #' @rdname gpkg-contents
 #' @export
 gpkg_add_contents <- function(x, table_name, description = "", template = NULL) {
@@ -89,14 +89,15 @@ gpkg_update_contents <- function(x) {
     x <- gpkg_delete_contents(x, table_name = y)
   }
   
-  x
+  !inherits(x, 'try-error')
 }
 
 #' @description `gpkg_delete_contents()`: Delete a record from `gpkg_contents` based on table name
 #' @rdname gpkg-contents
 #' @export
 gpkg_delete_contents <- function(x, table_name) {
-  gpkg_execute(x, paste0("DELETE FROM gpkg_contents WHERE table_name = '", table_name, "'"))
+  res <- gpkg_execute(x, paste0("DELETE FROM gpkg_contents WHERE table_name = '", table_name, "'"))
+  !inherits(res, 'try-error')
 }
 
 #' @description `gpkg_create_contents()`: Create an empty `gpkg_contents` table
@@ -116,5 +117,6 @@ gpkg_create_contents <- function(x) {
           srs_id INTEGER,
           CONSTRAINT fk_gc_r_srs_id FOREIGN KEY (srs_id) REFERENCES gpkg_spatial_ref_sys(srs_id)
         )"
-  gpkg_execute(x, q)
+  res <- gpkg_execute(x, q)
+  !inherits(res, 'try-error')
 }

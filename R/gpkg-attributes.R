@@ -1,26 +1,28 @@
 #' Write or Remove Attribute Table in a GeoPackage
 #' 
-#' `gpkg_write_attributes()`: Specify a target geopackage and name for new table. For adding attributes, specify the new data as data.frame. The table name will be registered in the `gpkg_contents` table. Optionally include a description and/or a template terra object that can be used to define the extent of the attribute data.
+#' `gpkg_write_attributes()`: Specify a target geopackage and name for new table. For adding attributes, specify the new data as data.frame. The table name will be registered in the `gpkg_contents` table. Optionally include a custom `description` and/or use a `template`  object to define the spatial extent associated with attribute data.
 #'
-#' @param x a geopackage object
-#' @param table a data.frame
-#' @param table_name character. The name for `table` in `x`
+#' @param x A `geopackage` object
+#' @param table A `data.frame`
+#' @param table_name `character`. The name for `table` in `x`
 #' @param description Optional description. Default `""`
-#' @param template a list (containing elements `"ext"` and `"crs"`, or a terra object. These are defining xmin/ymin/xmax/ymax and CRS of the attribute table.
-#' @param overwrite overwrite? Default `FALSE`
-#' @param append append? Default `FALSE`
+#' @param template A `list` (containing elements `"ext"` and `"crs"`, or a `terra` object. These objects defining xmin/ymin/xmax/ymax and spatial reference system for the attribute table.
+#' @param overwrite Overwrite? Default `FALSE`
+#' @param append Append? Default `FALSE`
+#' @return `logical`. `TRUE` on successful table write or remove.
 #' @rdname gpkg-attributes
 #' @export
-gpkg_write_attributes <-
-  function(x,
-           table,
-           table_name,
-           description = "",
-           template = NULL,
-           overwrite = FALSE,
-           append = FALSE) {
-    
+gpkg_write_attributes <-  function(x,
+                                   table,
+                                   table_name,
+                                   description = "",
+                                   template = NULL,
+                                   overwrite = FALSE,
+                                   append = FALSE) {
+  
   con <- .gpkg_connection_from_x(x)
+  
+  stopifnot(requireNamespace("RSQLite", quietly = TRUE))
   
   # write new table
   if (!is.null(con)) {
@@ -43,14 +45,20 @@ gpkg_remove_attributes <- function(x, table_name) {
   
   con <- .gpkg_connection_from_x(x)
   
-  # write new table
+  stopifnot(requireNamespace("RSQLite", quietly = TRUE))
+  
+  res <- list()
   if (!is.null(con)) {
-    for (y in table_name) {
-      RSQLite::dbRemoveTable(con, y)
+    res <- lapply(table_name, function(y) {
+      # remove existing table
+      i <- RSQLite::dbRemoveTable(con, y)
+      
+      # remove gpkg_contents record
       if (y %in% gpkg_contents(x)$table_name) {
         gpkg_delete_contents(x, y)
       }
-    }
+      i
+    })
   }
   
   # close connection if needed
@@ -58,5 +66,5 @@ gpkg_remove_attributes <- function(x, table_name) {
     gpkg_disconnect(x)
   }
   
-  x
+  (sum(sapply(res, sum)) > 0)
 }

@@ -18,22 +18,25 @@ gpkg_write_attributes(
 gpkg_remove_attributes(x, table_name)
 }
 \arguments{
-\item{x}{a geopackage object}
+\item{x}{A \code{geopackage} object}
 
-\item{table}{a data.frame}
+\item{table}{A \code{data.frame}}
 
-\item{table_name}{character. The name for \code{table} in \code{x}}
+\item{table_name}{\code{character}. The name for \code{table} in \code{x}}
 
 \item{description}{Optional description. Default \code{""}}
 
-\item{template}{a list (containing elements \code{"ext"} and \code{"crs"}, or a terra object. These are defining xmin/ymin/xmax/ymax and CRS of the attribute table.}
+\item{template}{A \code{list} (containing elements \code{"ext"} and \code{"crs"}, or a \code{terra} object. These objects defining xmin/ymin/xmax/ymax and spatial reference system for the attribute table.}
 
-\item{overwrite}{overwrite? Default \code{FALSE}}
+\item{overwrite}{Overwrite? Default \code{FALSE}}
 
-\item{append}{append? Default \code{FALSE}}
+\item{append}{Append? Default \code{FALSE}}
+}
+\value{
+\code{logical}. \code{TRUE} on successful table write or remove.
 }
 \description{
-\code{gpkg_write_attributes()}: Specify a target geopackage and name for new table. For adding attributes, specify the new data as data.frame. The table name will be registered in the \code{gpkg_contents} table. Optionally include a description and/or a template terra object that can be used to define the extent of the attribute data.
+\code{gpkg_write_attributes()}: Specify a target geopackage and name for new table. For adding attributes, specify the new data as data.frame. The table name will be registered in the \code{gpkg_contents} table. Optionally include a custom \code{description} and/or use a \code{template}  object to define the spatial extent associated with attribute data.
 
 \code{gpkg_remove_attributes()}: Remove an attribute table and corresponding \code{gpkg_contents} record
 }
