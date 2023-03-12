@@ -12,8 +12,11 @@ dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
 gpkg_tmp <- tempfile(fileext = ".gpkg")
 
+expect_error(.gpkg_connection_from_x(NULL))
+expect_true(inherits(gpkg_execute(gpkg_tmp, "select * from foo"), 'try-error'))
+
 if (file.exists(gpkg_tmp))
-  file.remove(gpkg_tmp)
+  unlink(gpkg_tmp)
 
 # write a gpkg with two DEMs in it
 gpkg_write(
@@ -78,6 +81,13 @@ g2 <- geopackage(list(
     data2 = tfcsv
   ), connect = TRUE)
 expect_true(inherits(g2, 'geopackage'))
+expect_error(lazy.frame(g2, "dem3"))
+expect_error(dplyr.frame(g2, "dem3"))
+expect_true(is.character(gpkg_table(g2, "dem2", query_string = TRUE)))
+expect_true(is.character(
+  gpkg:::.gpkg_update_table(g2, "dem2", "zoom_level", 1, "id", 1, query_string = TRUE)
+))
+
 gpkg_disconnect(g2)
 unlink(tfcsv)
 unlink(tfgpkg)

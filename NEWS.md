@@ -1,10 +1,16 @@
-# gpkg 0.0.2.9002
+# gpkg 0.0.2.9003
 
 * Updated definitions of `lazy.frame()` and `dplyr.frame()` and related docs
 
 * Updated `gpkg_write()` for raster, vector, and attribute data
 
-  * General cleanup and refactored approach for splitting input data sources between attributes, vector, and tiled grid coverage.
+  * General cleanup and refactored approach for splitting input data sources between attributes, vector, and tiled grid coverage. 
+  
+  * New approach still contains hard-coded logic related to the allowed object types and file data sources (that will be generalized in the future)
+  
+  * `RASTER_TABLE` name is now properly injected into GDAL options from named list input (when not otherwise specified)
+
+* Bug fix in `geopackage(<list>)` related to appending v.s. overwriting raster data
 
 # gpkg 0.0.2
 

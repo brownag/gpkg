@@ -36,11 +36,9 @@ lazy.frame.geopackage <- function(x, table_name = NULL, ...) {
   if (is.null(table_name)) {
     table_name <- tbls
   }
-  if (!all(table_name %in% tbls))
-    stop("no table with name: '",
-         paste0(table_name[!table_name %in% tbls], collapse = "', '"),
-         "' in ",
-         dsn)
+  
+  if (!all(table_name %in% tbls)) stop("no table with name: '", paste0(table_name[!table_name %in% tbls], collapse = "', '"), "' in ", dsn)
+  
   res <- do.call('rbind', lapply(table_name, function(xx) {
     data.frame(dsn = dsn, 
       table_name = xx,
@@ -113,11 +111,8 @@ dplyr.frame.geopackage <- function(x, table_name, ...) {
   con <- .gpkg_connection_from_x(x)
   
   tbls <- gpkg_list_tables(con)
-  if (missing(table_name) || length(table_name) == 0) {
-    stop("table name should be one of:",
-         paste0(tbls, collapse = ", "),
-         call = FALSE)
-  }
+  
+  if (missing(table_name) || length(table_name) == 0) stop("table name should be one of:", paste0(tbls, collapse = ", "), call = FALSE)
   
   dplyr::tbl(con, table_name, ...)
 }
