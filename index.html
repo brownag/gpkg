@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9003</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@
 <span><span class="co">#&gt;  sqlite_sequence</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
-<span><span class="co">#&gt;   Path: /tmp/RtmpVUC88S/file1c9564177c110.gpkg</span></span>
+<span><span class="co">#&gt;   Path: /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg</span></span>
 <span><span class="co">#&gt;   Extensions: TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "geopackage"</span></span></code></pre></div>
@@ -196,8 +196,8 @@
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file1c9564177c110.gpkg:DEM1 </span></span>
-<span><span class="co">#&gt; varname     : file1c9564177c110 </span></span>
+<span><span class="co">#&gt; source      : file2eedd44f79a0.gpkg:DEM1 </span></span>
+<span><span class="co">#&gt; varname     : file2eedd44f79a0 </span></span>
 <span><span class="co">#&gt; name        : DEM1 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $DEM2</span></span>
@@ -206,15 +206,15 @@
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file1c9564177c110.gpkg:DEM2 </span></span>
-<span><span class="co">#&gt; varname     : file1c9564177c110 </span></span>
+<span><span class="co">#&gt; source      : file2eedd44f79a0.gpkg:DEM2 </span></span>
+<span><span class="co">#&gt; varname     : file2eedd44f79a0 </span></span>
 <span><span class="co">#&gt; name        : DEM2 </span></span>
 <span><span class="co">#&gt; min value   :  195 </span></span>
 <span><span class="co">#&gt; max value   :  500 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $myattr</span></span>
 <span><span class="co">#&gt; # Source:   table&lt;myattr&gt; [10 x 2]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.40.1 [/tmp/RtmpVUC88S/file1c9564177c110.gpkg]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 [/tmp/RtmpV3OufG/file2eedd44f79a0.gpkg]</span></span>
 <span><span class="co">#&gt;        a b    </span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;</span></span>
 <span><span class="co">#&gt;  1     1 A    </span></span>
@@ -233,7 +233,7 @@
 <span><span class="co">#&gt;  geometry    : polygons </span></span>
 <span><span class="co">#&gt;  dimensions  : 1, 0  (geometries, attributes)</span></span>
 <span><span class="co">#&gt;  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt;  source      : file1c9564177c110.gpkg (bbox)</span></span>
+<span><span class="co">#&gt;  source      : file2eedd44f79a0.gpkg (bbox)</span></span>
 <span><span class="co">#&gt;  coord. ref. : lon/lat WGS 84 (EPSG:4326)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="lazy-tables-and-dplyr-integration">Lazy Tables and {dplyr} Integration<a class="anchor" aria-label="anchor" href="#lazy-tables-and-dplyr-integration"></a>
@@ -246,13 +246,13 @@
 <p><code><a href="reference/lazy.frame.html">lazy.frame()</a></code> is a low-frills <code>data.frame</code> result containing important table information, but not values. The <code>PRAGMA table_info()</code> is stored as a nested data.frame <code>table_info</code>. This representation has no dependencies beyond {RSQLite} and is efficient for inspection of table structure and attributes. Though it is less useful for data analysis.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/lazy.frame.html">lazy.frame</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                      dsn table_name nrow table_info.cid</span></span>
-<span><span class="co">#&gt; 1 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              0</span></span>
-<span><span class="co">#&gt; 2 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              1</span></span>
-<span><span class="co">#&gt; 3 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              2</span></span>
-<span><span class="co">#&gt; 4 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              3</span></span>
-<span><span class="co">#&gt; 5 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM1    1              4</span></span>
-<span><span class="co">#&gt; 6 /tmp/RtmpVUC88S/file1c9564177c110.gpkg       DEM2    1              0</span></span>
+<span><span class="co">#&gt;                                     dsn table_name nrow table_info.cid</span></span>
+<span><span class="co">#&gt; 1 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              0</span></span>
+<span><span class="co">#&gt; 2 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              1</span></span>
+<span><span class="co">#&gt; 3 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              2</span></span>
+<span><span class="co">#&gt; 4 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              3</span></span>
+<span><span class="co">#&gt; 5 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              4</span></span>
+<span><span class="co">#&gt; 6 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM2    1              0</span></span>
 <span><span class="co">#&gt;   table_info.name table_info.type table_info.notnull table_info.dflt_value</span></span>
 <span><span class="co">#&gt; 1              id         INTEGER                  0                  &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2      zoom_level         INTEGER                  1                  &lt;NA&gt;</span></span>
@@ -277,7 +277,7 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/lazy.frame.html">dplyr.frame</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Source:   table&lt;gpkg_contents&gt; [4 x 10]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.40.1 [/tmp/RtmpVUC88S/file1c9564177c110.gpkg]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.40.1 [/tmp/RtmpV3OufG/file2eedd44f79a0.gpkg]</span></span>
 <span><span class="co">#&gt;   table_name data_type ident…¹ descr…² last_…³   min_x min_y  max_x max_y srs_id</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 DEM1       2d-gridd… DEM1    ""      2023-0…    6.01  49.7   6.27  49.9   4326</span></span>

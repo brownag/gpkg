@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9003</span>
       </span>
     </div>
 
@@ -48,12 +48,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.2.9002" id="gpkg-0029002">gpkg 0.0.2.9002<a class="anchor" aria-label="anchor" href="#gpkg-0029002"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.2.9003" id="gpkg-0029003">gpkg 0.0.2.9003<a class="anchor" aria-label="anchor" href="#gpkg-0029003"></a></h2>
 <ul><li><p>Updated definitions of <code><a href="../reference/lazy.frame.html">lazy.frame()</a></code> and <code><a href="../reference/lazy.frame.html">dplyr.frame()</a></code> and related docs</p></li>
 <li>
 <p>Updated <code><a href="../reference/gpkg_write.html">gpkg_write()</a></code> for raster, vector, and attribute data</p>
-<ul><li>General cleanup and refactored approach for splitting input data sources between attributes, vector, and tiled grid coverage.</li>
+<ul><li><p>General cleanup and refactored approach for splitting input data sources between attributes, vector, and tiled grid coverage.</p></li>
+<li><p>New approach still contains hard-coded logic related to the allowed object types and file data sources (that will be generalized in the future)</p></li>
+<li><p><code>RASTER_TABLE</code> name is now properly injected into GDAL options from named list input (when not otherwise specified)</p></li>
 </ul></li>
+<li><p>Bug fix in <code>geopackage(&lt;list&gt;)</code> related to appending v.s. overwriting raster data</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.2" id="gpkg-002">gpkg 0.0.2<a class="anchor" aria-label="anchor" href="#gpkg-002"></a></h2>
