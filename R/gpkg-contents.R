@@ -70,23 +70,28 @@ gpkg_add_contents <- function(x, table_name, description = "", template = NULL) 
 #' @rdname gpkg-contents
 #' @export
 gpkg_update_contents <- function(x) {
-  contents <- try(gpkg_contents(x))
-  if (inherits(contents, 'try-error')) {
+  contents <- try(gpkg_contents(x), silent = TRUE)
+  if (inherits(contents, 'try-error') || !inherits(contents, 'data.frame')) {
     # create minimal gpkg_contents table
-    gpkg_create_contents(x)
+    if (gpkg_create_contents(x)) {
+     contents <- try(gpkg_contents(x), silent = TRUE)
+    }
+    if (inherits(contents, 'try-error')) return(contents)
   }
   tables <- gpkg_list_tables(x)
-  tables_nonstandard <- tables[!grepl("^gpkg_.*|rtree_.*", tables)]
+  tables_nonstandard <- tables[!grepl("^gpkg_.*|rtree_.*|gpkgext_|sqlite_sequence", tables)]
   todo <- tables_nonstandard[!tables_nonstandard %in% contents$table_name]
   torem <- contents$table_name[!contents$table_name %in% tables]
   
   # create gpkg_contents records, 
   # TODO: set extent via template?
   for (y in todo) {
-    x <- gpkg_add_contents(x, table_name = y, description = y)
+    gpkg_add_contents(x, table_name = y, description = y)
   }
+  
+  # remove gpkg_contents records
   for (y in torem) {
-    x <- gpkg_delete_contents(x, table_name = y)
+    gpkg_delete_contents(x, table_name = y)
   }
   
   !inherits(x, 'try-error')

@@ -12,6 +12,9 @@
 
 * Bug fix in `geopackage(<list>)` related to appending v.s. overwriting raster data
 
+* `gpkg_update_contents()`: Handle `gpkgext_` and `sqlite_sequence` as standard GPKG table prefixes  
+  * fixes error with updating contents of GPKG with extensions loaded
+  
 # gpkg 0.0.2
 
 * Added a `NEWS.md` file to track changes to the package.

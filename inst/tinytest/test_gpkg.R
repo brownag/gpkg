@@ -174,13 +174,19 @@ expect_stdout(gpkg_read(g))
 # TODO: validator
 expect_error(gpkg_validate(g))
 
-# TODO: why?
-expect_error(gpkg_update_contents(g))
-# RSQLite::dbRemoveTable(g, "gpkg_contents")
-# RSQLite::dbWriteTable(g, "bar", data.frame(b = 2))
+# checking ability to clean up corrupted contents
+RSQLite::dbRemoveTable(g$con, "gpkg_contents")
+RSQLite::dbWriteTable(g$con, "bar", data.frame(b = 2))
+tf <- tempfile()
+sink(file = tf)
+expect_stdout(gpkg_update_contents(g))
+sink()
+unlink(tf)
+expect_true("bar" %in% gpkg_contents(g)$table_name)
 
 # disconnect it
-expect_true(g <- gpkg_disconnect(g))
+expect_true(gpkg_disconnect(g))
 
 # cleanup
 unlink(gpkg_tmp)
+ 
