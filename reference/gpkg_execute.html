@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gpkg_execute</span><span class="op">(</span><span class="va">x</span>, <span class="va">statement</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gpkg_execute</span><span class="op">(</span><span class="va">x</span>, <span class="va">statement</span>, <span class="va">...</span>, silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,14 +65,20 @@
 <dt>statement</dt>
 <dd><p>a SQLite statement</p></dd>
 
+
+<dt>...</dt>
+<dd><p>Additional arguments to <code>RSQLite::dbExecute()</code></p></dd>
+
+
+<dt>silent</dt>
+<dd><p>Used to suppress error messages, passed to <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code>. Default: <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>result of <code>RSQLite::dbExecute()</code></p>
-
-
+<p>Invisible result of <code>RSQLite::dbExecute()</code>; or <code>try-error</code> on error.</p>
     </div>
 
   </div>
