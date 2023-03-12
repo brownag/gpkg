@@ -78,7 +78,8 @@ gpkg_write(
   destfile = gpkg_tmp,
   append = TRUE,
   RASTER_TABLE = "DEM2",
-  FIELD_NAME = "Elevation"
+  FIELD_NAME = "Elevation",
+  NoData = -9999
 )
 ```
 
@@ -90,7 +91,16 @@ We can also write vector data to GeoPackage. Here we use `gpkg_write()` to add a
 # add bounding polygon vector layer via named list
 r <- gpkg_tables(geopackage(gpkg_tmp))[['DEM1']]
 v <- terra::as.polygons(r, ext = TRUE)
-gpkg_write(list(bbox = v), destfile = gpkg_tmp)
+gpkg_write(list(bbox = v), destfile = gpkg_tmp, append = TRUE)
+```
+
+## Insert Attribute Table
+
+Similarly, `data.frame`-like objects (non-spatial "attributes") can be written to GeoPackage.
+
+```{r}
+z <- data.frame(a = 1:10, b = LETTERS[1:10])
+gpkg_write(list(myattr = z), destfile = gpkg_tmp, append = TRUE)
 ```
 
 ## Read a GeoPackage

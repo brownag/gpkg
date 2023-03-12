@@ -13,22 +13,22 @@ gpkg_tables <- function(x)
 #' @export
 #' @rdname gpkg_tables
 gpkg_tables.geopackage <- function(x) {
-  t1 <- names(x$tables)
-  t2 <- gpkg_contents(x)$table_name
+  contents <- gpkg_contents(x)
+  src <- gpkg_source(x)
+  y <- split(contents, contents$data_type)
   
-  # update if needed
-  idx <- which(!t2 %in% t1)
-  if (length(idx) > 0) {
-    newtn <- t2[idx]
-    newt <- lapply(newtn, function(y) {
-      lazy.frame(x, y)
-    })
-    names(newt) <- newtn
-    x$tables <- c(x$tables, newt)
-    x$tables <- x$tables[match(names(x$tables), t2)]
-  }
+  .LAZY.FUN <- switch(getOption("gpkg.use_dplyr", 
+                               default = !inherits(requireNamespace("dbplyr"), 
+                                                   "try-error")),
+                     "TRUE" = dplyr.frame, lazy.frame)
   
-  x$tables
+  unlist(lapply(names(y), function(z) {
+    switch(z, 
+           "2d-gridded-coverage" = { sapply(y[[z]]$table_name, function(i) terra::rast(src, i)) },
+           "features" = { sapply(y[[z]]$table_name, function(i) terra::vect(src, layer = i)) },
+           "attributes" = { `names<-`(list(.LAZY.FUN(src, table_name = y[[z]]$table_name)), 
+                                      y[[z]]$table_name) })
+  }), recursive = FALSE)
 }
 
 #' Get Source File of a `geopackage` Object

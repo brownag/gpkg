@@ -12,7 +12,7 @@ gpkg_execute(x, statement)
 \item{statement}{a SQLite statement}
 }
 \value{
-a \emph{data.frame} result of \code{RSQLite::dbGetQuery()}
+result of \code{RSQLite::dbExecute()}
 }
 \description{
 Execute an SQL statement in a GeoPackage

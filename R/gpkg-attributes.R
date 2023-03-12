@@ -24,15 +24,16 @@ gpkg_write_attributes <-
   
   # write new table
   if (!is.null(con)) {
-    RSQLite::dbWriteTable(con, table_name, table, overwrite = overwrite, append = append)
-    x <- gpkg_add_contents(x, table_name = table_name, description = description, template = template)
+    RSQLite::dbWriteTable(con, table_name, table, overwrite = overwrite, append = !overwrite && append)
+    res <- gpkg_delete_contents(x, table_name = table_name) + 
+            gpkg_add_contents(x, table_name = table_name, description = description, template = template)
   }
 
   # close connection if needed
   if (attr(con, 'disconnect')) {
     gpkg_disconnect(x)
   }
-  x
+  (res == 2)
 }
 
 #' @description `gpkg_remove_attributes()`: Remove an attribute table and corresponding `gpkg_contents` record

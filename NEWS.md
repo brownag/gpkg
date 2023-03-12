@@ -1,6 +1,10 @@
-# gpkg 0.0.2.9001
+# gpkg 0.0.2.9002
 
 * Updated definitions of `lazy.frame()` and `dplyr.frame()` and related docs
+
+* Updated `gpkg_write()` for raster, vector, and attribute data
+
+  * General cleanup and refactored approach for splitting input data sources between attributes, vector, and tiled grid coverage.
 
 # gpkg 0.0.2
 

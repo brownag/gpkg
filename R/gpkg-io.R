@@ -80,89 +80,119 @@ gpkg_write <- function(x,
                        NoData = NULL,
                        gdal_options = NULL,
                        ...) {
-  # attribute tables
-  if (inherits(x, 'data.frame')) {
-    if (is.null(table_name)) {
-      stop("`table_name` must be specified if `x` is a data.frame", call. = FALSE)
-    }  
-    return(gpkg_write_attributes(geopackage(destfile), x, table_name = table_name, overwrite = overwrite, append = append))
-  } 
   
-  if (!is.list(x) || is.character(x)) {
+  # ldsn <- .gpkg_list_to_source(x)
+  
+  res <- .gpkg_process_sources(x, 
+                               destfile,
+                               table_name = table_name,
+                               datatype = datatype,
+                               append = append,
+                               overwrite = overwrite,
+                               NoData = NoData,
+                               gdal_options = gdal_options,
+                               ...)
+  invisible(.gpkg_postprocess_sources(res))
+}
+
+.is.file <- function(y, pattern) {
+  is.character(y) && grepl(sprintf("\\.(%s)$", pattern), y, ignore.case = TRUE)
+}
+
+.gpkg_process_sources <- function(x, ...) {
+  if (!is.list(x)) {
     x <- list(x)
   }
-  if (is.list(x)) {
-    x <- do.call('c', lapply(x, function(xx) {
-      if (inherits(xx, 'SpatRasterCollection')) {
-        return(sapply(xx, terra::sources))
-      } else if (inherits(xx, 'SpatRaster')) {
-        return(terra::sources(xx))
-      } else if (inherits(xx, 'SpatVectorProxy')) {
-        # TODO: rspatial/terra#646 sources(<SpatVectorProxy>) added terra 1.5-32+
-        return(xx@ptr$v$source)
-      } else {
-       if (is.character(xx)) {
-          return(xx)
-        } else {
-          return(character())
-        }
-      }
-    }))
-  }
+  
+  # TODO: extend this; only intended for prototyping before general sln
+  
+  # objects with a file-based
+  src_raster <- vapply(x, inherits, logical(1), c('SpatRaster', 'SpatRasterCollection'))
+  src_vector <- vapply(x, inherits, logical(1), 'SpatVectorProxy')
+  obj_vector <- vapply(x, inherits, logical(1), c('sf', 'SpatVector'))
+  obj_attrib <- vapply(x, inherits, logical(1), 'data.frame')
+  pth_raster <- vapply(x, .is.file, logical(1),  "tif+|vrt|grd|png")
+  pth_vector <- vapply(x, .is.file, logical(1),  "shp|gpkg")
+  pth_attrib <- vapply(x, .is.file, logical(1),  "csv")
+  
+  # classify list of object input  grid, features, attributes
+  #  - each processing function handles local objects and/or file paths
+  list(
+    grids = .gpkg_process_grids(c(x[src_raster], x[pth_raster]), ...),
+    features = .gpkg_process_features(c(x[obj_vector], x[src_vector], x[pth_vector]), ...),
+    attributes = .gpkg_process_attributes(c(x[obj_attrib], x[pth_attrib]), ...)
+  )
+}
 
-  # classify source files -> (vector, grid, table)
-  # TODO: extend types of sources
-  ext <- gsub(".*\\.(.*$)", "\\1", x)
-  ldsn <- split(x, factor(ext, levels = c('shp', 'tif', 'vrt', 'csv')), drop = FALSE)
-
-  # if any grids are present, write them first
-  grids <- c(ldsn[['tif']], ldsn[['vrt']])
-  ngrd <- 0
-
-  if (length(grids) > 0) {
-    # first grid write with append=FALSE
-    .gpkg_write_grid_subdataset_terra(x = grids[1],
-                                      destfile = destfile,
-                                      datatype = datatype,
-                                      append = append,
-                                      overwrite = overwrite,
-                                      NoData = NoData,
-                                      gdal_options = gdal_options,
-                                      ...)
-    ngrd <- 1
-  }
-
-  if (length(grids) > 1) {
-    # subsequent grids append=TRUE
-    sds <- lapply(grids[2:length(grids)], .gpkg_write_grid_subdataset_terra,
-                                                  destfile = destfile,
-                                                  datatype = datatype,
-                                                  append = append,
-                                                  overwrite = overwrite,
-                                                  NoData = NoData,
-                                                  gdal_options = gdal_options,
-                                                  ...)
-    ngrd <- ngrd + length(sds)
-  }
-
-  # iterate over vector/table sources and write to database
-  vects <- ldsn[['shp']]
-  if (is.null(names(vects)) && length(vects) > 0) {
-    names(vects) <- as.character(1:length(vects))
-  }
-  nvct <- 0
-  lapply(names(vects), function(vv) {
-  .gpkg_write_vector_terra(vects[[vv]],
-                             layername = vv,
-                             destfile = destfile,
-                             insert = TRUE,
-                             overwrite = FALSE)
+#' @importFrom utils read.csv
+.gpkg_process_attributes <- function(ldsn, destfile, table_name, overwrite=FALSE, append=TRUE, ...) {
+  z <- sapply(names(ldsn), function(x) {
+    # attribute tables
+    if (!inherits(ldsn[[x]], 'data.frame')) {
+      ldsn[[x]] <- utils::read.csv(ldsn[[x]])
+    }
+    x <- gpkg_write_attributes(
+      geopackage(destfile),
+      ldsn[[x]],
+      table_name = x,
+      overwrite = overwrite,
+      append = append
+    )
+    return(inherits(x, 'try-error'))
   })
+}
+    
+.gpkg_process_grids <- function(ldsn, destfile, datatype, append = TRUE, overwrite = FALSE, NoData, gdal_options, ...) {
+  res <- list()
+  if (length(ldsn) > 0) {
+    res <- list(.gpkg_write_grid_subdataset_terra(
+      x = ldsn[[1]],
+      destfile = destfile,
+      datatype = datatype,
+      append = append,
+      overwrite = overwrite,
+      NoData = NoData,
+      gdal_options = gdal_options,
+      ...
+    ))
+    names(res) <- names(ldsn)[[1]]
+  }
+  sds <- list()
+  if (length(ldsn) > 1) {
+    # subsequent grids append=TRUE
+    sds <- sapply(
+      ldsn[2:length(ldsn)],
+      .gpkg_write_grid_subdataset_terra,
+      destfile = destfile,
+      datatype = datatype,
+      append = append,
+      overwrite = overwrite,
+      NoData = NoData,
+      gdal_options = gdal_options,
+      ...
+    )
+  }
+  c(res, sds)
+}
 
-  # post processing? validate?
+.gpkg_process_features <- function(ldsn, destfile, insert = TRUE, overwrite = FALSE, ...) {
+  if (is.null(names(ldsn)) && length(ldsn) > 0) {
+    names(ldsn) <- paste0("layer", 1:length(ldsn))
+  }
+  sapply(names(ldsn), function(vv) {
+    .gpkg_write_vector_terra(
+      ldsn[[vv]],
+      layername = vv,
+      destfile = destfile,
+      insert = insert,
+      overwrite = overwrite
+    )
+  })
+}
 
-  # return TRUE if at least one layer written
-  invisible(ngrd > 0)
+.gpkg_postprocess_sources <- function(result, ...) {
+  result
+ # TODO gpkg_validate? 
 }
 
 .lut_gpkg_creation <- function(...) {
@@ -193,7 +223,11 @@ gpkg_write <- function(x,
     stop('the `terra` package is required to write gridded data to GeoPackage', call. = FALSE)
   }
 
-  r <- terra::rast(x)
+  if (!inherits(x, 'SpatRaster')) {
+    r <- terra::rast(x)
+  } else {
+    r <- x
+  }
 
   gdal_options <- unique(c(gdal_options, .lut_gpkg_creation(...)))
 
@@ -202,7 +236,6 @@ gpkg_write <- function(x,
   }
 
   if (append) {
-    overwrite <- FALSE
     if (!any(grepl("APPEND_SUBDATASET", gdal_options, ignore.case = TRUE))) {
       gdal_options <- c(gdal_options, "APPEND_SUBDATASET=YES")
     }
@@ -217,8 +250,12 @@ gpkg_write <- function(x,
   )
 
   if (!is.null(NoData)) {
-    # TODO: handle custom table name
-    gpkg_tile_set_data_null(destfile, gsub("(.*?)\\..*", "\\1", basename(x)), NoData)
+    ctn <- gsub("RASTER_TABLE=(.*)|.*", "\\1", gdal_options)
+    ctn <- ctn[nchar(ctn) > 0]
+    if (length(ctn) == 0) {
+      ctn <- basename(tempfile(pattern = "raster"))
+    }
+    gpkg_tile_set_data_null(destfile, ctn, NoData)
   }
 
   invisible(res)
@@ -239,12 +276,11 @@ gpkg_write <- function(x,
 
   gdal_options <- unique(c(gdal_options, .lut_gpkg_creation(...)))
   
-  if (insert) {
-    overwrite <- FALSE
+  if (!inherits(x, 'SpatVector')) {
+    x <- terra::vect(x)
   }
   
-  res <- terra::writeVector(
-            terra::vect(x),
+  res <- terra::writeVector(x,
             destfile,
             layer = layername,
             insert = insert,

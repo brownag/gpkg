@@ -39,7 +39,7 @@ gpkg_add_contents <- function(x, table_name, description = "", template = NULL) 
   }
   
   # create gpkg_contents empty table if needed
-  if (!"gpkg_contents" %in% gpkg_list_tables(x)){
+  if (!"gpkg_contents" %in% gpkg_list_tables(x)) {
     x <- gpkg_create_contents(x)
   }
   
@@ -63,7 +63,7 @@ gpkg_add_contents <- function(x, table_name, description = "", template = NULL) 
                       );"
                     )
   )
-  x
+  !inherits(x, 'try-error')
 }
 
 #' @description `gpkg_update_contents()`: Add and remove `gpkg_contents` records to match existing tables

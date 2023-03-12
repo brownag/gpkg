@@ -3,7 +3,7 @@
 #' @param x a _geopackage_ object
 #' @param statement a SQLite statement
 #'
-#' @return a _data.frame_ result of `RSQLite::dbGetQuery()`
+#' @return result of `RSQLite::dbExecute()`
 #' @export
 gpkg_execute <- function(x, statement) {
   con <- .gpkg_connection_from_x(x)
@@ -11,5 +11,5 @@ gpkg_execute <- function(x, statement) {
   if (attr(con, 'disconnect')) {
     DBI::dbDisconnect(con)
   }
-  x
+  res
 }
