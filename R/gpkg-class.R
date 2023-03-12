@@ -18,6 +18,11 @@ geopackage <- function(x, ...)
 #' @rdname geopackage-class
 #' @export
 geopackage.list <- function(x, dsn = NULL, connect = FALSE, ...) {
+  if (is.null(dsn)) {
+    dsn <- tempfile("Rgpkg", fileext = ".gpkg")
+    gpkg_write(x, destfile = dsn, ...)
+    dsn <- .gpkg_connection_from_x(dsn)
+  }
   obj <- .geopackage(dsn = dsn, connect = connect, ...)
   obj$tables <- x
   obj

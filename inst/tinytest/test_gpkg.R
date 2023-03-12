@@ -1,4 +1,11 @@
-# test terra gpkg grids
+# cleanup
+if (interactive()) 
+  rm(list = ls())
+
+# RSQLite and terra used heavily in tests
+# d(b)plyr used conditionally
+stopifnot(requireNamespace("tinytest", quietly = TRUE))
+stopifnot(requireNamespace("RSQLite", quietly = TRUE))
 stopifnot(requireNamespace("terra", quietly = TRUE))
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
@@ -56,9 +63,24 @@ expect_true(inherits(g0, 'geopackage'))
 g1 <- geopackage(gpkg_source(g))
 expect_true(inherits(g1, 'geopackage'))
 
-# from list
-g2 <- geopackage(list(dem=dem, data=data.frame(id=1:3,code=LETTERS[1:3])))
+# heterogeneous input from list
+tfcsv <- tempfile(fileext = ".csv")
+tfgpkg <- tempfile(fileext = ".gpkg")
+v <- terra::as.polygons(terra::rast(dem), ext = TRUE)
+terra::writeVector(v, tfgpkg)
+write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
+g2 <- geopackage(list(
+    dem1 = dem,
+    dem2 = dem,
+    bbox1 = v,
+    bbox2 = tfgpkg,
+    data1 = data.frame(id = 1:3, code = LETTERS[1:3]),
+    data2 = tfcsv
+  ), connect = TRUE)
 expect_true(inherits(g2, 'geopackage'))
+gpkg_disconnect(g2)
+unlink(tfcsv)
+unlink(tfgpkg)
 
 # missing input
 g3 <- geopackage(connect = TRUE)
@@ -127,6 +149,8 @@ expect_true(gpkg_is_connected(g))
 # extensions
 expect_equal(gpkg_add_metadata_extension(g), 0)
 expect_equal(gpkg_add_relatedtables_extension(g), 0)
+
+expect_stdout(gpkg_read(g))
 
 # TODO: validator
 expect_error(gpkg_validate(g))

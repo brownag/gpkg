@@ -144,6 +144,9 @@ gpkg_write <- function(x,
 .gpkg_process_grids <- function(ldsn, destfile, datatype, append = TRUE, overwrite = FALSE, NoData, gdal_options, ...) {
   res <- list()
   if (length(ldsn) > 0) {
+    gdal_options_sub <- .gpkg_gdaloptions_add(gdal_options, 
+                                              key = "RASTER_TABLE", 
+                                              value = names(ldsn)[[1]])
     res <- list(.gpkg_write_grid_subdataset_terra(
       x = ldsn[[1]],
       destfile = destfile,
@@ -151,7 +154,7 @@ gpkg_write <- function(x,
       append = append,
       overwrite = overwrite,
       NoData = NoData,
-      gdal_options = gdal_options,
+      gdal_options = gdal_options_sub,
       ...
     ))
     names(res) <- names(ldsn)[[1]]
@@ -159,17 +162,21 @@ gpkg_write <- function(x,
   sds <- list()
   if (length(ldsn) > 1) {
     # subsequent grids append=TRUE
-    sds <- sapply(
-      ldsn[2:length(ldsn)],
-      .gpkg_write_grid_subdataset_terra,
-      destfile = destfile,
-      datatype = datatype,
-      append = append,
-      overwrite = overwrite,
-      NoData = NoData,
-      gdal_options = gdal_options,
-      ...
-    )
+    sds <- sapply(names(ldsn[2:length(ldsn)]), function(n) {
+      gdal_options_sub <- .gpkg_gdaloptions_add(gdal_options, 
+                                                key = "RASTER_TABLE", 
+                                                value = n)
+      .gpkg_write_grid_subdataset_terra(
+        ldsn[[n]],
+        destfile = destfile,
+        datatype = datatype,
+        append = TRUE,
+        overwrite = overwrite,
+        NoData = NoData,
+        gdal_options = gdal_options_sub,
+        ...
+      )
+    })
   }
   c(res, sds)
 }
@@ -203,6 +210,14 @@ gpkg_write <- function(x,
     return(paste0(kvn, "=", as.character(kv[kvn])))
   }
   character(0)
+}
+
+.gpkg_gdaloptions_add <- function(gdal_options, key, value, force = FALSE) {
+  # add a gdaloption (if 'key' not already defined)
+  if (force || !any(grepl(key, gdal_options, ignore.case = TRUE)) ) {
+    return(c(gdal_options, paste0(key, "=", value)))
+  }
+  NULL
 }
 
 #' .gpkg_write_grid_subdataset_terra
