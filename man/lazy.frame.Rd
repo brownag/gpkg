@@ -3,9 +3,11 @@
 \name{lazy.frame}
 \alias{lazy.frame}
 \alias{lazy.frame.character}
+\alias{lazy.frame.SQLiteConnection}
 \alias{lazy.frame.geopackage}
 \alias{dplyr.frame}
 \alias{dplyr.frame.character}
+\alias{dplyr.frame.SQLiteConnection}
 \alias{dplyr.frame.geopackage}
 \title{Lazy Access to Table Information}
 \usage{
@@ -13,11 +15,15 @@ lazy.frame(x, table_name = NULL, ...)
 
 \method{lazy.frame}{character}(x, table_name = NULL, ...)
 
+\method{lazy.frame}{SQLiteConnection}(x, table_name, ...)
+
 \method{lazy.frame}{geopackage}(x, table_name = NULL, ...)
 
 dplyr.frame(x, table_name, ...)
 
 \method{dplyr.frame}{character}(x, table_name, ...)
+
+\method{dplyr.frame}{SQLiteConnection}(x, table_name, ...)
 
 \method{dplyr.frame}{geopackage}(x, table_name, ...)
 }

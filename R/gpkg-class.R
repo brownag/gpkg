@@ -62,7 +62,7 @@ geopackage.character <- function(x, connect = FALSE, ...) {
     dsn <- con@dbname
   # create a connection when geopackage object is constructed
   } else if (connect) {
-    if (requireNamespace("RSQLite")) {
+    if (requireNamespace("RSQLite", quietly = TRUE)) {
       con <- RSQLite::dbConnect(RSQLite::SQLite(), dsn)
     } else { 
       stop('package `RSQLite` is required to connect to GeoPackages', call. = FALSE)

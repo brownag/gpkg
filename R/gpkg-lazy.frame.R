@@ -13,6 +13,12 @@ lazy.frame.character <- function(x, table_name = NULL, ...) {
   res
 }
 
+#' @rdname lazy.frame
+#' @export
+lazy.frame.SQLiteConnection <- function(x, table_name, ...) {
+  lazy.frame(geopackage(x), table_name, ...)
+}
+
 #' Lazy Access to Table Information
 #' 
 #' `lazy.frame()`: Get information on a table in a GeoPackage (without returning the whole table).
@@ -95,12 +101,18 @@ dplyr.frame.character <- function(x, table_name, ...) {
 
 #' @rdname lazy.frame
 #' @export
+dplyr.frame.SQLiteConnection <- function(x, table_name, ...) {
+  dplyr.frame(geopackage(x), table_name, ...)
+}
+
+#' @rdname lazy.frame
+#' @export
 dplyr.frame.geopackage <- function(x, table_name, ...) {
-  stopifnot(requireNamespace("dbplyr"))
+  stopifnot(requireNamespace("dbplyr", quietly = TRUE))
   
   con <- .gpkg_connection_from_x(x)
+  
   tbls <- gpkg_list_tables(con)
-  # dsn <- gpkg_source(x)
   if (missing(table_name) || length(table_name) == 0) {
     stop("table name should be one of:",
          paste0(tbls, collapse = ", "),

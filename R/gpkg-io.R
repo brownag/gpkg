@@ -80,9 +80,6 @@ gpkg_write <- function(x,
                        NoData = NULL,
                        gdal_options = NULL,
                        ...) {
-  
-  # ldsn <- .gpkg_list_to_source(x)
-  
   res <- .gpkg_process_sources(x, 
                                destfile,
                                table_name = table_name,
@@ -126,13 +123,15 @@ gpkg_write <- function(x,
 
 #' @importFrom utils read.csv
 .gpkg_process_attributes <- function(ldsn, destfile, table_name, overwrite=FALSE, append=TRUE, ...) {
-  z <- sapply(names(ldsn), function(x) {
+  sapply(names(ldsn), function(x) {
     # attribute tables
     if (!inherits(ldsn[[x]], 'data.frame')) {
       ldsn[[x]] <- utils::read.csv(ldsn[[x]])
     }
+    g <- geopackage(destfile, connect = TRUE)
+    on.exit(gpkg_disconnect(g))
     x <- gpkg_write_attributes(
-      geopackage(destfile),
+      g,
       ldsn[[x]],
       table_name = x,
       overwrite = overwrite,

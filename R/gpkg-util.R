@@ -13,20 +13,25 @@ gpkg_tables <- function(x)
 #' @export
 #' @rdname gpkg_tables
 gpkg_tables.geopackage <- function(x) {
-  contents <- gpkg_contents(x)
   src <- gpkg_source(x)
+  xx <- .gpkg_connection_from_x(x)
+  contents <- gpkg_contents(xx)
   y <- split(contents, contents$data_type)
   
-  .LAZY.FUN <- switch(getOption("gpkg.use_dplyr", 
-                               default = !inherits(requireNamespace("dbplyr"), 
-                                                   "try-error")),
-                     "TRUE" = dplyr.frame, lazy.frame)
-  
+  .LAZY.FUN <- switch(as.character(
+                      getOption("gpkg.use_dplyr",  
+                                default = !inherits(requireNamespace("dbplyr", quietly = TRUE),
+                                                    "try-error")
+                    )),
+                    "TRUE" = dplyr.frame,
+                    "FALSE" = lazy.frame,
+                    lazy.frame)
+                    
   unlist(lapply(names(y), function(z) {
     switch(z, 
            "2d-gridded-coverage" = { sapply(y[[z]]$table_name, function(i) terra::rast(src, i)) },
            "features" = { sapply(y[[z]]$table_name, function(i) terra::vect(src, layer = i)) },
-           "attributes" = { `names<-`(list(.LAZY.FUN(src, table_name = y[[z]]$table_name)), 
+           "attributes" = { `names<-`(list(.LAZY.FUN(xx, table_name = y[[z]]$table_name)), 
                                       y[[z]]$table_name) })
   }), recursive = FALSE)
 }

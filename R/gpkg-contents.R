@@ -18,7 +18,7 @@ gpkg_add_contents <- function(x, table_name, description = "", template = NULL) 
       cr <- as.integer(template$srsid)
     } else {
       ## TODO: calculate ext from object, calculate srsid from WKT (?)
-      # if (!requireNamespace("terra")) {
+      # if (!requireNamespace("terra", quietly = TRUE)) {
       #   stop("package `terra` is required to add contents with a custom extent", call. = FALSE)
       # }
       # 
