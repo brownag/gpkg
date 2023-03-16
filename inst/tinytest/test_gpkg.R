@@ -13,7 +13,8 @@ stopifnot(nchar(dem) > 0)
 gpkg_tmp <- tempfile(fileext = ".gpkg")
 
 # basic error conditions
-expect_error(suppressWarnings(geopackage(connect = TRUE, tmpdir = ""))) # permission denied
+if (Sys.info()["sysname"] != "Windows")
+  expect_error(suppressWarnings(geopackage(connect = TRUE, tmpdir = ""))) # permission denied
 expect_error(.gpkg_connection_from_x(NULL)) # empty reference
 expect_true(inherits(gpkg_execute(gpkg_tmp, "select * from foo", silent = TRUE), 'try-error')) # nonexistent table
 
