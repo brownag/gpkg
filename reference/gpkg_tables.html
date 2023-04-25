@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.9000</span>
       </span>
     </div>
 
@@ -53,16 +53,24 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gpkg_tables</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gpkg_tables</span><span class="op">(</span><span class="va">x</span>, collect <span class="op">=</span> <span class="cn">FALSE</span>, pragma <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for geopackage</span></span>
-<span><span class="fu">gpkg_tables</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gpkg_tables</span><span class="op">(</span><span class="va">x</span>, collect <span class="op">=</span> <span class="cn">FALSE</span>, pragma <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a <code>geopackage</code> object</p></dd>
+
+
+<dt>collect</dt>
+<dd><p>Default: <code>FALSE</code>. Should tables be materialized as 'data.frame' objects in memory? (i.e. not "lazy") Default: <code>FALSE</code>; if <code>TRUE</code> 'dbplyr' is not required. Always <code>TRUE</code> for <code>pragma=TRUE</code> (pragma information are always "collected").</p></dd>
+
+
+<dt>pragma</dt>
+<dd><p>Default: <code>FALSE</code>. Use <code><a href="gpkg_table.html">gpkg_table_pragma()</a></code> instead of <code><a href="gpkg_table.html">gpkg_table()</a></code>? The former does not require 'dbplyr'.</p></dd>
 
 </dl></div>
     <div id="value">

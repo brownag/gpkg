@@ -73,6 +73,9 @@
     <loc>/reference/gpkg_tile_set_data_null.html</loc>
   </url>
   <url>
+    <loc>/reference/gpkg_update_table.html</loc>
+  </url>
+  <url>
     <loc>/reference/gpkg_validate.html</loc>
   </url>
   <url>
@@ -80,8 +83,5 @@
   </url>
   <url>
     <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lazy.frame.html</loc>
   </url>
 </urlset>
