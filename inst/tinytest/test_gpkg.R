@@ -92,7 +92,7 @@ expect_error(gpkg_table_pragma(g2, "dem3"))
 expect_error(gpkg_table(g2, "dem3"))
 expect_true(is.character(gpkg_table(g2, "dem2", query_string = TRUE)))
 expect_true(is.character(
-  gpkg:::.gpkg_update_table(g2, "dem2", "zoom_level", 1, "id", 1, query_string = TRUE)
+  gpkg_update_table(g2, "dem2", "zoom_level", 1, "id", 1, query_string = TRUE)
 ))
 gpkg_disconnect(g2)
 unlink(tfcsv)

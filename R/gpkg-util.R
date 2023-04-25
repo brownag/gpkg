@@ -82,7 +82,7 @@ gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
   }
 
   invisible(
-    .gpkg_update_table(
+    gpkg_update_table(
       x,
       table_name = "gpkg_2d_gridded_coverage_ancillary",
       updatecol = "data_null",
