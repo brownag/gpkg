@@ -218,16 +218,16 @@ gpkg_tables(g)
 
 Two methods for ‘lazy’ access of table contents are available:
 
-#### Method 1: `lazy.frame()`
+#### Method 1: `gpkg_table_pragma()`
 
-`lazy.frame()` is a low-frills `data.frame` result containing important
+`gpkg_table_pragma()` is a low-frills `data.frame` result containing important
 table information, but not values. The `PRAGMA table_info()` is stored
 as a nested data.frame `table_info`. This representation has no
 dependencies beyond {RSQLite} and is efficient for inspection of table
 structure and attributes. Though it is less useful for data analysis.
 
 ``` r
-head(lazy.frame(g))
+head(gpkg_table_pragma(g))
 #>                                     dsn table_name nrow table_info.cid
 #> 1 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              0
 #> 2 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              1
@@ -251,9 +251,9 @@ head(lazy.frame(g))
 #> 6             1
 ```
 
-#### Method 2: `dplyr.frame()`
+#### Method 2: `gpkg_table()`
 
-With the `dplyr.frame()` method you access a specific table (by name)
+With the `gpkg_table()` method you access a specific table (by name)
 and get a “lazy” `tibble` object referencing that table. This is
 achieved via {dplyr} and the {dbplyr} database connection to the
 GeoPackage via the {RSQLite} driver. The resulting object’s data can be
@@ -264,7 +264,7 @@ For example, we inspect the contents of the `gpkg_contents` table that
 contains critical information on the data contained in a GeoPackage.
 
 ``` r
-dplyr.frame(g, "gpkg_contents")
+gpkg_table(g, "gpkg_contents")
 #> # Source:   table<gpkg_contents> [4 x 10]
 #> # Database: sqlite 3.40.1 [/tmp/RtmpV3OufG/file2eedd44f79a0.gpkg]
 #>   table_name data_type ident…¹ descr…² last_…³   min_x min_y  max_x max_y srs_id
@@ -287,7 +287,7 @@ materialize a `tibble` with `dplyr::collect()`:
 ``` r
 library(dplyr, warn.conflicts = FALSE)
 
-dplyr.frame(g, "gpkg_2d_gridded_tile_ancillary") %>% 
+gpkg_table(g, "gpkg_2d_gridded_tile_ancillary") %>% 
   filter(tpudt_name == "DEM2") %>% 
   select(mean, std_dev) %>% 
   collect()

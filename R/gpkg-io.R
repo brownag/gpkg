@@ -17,11 +17,15 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
     contents <- gpkg_contents(x)
     # read grids
     if (!any(contents$data_type %in%  c("attributes", "features"))) {
-        r <- terra::rast(xx)
-        # convert to list of single-layer SpatRaster
-        grids <- as.list(r)
-        # assign raster table names
-        names(grids) <- names(r)
+        r <- try(terra::rast(xx), silent = TRUE)
+        if (inherits(r, 'try-error')) {
+          grids <- list()
+        } else {
+          # convert to list of single-layer SpatRaster
+          grids <- as.list(r)
+          # assign raster table names
+          names(grids) <- names(r)
+        }
     } else grids <- list()
 
     # read vector layers (error if there aren't any)

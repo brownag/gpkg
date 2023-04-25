@@ -22,17 +22,3 @@
   }
   res
 }
-
-#' Get table from a GeoPackage by table name
-#' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
-#' @param table_name character. table name
-#' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
-#' @return A data.frame
-#' @export
-gpkg_table <- function(x, table_name, query_string = FALSE) {
-  q <- sprintf("SELECT * FROM %s", table_name)
-  if (query_string) {
-    return(q)
-  }
-  gpkg_query(x, q)
-}

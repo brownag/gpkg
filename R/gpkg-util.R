@@ -3,29 +3,27 @@
 #' Get Tables from a `geopackage` Object
 #'
 #' @param x a `geopackage` object
+#' @param collect Default: `FALSE`. Should tables be materialized as 'data.frame' objects in memory? (i.e. not "lazy") Default: `FALSE`; if `TRUE` 'dbplyr' is not required. Always `TRUE` for `pragma=TRUE` (pragma information are always "collected").
+#' @param pragma Default: `FALSE`. Use `gpkg_table_pragma()` instead of `gpkg_table()`? The former does not require 'dbplyr'.
 #'
 #' @return a list of SpatVectorProxy, SpatRaster, data.frame (lazy tbl?)
 #' @export
 #' @rdname gpkg_tables
-gpkg_tables <- function(x)
+gpkg_tables <- function(x, collect = FALSE, pragma = FALSE)
   UseMethod("gpkg_tables", x)
 
 #' @export
 #' @rdname gpkg_tables
-gpkg_tables.geopackage <- function(x) {
+gpkg_tables.geopackage <- function(x, collect = FALSE, pragma = FALSE) {
   src <- gpkg_source(x)
   xx <- .gpkg_connection_from_x(x)
   contents <- gpkg_contents(xx)
   y <- split(contents, contents$data_type)
   
-  .LAZY.FUN <- switch(as.character(
-                      getOption("gpkg.use_dplyr",  
-                                default = !inherits(requireNamespace("dbplyr", quietly = TRUE),
-                                                    "try-error")
-                    )),
-                    "TRUE" = dplyr.frame,
-                    "FALSE" = lazy.frame,
-                    lazy.frame)
+  .LAZY.FUN <- ifelse(isTRUE(pragma), gpkg_table_pragma, 
+                      function(x, ...) {
+                        gpkg_table(x, ..., collect = collect)
+                      })
                     
   unlist(lapply(names(y), function(z) {
     switch(z, 
@@ -105,7 +103,7 @@ gpkg_2d_gridded_coverage_ancillary <- function(x) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop('package `RSQLite` is required to get the `gpkg_2d_gridded_coverage_ancillary` table', call. = FALSE)
   }
-  gpkg_table(x, "gpkg_2d_gridded_coverage_ancillary")
+  gpkg_table(x, "gpkg_2d_gridded_coverage_ancillary", collect = TRUE)
 }
 
 #' Get `gpkg_contents` Table
@@ -118,5 +116,5 @@ gpkg_contents <- function(x) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop('package `RSQLite` is required to get the `gpkg_contents` table', call. = FALSE)
   }
-  gpkg_table(x, "gpkg_contents")
+  gpkg_collect(x, "gpkg_contents")
 }
