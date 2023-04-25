@@ -63,7 +63,7 @@ start by adding two DEM (GeoTIFF) files.
 ``` r
 library(gpkg)
 library(terra)
-#> terra 1.7.19
+#> terra 1.7.29
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -138,7 +138,7 @@ g
 #>  sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg
+#>   Path: /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -166,15 +166,15 @@ gpkg_list_tables(g)
 #> [17] "rtree_bbox_geom_rowid"              "sqlite_sequence"
 
 # inspect tables
-gpkg_tables(g)
+gpkg_tables(g, collect = TRUE)
 #> $DEM1
 #> class       : SpatRaster 
 #> dimensions  : 30, 31, 1  (nrow, ncol, nlyr)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file2eedd44f79a0.gpkg:DEM1 
-#> varname     : file2eedd44f79a0 
+#> source      : file174a6332a47c3.gpkg:DEM1 
+#> varname     : file174a6332a47c3 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -183,36 +183,61 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file2eedd44f79a0.gpkg:DEM2 
-#> varname     : file2eedd44f79a0 
+#> source      : file174a6332a47c3.gpkg:DEM2 
+#> varname     : file174a6332a47c3 
 #> name        : DEM2 
 #> min value   :  195 
 #> max value   :  500 
 #> 
 #> $myattr
-#> # Source:   table<myattr> [10 x 2]
-#> # Database: sqlite 3.40.1 [/tmp/RtmpV3OufG/file2eedd44f79a0.gpkg]
-#>        a b    
-#>    <int> <chr>
-#>  1     1 A    
-#>  2     2 B    
-#>  3     3 C    
-#>  4     4 D    
-#>  5     5 E    
-#>  6     6 F    
-#>  7     7 G    
-#>  8     8 H    
-#>  9     9 I    
-#> 10    10 J    
+#>     a b
+#> 1   1 A
+#> 2   2 B
+#> 3   3 C
+#> 4   4 D
+#> 5   5 E
+#> 6   6 F
+#> 7   7 G
+#> 8   8 H
+#> 9   9 I
+#> 10 10 J
 #> 
 #> $bbox
 #>  class       : SpatVector 
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file2eedd44f79a0.gpkg (bbox)
+#>  source      : file174a6332a47c3.gpkg (bbox)
 #>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 ```
+
+Note that the `collect = TRUE` forces data be loaded into R memory.
+
+`gpkg_collect()` is a helper method that calls
+`gpkg_table(..., collect = TRUE)` to do the same in-memory loading for
+specific tables. Note that you get a tabular result regardless of
+whether you have tile, vector, or attribute data.
+
+``` r
+gpkg_collect(g, "DEM1")
+#>   id zoom_level tile_column tile_row     tile_data
+#> 1  1          0           0        0 blob[3.98 kB]
+
+gpkg_collect(g, "gpkg_contents")
+#>   table_name           data_type identifier description
+#> 1       DEM1 2d-gridded-coverage       DEM1            
+#> 2       DEM2 2d-gridded-coverage       DEM2            
+#> 3       bbox            features       bbox            
+#> 4     myattr          attributes     myattr            
+#>                last_change       min_x     min_y      max_x    max_y srs_id
+#> 1 2023-04-25T03:25:23.466Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 2 2023-04-25T03:25:23.543Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 3 2023-04-25T03:25:23.850Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 4 2023-04-24T20:25:23.978Z -180.000000 -90.00000 180.000000 90.00000   4326
+```
+
+There are several other methods that can be used for working with
+tabular data in a GeoPackage in a “lazy” fashion.
 
 ### Lazy Tables and {dplyr} Integration
 
@@ -220,21 +245,22 @@ Two methods for ‘lazy’ access of table contents are available:
 
 #### Method 1: `gpkg_table_pragma()`
 
-`gpkg_table_pragma()` is a low-frills `data.frame` result containing important
-table information, but not values. The `PRAGMA table_info()` is stored
-as a nested data.frame `table_info`. This representation has no
-dependencies beyond {RSQLite} and is efficient for inspection of table
-structure and attributes. Though it is less useful for data analysis.
+`gpkg_table_pragma()` is a low-frills `data.frame` result containing
+important table information, but not values. The `PRAGMA table_info()`
+is stored as a nested data.frame `table_info`. This representation has
+no dependencies beyond {RSQLite} and is efficient for inspection of
+table structure and attributes. Though it is less useful for data
+analysis.
 
 ``` r
 head(gpkg_table_pragma(g))
-#>                                     dsn table_name nrow table_info.cid
-#> 1 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              0
-#> 2 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              1
-#> 3 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              2
-#> 4 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              3
-#> 5 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM1    1              4
-#> 6 /tmp/RtmpV3OufG/file2eedd44f79a0.gpkg       DEM2    1              0
+#>                                      dsn table_name nrow table_info.cid
+#> 1 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              0
+#> 2 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              1
+#> 3 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              2
+#> 4 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              3
+#> 5 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              4
+#> 6 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM2    1              0
 #>   table_info.name table_info.type table_info.notnull table_info.dflt_value
 #> 1              id         INTEGER                  0                  <NA>
 #> 2      zoom_level         INTEGER                  1                  <NA>
@@ -253,12 +279,11 @@ head(gpkg_table_pragma(g))
 
 #### Method 2: `gpkg_table()`
 
-With the `gpkg_table()` method you access a specific table (by name)
-and get a “lazy” `tibble` object referencing that table. This is
-achieved via {dplyr} and the {dbplyr} database connection to the
-GeoPackage via the {RSQLite} driver. The resulting object’s data can be
-used in more complex analyses by using other {dbplyr}/{tidyverse}
-functions.
+With the `gpkg_table()` method you access a specific table (by name) and
+get a “lazy” `tibble` object referencing that table. This is achieved
+via {dplyr} and the {dbplyr} database connection to the GeoPackage via
+the {RSQLite} driver. The resulting object’s data can be used in more
+complex analyses by using other {dbplyr}/{tidyverse} functions.
 
 For example, we inspect the contents of the `gpkg_contents` table that
 contains critical information on the data contained in a GeoPackage.
@@ -266,14 +291,14 @@ contains critical information on the data contained in a GeoPackage.
 ``` r
 gpkg_table(g, "gpkg_contents")
 #> # Source:   table<gpkg_contents> [4 x 10]
-#> # Database: sqlite 3.40.1 [/tmp/RtmpV3OufG/file2eedd44f79a0.gpkg]
-#>   table_name data_type ident…¹ descr…² last_…³   min_x min_y  max_x max_y srs_id
-#>   <chr>      <chr>     <chr>   <chr>   <chr>     <dbl> <dbl>  <dbl> <dbl>  <int>
-#> 1 DEM1       2d-gridd… DEM1    ""      2023-0…    6.01  49.7   6.27  49.9   4326
-#> 2 DEM2       2d-gridd… DEM2    ""      2023-0…    6.01  49.7   6.27  49.9   4326
-#> 3 bbox       features  bbox    ""      2023-0…    6.01  49.7   6.27  49.9   4326
-#> 4 myattr     attribut… myattr  ""      2023-0… -180    -90   180     90     4326
-#> # … with abbreviated variable names ¹​identifier, ²​description, ³​last_change
+#> # Database: sqlite 3.41.2 [/tmp/RtmpL0d4J8/file174a6332a47c3.gpkg]
+#>   table_name data_type   identifier description last_change   min_x min_y  max_x
+#>   <chr>      <chr>       <chr>      <chr>       <chr>         <dbl> <dbl>  <dbl>
+#> 1 DEM1       2d-gridded… DEM1       ""          2023-04-25…    6.01  49.7   6.27
+#> 2 DEM2       2d-gridded… DEM2       ""          2023-04-25…    6.01  49.7   6.27
+#> 3 bbox       features    bbox       ""          2023-04-25…    6.01  49.7   6.27
+#> 4 myattr     attributes  myattr     ""          2023-04-24… -180    -90   180   
+#> # ℹ 2 more variables: max_y <dbl>, srs_id <int>
 ```
 
 As a more complicated example we access the

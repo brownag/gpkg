@@ -1,3 +1,17 @@
+# gpkg 0.0.3.9000
+
+ - Refactoring table accessor methods (https://github.com/brownag/gpkg/issues/2)
+ 
+   - Renamed `lazy.frame()` -> `gpkg_table_pragma()`
+  
+   - Renamed `dplyr.frame()` -> `gpkg_table()`
+   
+   - `gpkg_table()` gains `collect` argument (toggles materializing whole data.frame v.s. dbplyr approach). `collect` requires only 'RSQLite' not 'dbplyr'.
+   
+   - `gpkg_tables()` gains `pragma` argument to toggle use of gpkg_table_pragma() over gpkg_table(). It also supports `collect` argument. 
+   
+ - `gpkg_update_table()` is now exported; this method is/was used internally for updating the NoData entry for existing layers via `gpkg_tile_set_data_null()`
+
 # gpkg 0.0.2.9003
 
 * Updated definitions of `lazy.frame()` and `dplyr.frame()` and related docs

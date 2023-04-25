@@ -123,8 +123,20 @@ We can list the table names in a GeoPackage with `gpkg_list_tables()` and fetch 
 gpkg_list_tables(g)
 
 # inspect tables
-gpkg_tables(g)
+gpkg_tables(g, collect = TRUE)
 ```
+
+Note that the `collect = TRUE` forces data be loaded into R memory.
+
+`gpkg_collect()` is a helper method that calls `gpkg_table(..., collect = TRUE)` to do the same in-memory loading for specific tables. Note that you get a tabular result regardless of whether you have tile, vector, or attribute data.
+
+```{r}
+gpkg_collect(g, "DEM1")
+
+gpkg_collect(g, "gpkg_contents")
+```
+
+There are several other methods that can be used for working with tabular data in a GeoPackage in a "lazy" fashion.
 
 ### Lazy Tables and {dplyr} Integration
 
