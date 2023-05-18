@@ -221,7 +221,9 @@ gpkg_write <- function(x,
 
 .gpkg_gdaloptions_add <- function(gdal_options, key, value, force = FALSE) {
   # add a gdaloption (if 'key' not already defined)
-  if (force || !any(grepl(key, gdal_options, ignore.case = TRUE))) return(c(gdal_options, paste0(key, "=", value)))
+  if (force || !any(grepl(key, gdal_options, ignore.case = TRUE))) 
+    return(c(gdal_options, ifelse(nchar(value) > 0, paste0(key, "=", value), "")))
+  else ""
 }
 
 #' .gpkg_write_grid_subdataset_terra
