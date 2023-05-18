@@ -1,4 +1,10 @@
-# gpkg 0.0.3.9000
+# gpkg 0.0.4
+
+ - Fixed bug in `.gpkg_gdaloptions_add()` that could cause addition of options with no value set
+ 
+ - Added `gpkg_vect()`: a `terra::vect()`-based analog of `gpkg_table()` for lazy manipulation of vector, grid, and attribute data in a GeoPackage
+
+# gpkg 0.0.3
 
  - Refactoring table accessor methods (https://github.com/brownag/gpkg/issues/2)
  
@@ -12,7 +18,7 @@
    
  - `gpkg_update_table()` is now exported; this method is/was used internally for updating the NoData entry for existing layers via `gpkg_tile_set_data_null()`
 
-# gpkg 0.0.2.9003
+# gpkg 0.0.2
 
 * Updated definitions of `lazy.frame()` and `dplyr.frame()` and related docs
 
@@ -29,10 +35,6 @@
 * `gpkg_update_contents()`: Handle `gpkgext_` and `sqlite_sequence` as standard GPKG table prefixes  
   * fixes error with updating contents of GPKG with extensions loaded
   
-# gpkg 0.0.2
-
-* Added a `NEWS.md` file to track changes to the package.
-
 * Added {dbplyr} backend option to return `tibble` object via `geopackage` object internal SQLiteConnection
 
 * Changed formatting of PRAGMA `table_info` child data.frame in `lazy.frame()` result

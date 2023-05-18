@@ -94,6 +94,8 @@ expect_true(is.character(gpkg_table(g2, "dem2", query_string = TRUE)))
 expect_true(is.character(
   gpkg_update_table(g2, "dem2", "zoom_level", 1, "id", 1, query_string = TRUE)
 ))
+expect_true(inherits(gpkg_vect(g2, 'dem2'), 'SpatVector'))
+expect_true(inherits(gpkg_vect(g2, 'gpkg_contents'), 'SpatVector'))
 gpkg_disconnect(g2)
 unlink(tfcsv)
 unlink(tfgpkg)

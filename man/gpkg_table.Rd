@@ -8,6 +8,7 @@
 \alias{gpkg_table}
 \alias{gpkg_table.default}
 \alias{gpkg_collect}
+\alias{gpkg_vect}
 \title{Lazy Access to Tables by Name}
 \usage{
 gpkg_table_pragma(x, table_name = NULL, ...)
@@ -23,17 +24,22 @@ gpkg_table(x, table_name, collect = FALSE, query_string = FALSE, ...)
 \method{gpkg_table}{default}(x, table_name, collect = FALSE, query_string = FALSE, ...)
 
 gpkg_collect(x, table_name, query_string = FALSE, ...)
+
+gpkg_vect(x, table_name, ...)
 }
 \arguments{
 \item{x}{A geopackage object or character path to GeoPackage}
 
 \item{table_name}{One or more table names; for \code{gpkg_table_pragma()} if \code{table_name=NULL} returns a record for each table. \code{gpkg_table()} requires \code{table_name} be specified}
 
-\item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used.}
+\item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used. For \code{gpkg_vect()} additional arguments are passed to \code{terra::vect()}.}
 
 \item{collect}{Materialize a data.frame object in memory? Default: \code{FALSE} requires 'dbplyr' package. \code{TRUE} uses 'RSQLite'.}
 
 \item{query_string}{logical. Return SQLite query rather than executing it? Default: \code{FALSE}}
+}
+\value{
+\code{gpkg_vect()}: a SpatVector object (may or may not contain geometry columns)
 }
 \description{
 \code{gpkg_table_pragma()}: Get information on a table in a GeoPackage (without returning the whole table).

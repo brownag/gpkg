@@ -27,7 +27,7 @@ gpkg_table_pragma.SQLiteConnection <- function(x, table_name, ...) {
 #' @param table_name One or more table names; for `gpkg_table_pragma()` if `table_name=NULL` returns a record for each table. `gpkg_table()` requires `table_name` be specified
 #' @param collect Materialize a data.frame object in memory? Default: `FALSE` requires 'dbplyr' package. `TRUE` uses 'RSQLite'.
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
-#' @param ... Additional arguments. In `gpkg_table()` arguments in `...` are passed to `dplyr::tbl()`. For `gpkg_table_pragma()`, `...` arguments are (currently) not used. 
+#' @param ... Additional arguments. In `gpkg_table()` arguments in `...` are passed to `dplyr::tbl()`. For `gpkg_table_pragma()`, `...` arguments are (currently) not used. For `gpkg_vect()` additional arguments are passed to `terra::vect()`.
 #' @export
 #' @rdname gpkg_table
 #' @importFrom DBI dbGetQuery dbDisconnect
@@ -135,4 +135,22 @@ gpkg_table.default <- function(x,
 #' @export
 gpkg_collect <- function(x, table_name, query_string = FALSE, ...) {
   gpkg_table(x, table_name, ..., query_string = query_string, collect = TRUE)
+}
+
+#' @return `gpkg_vect()`: a SpatVector object (may or may not contain geometry columns)
+#' @export
+#' @rdname gpkg_table
+gpkg_vect <- function(x, table_name, ...) {
+  if (!requireNamespace("terra", quietly = TRUE))
+    stop("package 'terra' is required to create SpatVector objects from tables in a GeoPackage", call. = FALSE)
+  res <- try(terra::vect(x$dsn, layer = table_name, ...), silent = TRUE)
+  if (inherits(res, 'try-error')) {
+    res2 <- try(terra::vect(x$dsn, query = paste("SELECT * FROM", table_name), ...), '')
+    if (inherits(res2, 'try-error')) {
+      message(res[1])
+      stop(res2[1], call. = FALSE)
+    }
+    res <- res2
+  }
+  res
 }
