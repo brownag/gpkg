@@ -19,7 +19,7 @@ gpkg_collect(): alias for gpkg_table(..., collect=TRUE)'><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9000</span>
       </span>
     </div>
 
@@ -73,7 +73,9 @@ gpkg_collect(): alias for gpkg_table(..., collect=TRUE)'><!-- mathjax --><script
 <span><span class="co"># S3 method for default</span></span>
 <span><span class="fu">gpkg_table</span><span class="op">(</span><span class="va">x</span>, <span class="va">table_name</span>, collect <span class="op">=</span> <span class="cn">FALSE</span>, query_string <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">gpkg_collect</span><span class="op">(</span><span class="va">x</span>, <span class="va">table_name</span>, query_string <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gpkg_collect</span><span class="op">(</span><span class="va">x</span>, <span class="va">table_name</span>, query_string <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gpkg_vect</span><span class="op">(</span><span class="va">x</span>, <span class="va">table_name</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,7 +89,7 @@ gpkg_collect(): alias for gpkg_table(..., collect=TRUE)'><!-- mathjax --><script
 
 
 <dt>...</dt>
-<dd><p>Additional arguments. In <code>gpkg_table()</code> arguments in <code>...</code> are passed to <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">dplyr::tbl()</a></code>. For <code>gpkg_table_pragma()</code>, <code>...</code> arguments are (currently) not used.</p></dd>
+<dd><p>Additional arguments. In <code>gpkg_table()</code> arguments in <code>...</code> are passed to <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">dplyr::tbl()</a></code>. For <code>gpkg_table_pragma()</code>, <code>...</code> arguments are (currently) not used. For <code>gpkg_vect()</code> additional arguments are passed to <code><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">terra::vect()</a></code>.</p></dd>
 
 
 <dt>collect</dt>
@@ -98,6 +100,12 @@ gpkg_collect(): alias for gpkg_table(..., collect=TRUE)'><!-- mathjax --><script
 <dd><p>logical. Return SQLite query rather than executing it? Default: <code>FALSE</code></p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p><code>gpkg_vect()</code>: a SpatVector object (may or may not contain geometry columns)</p>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -122,11 +130,11 @@ gpkg_collect(): alias for gpkg_table(..., collect=TRUE)'><!-- mathjax --><script
 <span class="r-in"><span><span class="co"># inspect gpkg_contents table</span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_table</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;gpkg_contents&gt; [2 x 10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.41.2 [/tmp/RtmpXAkiJE/file1830668c6178.gpkg]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.41.2 [/tmp/RtmpDdDBE6/file18df473dbee8.gpkg]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   table_name data_type      identifier description last_change min_x min_y max_x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2023-04-25…  6.01  49.7  6.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2023-04-25…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2023-05-18…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2023-05-18…  6.01  49.7  6.27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: max_y &lt;dbl&gt;, srs_id &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># materialize a data.frame from gpkg_2d_gridded_tile_ancillary</span></span></span>

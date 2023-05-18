@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9000</span>
       </span>
     </div>
 
@@ -48,7 +48,12 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.3.9000" id="gpkg-0039000">gpkg 0.0.3.9000<a class="anchor" aria-label="anchor" href="#gpkg-0039000"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.4" id="gpkg-004">gpkg 0.0.4<a class="anchor" aria-label="anchor" href="#gpkg-004"></a></h2>
+<ul><li><p>Fixed bug in <code>.gpkg_gdaloptions_add()</code> that could cause addition of options with no value set</p></li>
+<li><p>Added <code><a href="../reference/gpkg_table.html">gpkg_vect()</a></code>: a <code><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">terra::vect()</a></code>-based analog of <code><a href="../reference/gpkg_table.html">gpkg_table()</a></code> for lazy manipulation of vector, grid, and attribute data in a GeoPackage</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.3" id="gpkg-003">gpkg 0.0.3<a class="anchor" aria-label="anchor" href="#gpkg-003"></a></h2>
 <ul><li>
 <p>Refactoring table accessor methods (<a href="https://github.com/brownag/gpkg/issues/2" class="external-link uri">https://github.com/brownag/gpkg/issues/2</a>)</p>
 <ul><li><p>Renamed <code>lazy.frame()</code> -&gt; <code><a href="../reference/gpkg_table.html">gpkg_table_pragma()</a></code></p></li>
@@ -59,7 +64,7 @@
 <li><p><code><a href="../reference/gpkg_update_table.html">gpkg_update_table()</a></code> is now exported; this method is/was used internally for updating the NoData entry for existing layers via <code><a href="../reference/gpkg_tile_set_data_null.html">gpkg_tile_set_data_null()</a></code></p></li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.2.9003" id="gpkg-0029003">gpkg 0.0.2.9003<a class="anchor" aria-label="anchor" href="#gpkg-0029003"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.2" id="gpkg-002">gpkg 0.0.2<a class="anchor" aria-label="anchor" href="#gpkg-002"></a></h2>
 <ul><li><p>Updated definitions of <code>lazy.frame()</code> and <code>dplyr.frame()</code> and related docs</p></li>
 <li>
 <p>Updated <code><a href="../reference/gpkg_write.html">gpkg_write()</a></code> for raster, vector, and attribute data</p>
@@ -72,10 +77,6 @@
 <p><code><a href="../reference/gpkg-contents.html">gpkg_update_contents()</a></code>: Handle <code>gpkgext_</code> and <code>sqlite_sequence</code> as standard GPKG table prefixes</p>
 <ul><li>fixes error with updating contents of GPKG with extensions loaded</li>
 </ul></li>
-</ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.2" id="gpkg-002">gpkg 0.0.2<a class="anchor" aria-label="anchor" href="#gpkg-002"></a></h2>
-<ul><li><p>Added a <code>NEWS.md</code> file to track changes to the package.</p></li>
 <li><p>Added {dbplyr} backend option to return <code>tibble</code> object via <code>geopackage</code> object internal SQLiteConnection</p></li>
 <li><p>Changed formatting of PRAGMA <code>table_info</code> child data.frame in <code>lazy.frame()</code> result</p></li>
 </ul></div>
