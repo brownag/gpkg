@@ -2,7 +2,7 @@
 % Please edit documentation in R/gpkg-sqlite.R
 \name{gpkg_update_table}
 \alias{gpkg_update_table}
-\title{Update Table by Name}
+\title{Update a Table by Name}
 \usage{
 gpkg_update_table(
   x,
@@ -15,20 +15,20 @@ gpkg_update_table(
 )
 }
 \arguments{
-\item{x}{A a \code{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}}
+\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}.}
 
-\item{table_name}{character. table name}
+\item{table_name}{\emph{character}. Table name.}
 
-\item{updatecol}{character. column to update}
+\item{updatecol}{\emph{character}. Column to update.}
 
-\item{updatevalue}{scalar value to set}
+\item{updatevalue}{\emph{character}, \emph{numeric}, etc.; A scalar value to set.}
 
-\item{wherecol}{character. column to constrain update}
+\item{wherecol}{\emph{character}. Column used to constrain update.}
 
-\item{wherevector}{vector of values where update should be made}
+\item{wherevector}{\emph{character}, \emph{numeric}, etc.; Vector of values where update should be made.}
 
-\item{query_string}{logical. Return SQLite query rather than executing it? Default: \code{FALSE}}
+\item{query_string}{\emph{logical}. Return SQLite query rather than executing it? Default: \code{FALSE}}
 }
 \description{
-For a given table, set column X to scalar A where column Y is in vector B
+For a given table, set column \code{updatecol} to scalar \code{updatevalue} where column \code{wherecol} is in vector \code{wherevector}.
 }

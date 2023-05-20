@@ -28,18 +28,22 @@ gpkg_collect(x, table_name, query_string = FALSE, ...)
 gpkg_vect(x, table_name, ...)
 }
 \arguments{
-\item{x}{A geopackage object or character path to GeoPackage}
+\item{x}{A \emph{geopackage} object or character path to GeoPackage file}
 
 \item{table_name}{One or more table names; for \code{gpkg_table_pragma()} if \code{table_name=NULL} returns a record for each table. \code{gpkg_table()} requires \code{table_name} be specified}
 
-\item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used. For \code{gpkg_vect()} additional arguments are passed to \code{terra::vect()}.}
+\item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used. For \code{gpkg_vect()} additional arguments (such as \code{proxy=TRUE}) are passed to \code{terra::vect()}.}
 
 \item{collect}{Materialize a data.frame object in memory? Default: \code{FALSE} requires 'dbplyr' package. \code{TRUE} uses 'RSQLite'.}
 
 \item{query_string}{logical. Return SQLite query rather than executing it? Default: \code{FALSE}}
 }
 \value{
-\code{gpkg_vect()}: a SpatVector object (may or may not contain geometry columns)
+\code{gpkg_table()}: A 'dbplyr' object of class \emph{tbl_SQLiteConnection}
+
+\code{gpkg_collect()}: An object of class \emph{data.frame}
+
+\code{gpkg_vect()}: A 'terra' object of class \emph{SpatVector} (may not contain geometry columns)
 }
 \description{
 \code{gpkg_table_pragma()}: Get information on a table in a GeoPackage (without returning the whole table).

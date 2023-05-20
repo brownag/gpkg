@@ -7,7 +7,7 @@
 gpkg_tile_set_data_null(x, name, value, query_string = FALSE)
 }
 \arguments{
-\item{x}{A a \code{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}}
+\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}}
 
 \item{name}{character. Tile matrix set name(s) (\code{tile_matrix_set_name})}
 

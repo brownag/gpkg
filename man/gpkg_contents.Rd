@@ -7,7 +7,7 @@
 gpkg_contents(x)
 }
 \arguments{
-\item{x}{A a \code{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}}
+\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}}
 }
 \value{
 a data.frame containing columns \code{table_name}, \code{data_type}, \code{identifier}, \code{description}, \code{last_change}, \code{min_x}, \code{min_y}, \code{max_x}, \code{max_y}, \code{srs_id}

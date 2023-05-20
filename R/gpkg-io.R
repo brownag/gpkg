@@ -5,7 +5,7 @@
 #' @param x Path to GeoPackage
 #' @param connect Connect to database and store connection in result? Default: `FALSE`
 #' @param quiet Hide printing of gdalinfo description to stdout. Default: `TRUE`
-#' @return A `geopackage` object (list containing tables, grids and vector data)
+#' @return A _geopackage_ object (list containing tables, grids and vector data)
 #' @export
 #' @keywords io
 gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {

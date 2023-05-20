@@ -3,18 +3,18 @@
 \name{gpkg_source}
 \alias{gpkg_source}
 \alias{gpkg_source.geopackage}
-\title{Get Source File of a \code{geopackage} Object}
+\title{Get Source File of a \emph{geopackage} object}
 \usage{
 gpkg_source(x)
 
 \method{gpkg_source}{geopackage}(x)
 }
 \arguments{
-\item{x}{a \code{geopackage} object}
+\item{x}{A \emph{geopackage} object}
 }
 \value{
-character path
+\emph{character} file path
 }
 \description{
-Get Source File of a \code{geopackage} Object
+Get Source File of a \emph{geopackage} object
 }

@@ -35,7 +35,7 @@ geopackage(x, ...)
 \item{tmpdir}{used only when \code{x} is missing (creating temporary file GeoPackage), passed to \code{tempfile()}; default \code{tempdir()}}
 }
 \value{
-A \code{geopackage} Object
+A \emph{geopackage} object
 }
 \description{
 \code{geopackage} Constructors

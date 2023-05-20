@@ -1,7 +1,7 @@
 #' Query a GeoPackage for tabular result
 #'
-#' @param x a _geopackage_ object
-#' @param query a SQLite query
+#' @param x A _geopackage_ object
+#' @param query An SQLite query
 #'
 #' @return a _data.frame_ result of `RSQLite::dbGetQuery()`
 #' @export

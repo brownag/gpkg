@@ -9,7 +9,7 @@
 #' @param connect Connect to database and store connection in result? Default: `FALSE`
 #' @param ... Additional arguments \[not currently used\]
 #'
-#' @return A `geopackage` Object
+#' @return A _geopackage_ object
 #' @rdname geopackage-class
 #' @export
 geopackage <- function(x, ...)

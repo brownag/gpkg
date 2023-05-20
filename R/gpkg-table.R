@@ -23,11 +23,11 @@ gpkg_table_pragma.SQLiteConnection <- function(x, table_name, ...) {
 #' 
 #' `gpkg_table_pragma()`: Get information on a table in a GeoPackage (without returning the whole table).
 #' 
-#' @param x A geopackage object or character path to GeoPackage
+#' @param x A _geopackage_ object or character path to GeoPackage file
 #' @param table_name One or more table names; for `gpkg_table_pragma()` if `table_name=NULL` returns a record for each table. `gpkg_table()` requires `table_name` be specified
 #' @param collect Materialize a data.frame object in memory? Default: `FALSE` requires 'dbplyr' package. `TRUE` uses 'RSQLite'.
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
-#' @param ... Additional arguments. In `gpkg_table()` arguments in `...` are passed to `dplyr::tbl()`. For `gpkg_table_pragma()`, `...` arguments are (currently) not used. For `gpkg_vect()` additional arguments are passed to `terra::vect()`.
+#' @param ... Additional arguments. In `gpkg_table()` arguments in `...` are passed to `dplyr::tbl()`. For `gpkg_table_pragma()`, `...` arguments are (currently) not used. For `gpkg_vect()` additional arguments (such as `proxy=TRUE`) are passed to `terra::vect()`.
 #' @export
 #' @rdname gpkg_table
 #' @importFrom DBI dbGetQuery dbDisconnect
@@ -61,6 +61,7 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 #' @rdname gpkg_table
 #' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
 #' @description `gpkg_table()`: access a specific table (by name) and get a "lazy" `tibble` object referencing that table
+#' @return `gpkg_table()`: A 'dbplyr' object of class _tbl_SQLiteConnection_
 #' @examples 
 #' 
 #' tf <- tempfile(fileext = ".gpkg")
@@ -131,13 +132,14 @@ gpkg_table.default <- function(x,
 }
 
 #' @description `gpkg_collect()`: alias for `gpkg_table(..., collect=TRUE)`
+#' @return `gpkg_collect()`: An object of class _data.frame_
 #' @rdname gpkg_table
 #' @export
 gpkg_collect <- function(x, table_name, query_string = FALSE, ...) {
   gpkg_table(x, table_name, ..., query_string = query_string, collect = TRUE)
 }
 
-#' @return `gpkg_vect()`: a SpatVector object (may or may not contain geometry columns)
+#' @return `gpkg_vect()`: A 'terra' object of class _SpatVector_ (may not contain geometry columns)
 #' @export
 #' @rdname gpkg_table
 gpkg_vect <- function(x, table_name, ...) {

@@ -7,9 +7,9 @@
 gpkg_execute(x, statement, ..., silent = FALSE)
 }
 \arguments{
-\item{x}{a \emph{geopackage} object}
+\item{x}{A \emph{geopackage} object}
 
-\item{statement}{a SQLite statement}
+\item{statement}{An SQLite statement}
 
 \item{...}{Additional arguments to \code{RSQLite::dbExecute()}}
 

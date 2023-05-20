@@ -1,5 +1,7 @@
 ## code to prepare `gpkg_creation_options` dataset goes here
 ## source: https://gdal.org/drivers/raster/gpkg.html#creation-options
+##         https://gdal.org/drivers/vector/gpkg.html#dataset-creation-options
+##         https://gdal.org/drivers/vector/gpkg.html#layer-creation-options
 x <- read.table(sep = "\n", text =
 stringi::stri_enc_toascii("RASTER_TABLE=string. Name of tile user table. By default, based on the filename (i.e. if filename is foo.gpkg, the table will be called 'foo').
 APPEND_SUBDATASET=YES/NO: If set to YES, an existing GeoPackage will not be priorly destroyed, such as to be able to add new content to it. Defaults to NO.

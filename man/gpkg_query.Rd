@@ -7,9 +7,9 @@
 gpkg_query(x, query)
 }
 \arguments{
-\item{x}{a \emph{geopackage} object}
+\item{x}{A \emph{geopackage} object}
 
-\item{query}{a SQLite query}
+\item{query}{An SQLite query}
 }
 \value{
 a \emph{data.frame} result of \code{RSQLite::dbGetQuery()}

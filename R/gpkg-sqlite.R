@@ -1,16 +1,16 @@
 # gpkg sqlite tools
 
-#' Update Table by Name
+#' Update a Table by Name
 #' 
-#' For a given table, set column X to scalar A where column Y is in vector B
+#' For a given table, set column `updatecol` to scalar `updatevalue` where column `wherecol` is in vector `wherevector`.
 #' 
-#' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
-#' @param table_name character. table name
-#' @param updatecol character. column to update
-#' @param updatevalue scalar value to set
-#' @param wherecol character. column to constrain update
-#' @param wherevector vector of values where update should be made
-#' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
+#' @param x A _geopackage_ object, path to a GeoPackage or an `SQLiteConnection`.
+#' @param table_name _character_. Table name.
+#' @param updatecol _character_. Column to update.
+#' @param updatevalue _character_, _numeric_, etc.; A scalar value to set.
+#' @param wherecol _character_. Column used to constrain update.
+#' @param wherevector _character_, _numeric_, etc.; Vector of values where update should be made.
+#' @param query_string _logical_. Return SQLite query rather than executing it? Default: `FALSE`
 #' @export
 gpkg_update_table <- function(x, table_name, updatecol, updatevalue, wherecol, wherevector, query_string = FALSE) {
   con <- .gpkg_connection_from_x(x)

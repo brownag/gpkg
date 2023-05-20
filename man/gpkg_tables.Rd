@@ -3,14 +3,14 @@
 \name{gpkg_tables}
 \alias{gpkg_tables}
 \alias{gpkg_tables.geopackage}
-\title{Get Tables from a \code{geopackage} Object}
+\title{Get Tables fromA \emph{geopackage} object}
 \usage{
 gpkg_tables(x, collect = FALSE, pragma = FALSE)
 
 \method{gpkg_tables}{geopackage}(x, collect = FALSE, pragma = FALSE)
 }
 \arguments{
-\item{x}{a \code{geopackage} object}
+\item{x}{A \emph{geopackage} object}
 
 \item{collect}{Default: \code{FALSE}. Should tables be materialized as 'data.frame' objects in memory? (i.e. not "lazy") Default: \code{FALSE}; if \code{TRUE} 'dbplyr' is not required. Always \code{TRUE} for \code{pragma=TRUE} (pragma information are always "collected").}
 
@@ -20,5 +20,5 @@ gpkg_tables(x, collect = FALSE, pragma = FALSE)
 a list of SpatVectorProxy, SpatRaster, data.frame (lazy tbl?)
 }
 \description{
-Get Tables from a \code{geopackage} Object
+Get Tables fromA \emph{geopackage} object
 }

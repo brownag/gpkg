@@ -1,8 +1,8 @@
 # GeoPackage utilities
 
-#' Get Tables from a `geopackage` Object
+#' Get Tables fromA _geopackage_ object
 #'
-#' @param x a `geopackage` object
+#' @param x A _geopackage_ object
 #' @param collect Default: `FALSE`. Should tables be materialized as 'data.frame' objects in memory? (i.e. not "lazy") Default: `FALSE`; if `TRUE` 'dbplyr' is not required. Always `TRUE` for `pragma=TRUE` (pragma information are always "collected").
 #' @param pragma Default: `FALSE`. Use `gpkg_table_pragma()` instead of `gpkg_table()`? The former does not require 'dbplyr'.
 #'
@@ -34,10 +34,10 @@ gpkg_tables.geopackage <- function(x, collect = FALSE, pragma = FALSE) {
   }), recursive = FALSE)
 }
 
-#' Get Source File of a `geopackage` Object
+#' Get Source File of a _geopackage_ object
 #'
-#' @param x a `geopackage` object
-#' @return character path
+#' @param x A _geopackage_ object
+#' @return _character_ file path
 #' @export
 #' @rdname gpkg_source
 gpkg_source <- function(x)
@@ -51,7 +51,7 @@ gpkg_source.geopackage <- function(x) {
 
 #' List Tables in a GeoPackage
 #'
-#' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
+#' @param x A _geopackage_ object, path to a GeoPackage or an `SQLiteConnection`
 #' @return a character vector with names of all tables and views in the database
 #' @importFrom DBI dbListTables dbDisconnect
 #' @export
@@ -69,7 +69,7 @@ gpkg_list_tables <- function(x) {
 
 #' Set `data_null` Metadata for a GeoPackage Tile Dataset
 #'
-#' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
+#' @param x A _geopackage_ object, path to a GeoPackage or an `SQLiteConnection`
 #' @param name character. Tile matrix set name(s) (`tile_matrix_set_name`)
 #' @param value numeric. Value to use as "NoData" (`data_null` value)
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
@@ -95,7 +95,7 @@ gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
 
 #' Get `gpkg_2d_gridded_coverage_ancillary` Table
 #'
-#' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
+#' @param x A _geopackage_ object, path to a GeoPackage or an `SQLiteConnection`
 #' @return a data.frame containing columns `id`, `tile_matrix_set_name`, `datatype`, `scale`, `offset`, `precision`, `data_null`, `grid_cell_encoding`, `uom`, `field_name`, `quantity_definition`
 #' @importFrom DBI dbDisconnect
 #' @export
@@ -108,7 +108,7 @@ gpkg_2d_gridded_coverage_ancillary <- function(x) {
 
 #' Get `gpkg_contents` Table
 #'
-#' @param x A a `geopackage` object, path to a GeoPackage or an `SQLiteConnection`
+#' @param x A _geopackage_ object, path to a GeoPackage or an `SQLiteConnection`
 #' @return a data.frame containing columns `table_name`, `data_type`, `identifier`, `description`, `last_change`, `min_x`, `min_y`, `max_x`, `max_y`, `srs_id`
 #' @importFrom DBI dbDisconnect
 #' @export

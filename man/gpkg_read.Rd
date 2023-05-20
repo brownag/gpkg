@@ -14,7 +14,7 @@ gpkg_read(x, connect = FALSE, quiet = TRUE)
 \item{quiet}{Hide printing of gdalinfo description to stdout. Default: \code{TRUE}}
 }
 \value{
-A \code{geopackage} object (list containing tables, grids and vector data)
+A \emph{geopackage} object (list containing tables, grids and vector data)
 }
 \description{
 Experimental: This function is being evaluated for its scope compared to other more general functions that perform similar operations (i.e. \code{gpkg_tables()}).
