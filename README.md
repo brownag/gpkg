@@ -16,9 +16,9 @@ coverage](https://codecov.io/gh/brownag/gpkg/branch/main/graph/badge.svg)](https
 
 High-level wrapper functions to build [Open Geospatial Consortium (OGC)
 ‘GeoPackage’ files](https://geopackage.org).
-[GDAL](http://www.gdal.org/) utilities for read and write of spatial
-data ([vector](http://www.gdal.org/drv_geopackage.html) and
-[gridded](http://www.gdal.org/drv_geopackage_raster.html)) are provided
+[GDAL](https://www.gdal.org/) utilities for read and write of spatial
+data ([vector](https://www.gdal.org/drv_geopackage.html) and
+[gridded](https://www.gdal.org/drv_geopackage_raster.html)) are provided
 via the {[terra](https://cran.r-project.org/package=terra)} package.
 Additional ‘GeoPackage’ and ‘SQLite’ specific functions manipulate
 attributes and tabular data via the

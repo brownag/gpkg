@@ -3,7 +3,7 @@
 \name{gpkg_tables}
 \alias{gpkg_tables}
 \alias{gpkg_tables.geopackage}
-\title{Get Tables fromA \emph{geopackage} object}
+\title{Get Tables from a \emph{geopackage} object}
 \usage{
 gpkg_tables(x, collect = FALSE, pragma = FALSE)
 
@@ -20,5 +20,5 @@ gpkg_tables(x, collect = FALSE, pragma = FALSE)
 a list of SpatVectorProxy, SpatRaster, data.frame (lazy tbl?)
 }
 \description{
-Get Tables fromA \emph{geopackage} object
+Get Tables from a \emph{geopackage} object
 }

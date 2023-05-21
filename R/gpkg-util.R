@@ -1,6 +1,6 @@
 # GeoPackage utilities
 
-#' Get Tables fromA _geopackage_ object
+#' Get Tables from a _geopackage_ object
 #'
 #' @param x A _geopackage_ object
 #' @param collect Default: `FALSE`. Should tables be materialized as 'data.frame' objects in memory? (i.e. not "lazy") Default: `FALSE`; if `TRUE` 'dbplyr' is not required. Always `TRUE` for `pragma=TRUE` (pragma information are always "collected").
