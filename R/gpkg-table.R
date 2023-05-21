@@ -168,9 +168,7 @@ gpkg_vect <- function(x, table_name, ...) {
   if (inherits(res, 'try-error')) {
     res2 <- try(terra::vect(x$dsn, query = paste("SELECT * FROM", table_name), ...), silent = TRUE)
     if (inherits(res2, 'try-error')) {
-      
-      res2 <- try(terra::vect(x$dsn, layer = table_name, query = paste("SELECT * FROM", table_name), ...), silent = TRUE)
-      # stop(res2[1], call. = FALSE)
+      stop(res2[1], call. = FALSE)
     }
     res <- res2
   }

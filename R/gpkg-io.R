@@ -14,7 +14,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
   }
   res <- lapply(x, function(xx) {
     res <- list()
-    contents <- gpkg_contents(x)
+    contents <- gpkg_contents(x, create = TRUE)
     # read grids
     if (!any(contents$data_type %in%  c("attributes", "features"))) {
         r <- try(terra::rast(xx), silent = TRUE)

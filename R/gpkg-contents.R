@@ -1,3 +1,56 @@
+#' Get `gpkg_contents` or `gpkg_ogr_contents` Table
+#'
+#' These functions provide convenient access to the contents of the standard GeoPackage tables of the same name.
+#'
+#' @param x A _geopackage_ object, path to a GeoPackage or an _SQLiteConnection_
+#' @param create Create table `gpkg_contents` if does not exist? Default: ``
+#' @return `gpkg_contents()`: a _data.frame_ containing columns `table_name`, `data_type`, `identifier`, `description`, `last_change`, `min_x`, `min_y`, `max_x`, `max_y`, `srs_id`
+#' @importFrom DBI dbDisconnect
+#' @export
+gpkg_contents <- function(x, create = FALSE) {
+  if (!requireNamespace("RSQLite", quietly = TRUE)) {
+    stop('package `RSQLite` is required to get the `gpkg_contents` table', call. = FALSE)
+  }
+  if (!"gpkg_contents" %in% gpkg_list_tables(x) && isTRUE(create)) {
+    res <- gpkg_create_contents(x)
+    if (!res) {
+      stop("Failed to create gpkg_contents table", call. = FALSE)
+    }
+  }
+  gpkg_collect(x, "gpkg_contents")
+}
+
+#' @export
+#' @return `gpkg_ogr_contents()`: a _data.frame_ containing columns `table_name` and `feature_count`.
+#' @rdname gpkg_contents
+gpkg_ogr_contents <- function(x) {
+  if (!requireNamespace("RSQLite", quietly = TRUE)) {
+    stop('package `RSQLite` is required to get the `gpkg_ogr_contents` table', call. = FALSE)
+  }
+  gpkg_collect(x, "gpkg_ogr_contents")
+}
+
+
+#' List Tables Registered in a GeoPackage `gpkg_contents`
+#' 
+#' Get a vector of grid, feature and attribute table names registered in GeoPackage.
+#' 
+#' @param x A _geopackage_ object, path to a GeoPackage or an _SQLiteConnection_
+#' @param ogr Intersect `gpkg_contents` table name result with OGR tables that are listed in `gpkg_ogr_contents`? Default: `FALSE`
+#' @export
+#' @return character. Vector of grid, feature and attribute table names registered in GeoPackage.
+#' @seealso [gpkg_contents()] [gpkg_list_tables()]
+gpkg_list_contents <- function(x, ogr = FALSE) {
+  y <- gpkg_contents(x)$table_name
+  if (is.null(y)) 
+    y <- character()
+  if (isTRUE(ogr)) {
+    z <- gpkg_ogr_contents(x)$table_name
+  } else {
+    z <- y
+  }
+  intersect(y, z)
+}
 
 #' Add, Remove, Update and Create `gpkg_contents` table and records
 #' @description `gpkg_add_contents()`: Add a record to `gpkg_contents`

@@ -1,4 +1,4 @@
-# gpkg 0.0.4.9003
+# gpkg 0.0.5
 
  - Fixed bug in `gpkg_tables()` when multiple attribute tables were present.
  
@@ -7,6 +7,8 @@
  - Added `gpkg_rast()` (analog of `gpkg_vect()` for `terra::rast()`) for lazy manipulation of gridded data in a GeoPackage
  
  - Added `gpkg_create_dummy_features()` which is a workaround for use of `gpkg_vect()` on a GeoPackage with only gridded or attribute data.
+ 
+ - Added `gpkg_list_contents()` and `gpkg_ogr_contents()`; the former returns only table names registered in `gpkg_contents` table, which are optionally intersected with tables defined in `gpkg_ogr_contents` when `ogr=TRUE`.
  
 # gpkg 0.0.4
 
