@@ -3,6 +3,8 @@
  - Fixed bug in `.gpkg_gdaloptions_add()` that could cause addition of options with no value set
  
  - Added `gpkg_vect()`: a `terra::vect()`-based analog of `gpkg_table()` for lazy manipulation of vector, grid, and attribute data in a GeoPackage
+ 
+ - `gpkg_update_table()` defaults to `wherecol=NULL` which allows updating rows with no SQL `WHERE` clause specified
 
 # gpkg 0.0.3
 
@@ -12,9 +14,9 @@
   
    - Renamed `dplyr.frame()` -> `gpkg_table()`
    
-   - `gpkg_table()` gains `collect` argument (toggles materializing whole data.frame v.s. dbplyr approach). `collect` requires only 'RSQLite' not 'dbplyr'.
+   - `gpkg_table()` gains `collect` argument (toggles materializing data.frame v.s. 'dbplyr' approach). `collect` requires only 'RSQLite' not 'dbplyr'.
    
-   - `gpkg_tables()` gains `pragma` argument to toggle use of gpkg_table_pragma() over gpkg_table(). It also supports `collect` argument. 
+   - `gpkg_tables()` gains `pragma` argument to toggle use of `gpkg_table_pragma()` over `gpkg_table()`. It also supports `collect` argument. 
    
  - `gpkg_update_table()` is now exported; this method is/was used internally for updating the NoData entry for existing layers via `gpkg_tile_set_data_null()`
 

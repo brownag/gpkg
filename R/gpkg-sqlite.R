@@ -12,11 +12,16 @@
 #' @param wherevector _character_, _numeric_, etc.; Vector of values where update should be made.
 #' @param query_string _logical_. Return SQLite query rather than executing it? Default: `FALSE`
 #' @export
-gpkg_update_table <- function(x, table_name, updatecol, updatevalue, wherecol, wherevector, query_string = FALSE) {
+gpkg_update_table <- function(x, table_name, 
+                              updatecol, updatevalue, 
+                              wherecol = NULL, 
+                              wherevector = NULL, 
+                              query_string = FALSE) {
   con <- .gpkg_connection_from_x(x)
-  q <- sprintf("UPDATE %s SET %s = %s WHERE %s IN %s",
-               table_name, updatecol, updatevalue, wherecol,
-               paste0("(", paste0(paste0("'", wherevector, "'"), collapse = ","), ")"))
+  q <- sprintf("UPDATE %s SET %s = %s %s",
+               table_name, updatecol, updatevalue, 
+               ifelse(!is.null(wherecol), sprintf("WHERE %s IN %s", wherecol,
+                                                  paste0("(", paste0(paste0("'", wherevector, "'"), collapse = ","), ")")), ""))
   if (query_string) return(q)
   res <- RSQLite::dbExecute(con, q)
   if (attr(con, 'disconnect')) {
