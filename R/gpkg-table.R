@@ -166,6 +166,8 @@ gpkg_vect <- function(x, table_name, ...) {
     stop("package 'terra' is required to create SpatVector objects from tables in a GeoPackage", call. = FALSE)
   res <- try(terra::vect(x$dsn, layer = table_name, ...), silent = TRUE)
   if (inherits(res, 'try-error')) {
+    # create features, try again with layer not specified
+    gpkg_create_dummy_features(x)
     res2 <- try(terra::vect(x$dsn, query = paste("SELECT * FROM", table_name), ...), silent = TRUE)
     if (inherits(res2, 'try-error')) {
       stop(res2[1], call. = FALSE)
