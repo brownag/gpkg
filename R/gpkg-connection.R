@@ -71,7 +71,9 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
 #' @noRd
 #' @keywords internal
 .gpkg_connection_from_x <- function(x) {
+  
   disconnect <- TRUE
+  
   if (is.character(x)) {
     con <- gpkg_connect(x)$con
   } else if (inherits(x, 'geopackage')) {
@@ -85,9 +87,31 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
   } else if (inherits(x, 'SQLiteConnection')) {
     con <- x
     disconnect <- FALSE
-  } else stop('`x` should beA _geopackage_ object, a path to a GeoPackage or an `SQLiteConnection`')
+  } else stop('`x` should be `geopackage` object, a path to a GeoPackage or an `SQLiteConnection`')
+  
   if (!is.null(con)) { 
     attr(con, 'disconnect') <- disconnect
   }
   con
+}
+
+.gpkg_proxy_from_x <- function(x, table_name = NULL) {
+  
+  if (inherits(x, 'SpatVectorProxy')) {
+    return(x)
+  }
+  
+  if (is.character(x)) {
+    con <- x
+  } else if (inherits(x, 'geopackage')) {
+    con <- x$dsn
+  } else if (inherits(x, 'SQLiteConnection')) {
+    con <- x$con@dbname
+  } else stop('`x` should be `geopackage` object, a path to a GeoPackage, a `SpatVectorProxy`, or an `SQLiteConnection`')
+  
+  if (is.null(table_name)) {
+    table_name <- ""
+  }
+  
+  suppressWarnings(terra::vect(con, layer = table_name, proxy = TRUE))
 }

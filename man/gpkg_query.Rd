@@ -2,18 +2,28 @@
 % Please edit documentation in R/gpkg-query.R
 \name{gpkg_query}
 \alias{gpkg_query}
-\title{Query a GeoPackage for tabular result}
+\alias{gpkg_ogr_query}
+\title{Query a GeoPackage for Tabular Result}
 \usage{
-gpkg_query(x, query)
+gpkg_query(x, query, ogr = FALSE, ...)
+
+gpkg_ogr_query(x, query, ...)
 }
 \arguments{
 \item{x}{A \emph{geopackage} object}
 
-\item{query}{An SQLite query}
+\item{query}{\emph{character}. An SQLite/Spatialite/GeoPackage query. The \code{query} argument is forwarded to \code{sql} argument when \code{ogr=TRUE}.}
+
+\item{ogr}{\emph{logical}. Use the OGR query interface (via \code{terra::query()}). See details. Default: \code{FALSE} uses 'RSQLite' driver instead of 'terra'.}
+
+\item{...}{Additional arguments to \code{terra::query()} (such as  \code{start}, \code{n}, \code{vars}, \code{where}, \code{extent}, \code{filter}) are passed when \code{ogr=TRUE} (or using alias \code{gpkg_ogr_query()}). Otherwise not used.}
 }
 \value{
-a \emph{data.frame} result of \code{RSQLite::dbGetQuery()}
+a \emph{data.frame} result of \code{RSQLite::dbGetQuery()} or \emph{SpatVector} result from \code{terra::query()}.
 }
 \description{
-Query a GeoPackage for tabular result
+\code{gpkg_ogr_query()}: an alias for \code{gpkg_query(..., ogr=TRUE)}
+}
+\details{
+The GeoPackage driver supports OGR attribute filters. Provide filters in the SQLite dialect, as they will be executed directly against the database. If Spatialite is used, a recent version (4.2.0) is needed and cast operators are required to transform GeoPackage geometries to Spatialite geometries. A variety of SQL functions are available, see: \url{https://gdal.org/drivers/vector/gpkg.html#sql-functions}
 }

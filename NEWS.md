@@ -1,3 +1,9 @@
+# gpkg 0.0.4.9002
+
+ - Fixed bug in `gpkg_tables()` when multiple attribute tables were present.
+ 
+ - Added `gpkg_ogr_query()` (and `ogr` argument to `gpkg_query()`) to support querying OGR data sources using a 'terra' SpatVectorProxy backend. This allows for use of GeoPackage-specific SQL functions and the OGR SQLite dialect: <https://gdal.org/user/sql_sqlite_dialect.html>
+ 
 # gpkg 0.0.4
 
  - Fixed bug in `.gpkg_gdaloptions_add()` that could cause addition of options with no value set

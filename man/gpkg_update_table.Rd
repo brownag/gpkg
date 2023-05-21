@@ -9,8 +9,8 @@ gpkg_update_table(
   table_name,
   updatecol,
   updatevalue,
-  wherecol,
-  wherevector,
+  wherecol = NULL,
+  wherevector = NULL,
   query_string = FALSE
 )
 }

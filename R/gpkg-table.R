@@ -24,9 +24,9 @@ gpkg_table_pragma.SQLiteConnection <- function(x, table_name, ...) {
 #' `gpkg_table_pragma()`: Get information on a table in a GeoPackage (without returning the whole table).
 #' 
 #' @param x A _geopackage_ object or character path to GeoPackage file
-#' @param table_name One or more table names; for `gpkg_table_pragma()` if `table_name=NULL` returns a record for each table. `gpkg_table()` requires `table_name` be specified
-#' @param collect Materialize a data.frame object in memory? Default: `FALSE` requires 'dbplyr' package. `TRUE` uses 'RSQLite'.
-#' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
+#' @param table_name _character_. One or more table names; for `gpkg_table_pragma()` if `table_name=NULL` returns a record for each table. `gpkg_table()` requires `table_name` be specified
+#' @param collect _logical_. Materialize a data.frame object in memory? Default: `FALSE` requires 'dbplyr' package. `TRUE` uses 'RSQLite'.
+#' @param query_string _logical_. Return SQLite query rather than executing it? Default: `FALSE`
 #' @param ... Additional arguments. In `gpkg_table()` arguments in `...` are passed to `dplyr::tbl()`. For `gpkg_table_pragma()`, `...` arguments are (currently) not used. For `gpkg_vect()` additional arguments (such as `proxy=TRUE`) are passed to `terra::vect()`.
 #' @export
 #' @rdname gpkg_table

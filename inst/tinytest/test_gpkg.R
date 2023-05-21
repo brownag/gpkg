@@ -73,16 +73,19 @@ expect_true(inherits(g1, 'geopackage'))
 # heterogeneous input from list
 tfcsv <- tempfile(fileext = ".csv")
 tfgpkg <- tempfile(fileext = ".gpkg")
-v <- terra::as.polygons(terra::rast(dem), ext = TRUE)
+rdem <- terra::rast(dem)
+v <- terra::as.polygons(rdem, ext = TRUE)
+
 expect_error(gpkg_write(list(testgpkg = tfgpkg), destfile = tfgpkg))
 expect_silent(gpkg_write(list(testgpkg = v), destfile = tfgpkg))
+v <- terra::crop(v, terra::ext(rdem) / 2)
 expect_true(is.character(gpkg_list_tables(tfgpkg)))
 write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
 g2 <- geopackage(list(
   dem1 = dem,
   dem2 = terra::rast(dem),
-  bbox1 = v,
-  bbox2 = tfgpkg,
+  bbox1 = tfgpkg,
+  bbox2 = v,
   data1 = data.frame(id = 1:3, code = LETTERS[1:3]),
   data2 = tfcsv
 ))

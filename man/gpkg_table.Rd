@@ -30,13 +30,13 @@ gpkg_vect(x, table_name, ...)
 \arguments{
 \item{x}{A \emph{geopackage} object or character path to GeoPackage file}
 
-\item{table_name}{One or more table names; for \code{gpkg_table_pragma()} if \code{table_name=NULL} returns a record for each table. \code{gpkg_table()} requires \code{table_name} be specified}
+\item{table_name}{\emph{character}. One or more table names; for \code{gpkg_table_pragma()} if \code{table_name=NULL} returns a record for each table. \code{gpkg_table()} requires \code{table_name} be specified}
 
 \item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used. For \code{gpkg_vect()} additional arguments (such as \code{proxy=TRUE}) are passed to \code{terra::vect()}.}
 
-\item{collect}{Materialize a data.frame object in memory? Default: \code{FALSE} requires 'dbplyr' package. \code{TRUE} uses 'RSQLite'.}
+\item{collect}{\emph{logical}. Materialize a data.frame object in memory? Default: \code{FALSE} requires 'dbplyr' package. \code{TRUE} uses 'RSQLite'.}
 
-\item{query_string}{logical. Return SQLite query rather than executing it? Default: \code{FALSE}}
+\item{query_string}{\emph{logical}. Return SQLite query rather than executing it? Default: \code{FALSE}}
 }
 \value{
 \code{gpkg_table()}: A 'dbplyr' object of class \emph{tbl_SQLiteConnection}
