@@ -7,7 +7,7 @@
 
 [![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
 [![gpkg HTML
-Manual](https://img.shields.io/badge/docs-HTML-informational)](http://humus.rocks/gpkg/)
+Manual](http://img.shields.io/badge/docs-HTML-informational)](https://humus.rocks/gpkg/)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/gpkg)](https://CRAN.R-project.org/package=gpkg)
 [![Codecov test
@@ -15,7 +15,7 @@ coverage](https://codecov.io/gh/brownag/gpkg/branch/main/graph/badge.svg)](https
 <!-- badges: end -->
 
 High-level wrapper functions to build [Open Geospatial Consortium (OGC)
-‘GeoPackage’ files](https://geopackage.org).
+‘GeoPackage’ files](https://www.geopackage.org/).
 [GDAL](https://www.gdal.org/) utilities for read and write of spatial
 data ([vector](https://www.gdal.org/drv_geopackage.html) and
 [gridded](https://www.gdal.org/drv_geopackage_raster.html)) are provided
@@ -63,7 +63,7 @@ start by adding two DEM (GeoTIFF) files.
 ``` r
 library(gpkg)
 library(terra)
-#> terra 1.7.29
+#> terra 1.7.33
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -116,12 +116,7 @@ gpkg_write(list(myattr = z), destfile = gpkg_tmp, append = TRUE)
 
 `geopackage()` is a constructor that can create a simple container for
 working with geopackages from several types of inputs. Often you will
-have a *character* file path to a GeoPackage (.gpkg) file. Other times
-you may have a list of tables and layers you want to be in a GeoPackage
-that does not exist yet. Or, you may have a connection to a GeoPackage
-database already opened that you want to use. In any case (`character`,
-`list`, `SQLiteConnection`) there is an S3 method to facilitate creating
-the basic `geopackage` class provided by {gpkg}.
+have a *character* file path to a GeoPackage (.gpkg) file.
 
 ``` r
 g <- geopackage(gpkg_tmp, connect = TRUE)
@@ -138,11 +133,45 @@ g
 #>  sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg
+#>   Path: /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
 ```
+
+Other times you may have a list of tables and layers you want to be in a
+GeoPackage that does not exist yet.
+
+``` r
+g2 <- geopackage(list(dem = r, bbox = v))
+g2
+#> <geopackage>
+#> --------------------------------------------------------------------------------
+#> # of Tables: 16
+#>  
+#>  bbox, dem, gpkg_2d_gridded_coverage_ancillary,
+#>  gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions,
+#>  gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys,
+#>  gpkg_tile_matrix, gpkg_tile_matrix_set, rtree_bbox_geom,
+#>  rtree_bbox_geom_node, rtree_bbox_geom_parent, rtree_bbox_geom_rowid,
+#>  sqlite_sequence
+#> --------------------------------------------------------------------------------
+#> <SQLiteConnection>
+#>   Path: /tmp/Rtmp1WYbZ1/Rgpkge5a82e9646e1.gpkg
+#>   Extensions: TRUE
+class(g2)
+#> [1] "geopackage"
+```
+
+Note that a temporary GeoPackage
+(/tmp/Rtmp1WYbZ1/Rgpkge5a82e9646e1.gpkg) is automatically created when
+using the `geopackage(<list>)` constructor.
+
+You also may have a *DBIConnection* to a GeoPackage database already
+opened that you want to use. In any case (*character*, *list*,
+*SQLiteConnection*) there is an S3 method to facilitate creating the
+basic *geopackage* class provided by {gpkg}. All other methods are
+designed to be able to work smoothly with *geopackage* class input.
 
 ## Inspect Contents of GeoPackage
 
@@ -173,8 +202,8 @@ gpkg_tables(g, collect = TRUE)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file174a6332a47c3.gpkg:DEM1 
-#> varname     : file174a6332a47c3 
+#> source      : filee5a82e149637.gpkg:DEM1 
+#> varname     : filee5a82e149637 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -183,8 +212,8 @@ gpkg_tables(g, collect = TRUE)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file174a6332a47c3.gpkg:DEM2 
-#> varname     : file174a6332a47c3 
+#> source      : filee5a82e149637.gpkg:DEM2 
+#> varname     : filee5a82e149637 
 #> name        : DEM2 
 #> min value   :  195 
 #> max value   :  500 
@@ -203,11 +232,11 @@ gpkg_tables(g, collect = TRUE)
 #> 10 10 J
 #> 
 #> $bbox
-#>  class       : SpatVector 
+#>  class       : SpatVectorProxy
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file174a6332a47c3.gpkg (bbox)
+#>  source      : filee5a82e149637.gpkg (bbox)
 #>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 ```
 
@@ -230,16 +259,16 @@ gpkg_collect(g, "gpkg_contents")
 #> 3       bbox            features       bbox            
 #> 4     myattr          attributes     myattr            
 #>                last_change       min_x     min_y      max_x    max_y srs_id
-#> 1 2023-04-25T03:25:23.466Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 2 2023-04-25T03:25:23.543Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 3 2023-04-25T03:25:23.850Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 4 2023-04-24T20:25:23.978Z -180.000000 -90.00000 180.000000 90.00000   4326
+#> 1 2023-05-21T21:24:37.157Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 2 2023-05-21T21:24:37.235Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 3 2023-05-21T21:24:37.570Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 4 2023-05-21T14:24:37.719Z -180.000000 -90.00000 180.000000 90.00000   4326
 ```
 
 There are several other methods that can be used for working with
 tabular data in a GeoPackage in a “lazy” fashion.
 
-### Lazy Tables and {dplyr} Integration
+### Lazy Data Access
 
 Two methods for ‘lazy’ access of table contents are available:
 
@@ -254,13 +283,13 @@ analysis.
 
 ``` r
 head(gpkg_table_pragma(g))
-#>                                      dsn table_name nrow table_info.cid
-#> 1 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              0
-#> 2 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              1
-#> 3 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              2
-#> 4 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              3
-#> 5 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM1    1              4
-#> 6 /tmp/RtmpL0d4J8/file174a6332a47c3.gpkg       DEM2    1              0
+#>                                     dsn table_name nrow table_info.cid
+#> 1 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              0
+#> 2 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              1
+#> 3 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              2
+#> 4 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              3
+#> 5 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              4
+#> 6 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM2    1              0
 #>   table_info.name table_info.type table_info.notnull table_info.dflt_value
 #> 1              id         INTEGER                  0                  <NA>
 #> 2      zoom_level         INTEGER                  1                  <NA>
@@ -277,13 +306,72 @@ head(gpkg_table_pragma(g))
 #> 6             1
 ```
 
-#### Method 2: `gpkg_table()`
+#### Method 2: `gpkg_vect()` and `gpkg_query()`
+
+`gpkg_vect()` is a wrapper around `terra::vect()` you can use to create
+‘terra’ `SpatVector` objects from the tables found in a GeoPackage. The
+table of interest need not have a geometry column, but this method does
+not work on GeoPackage that contain only gridded data, and some layer in
+the GeoPackage must have some geometry.
+
+The *SpatVectorProxy* is used for lazy referencing of vector and
+attribute contents of a GeoPackage, analogous to the *SpatRaster* for
+gridded data. The ‘terra’ package provides “GDAL plumbing” for filter
+and query utilities. `gpkg_query()` by default uses the ‘RSQLite’
+driver, but the richer capabilities of the [OGR SQLite
+dialect](https://gdal.org/user/ogr_sql_dialect.html) can be utilized
+with the `ogr=TRUE` argument to `gpkg_query()` (or `gpkg_ogr_query()`
+for short).
+
+For example, we can use the built-in SQL functions such as `ST_MinX()`
+to calculate summaries for selected geometries. In this case we expect
+the calculated quantities to match the coordinates/boundaries of the
+bounding box `"bbox"` geometry column `"geom"`:
+
+``` r
+res <- gpkg_ogr_query(g, paste0("SELECT 
+                                   ST_MinX(geom) AS xmin,
+                                   ST_MinY(geom) AS ymin, 
+                                   ST_MaxX(geom) AS xmax, 
+                                   ST_MaxY(geom) AS ymax 
+                                 FROM bbox"))
+as.data.frame(res)
+#>       xmin     ymin     xmax     ymax
+#> 1 6.008333 49.69167 6.266667 49.94167
+```
+
+#### Method 3: `gpkg_rast()`
+
+Using `gpkg_rast()` you can quickly access references to all
+tile/gridded datasets in a GeoPackage.
+
+For example:
+
+``` r
+gpkg_rast(g)
+#> class       : SpatRaster 
+#> dimensions  : 30, 31, 2  (nrow, ncol, nlyr)
+#> resolution  : 0.008333333, 0.008333333  (x, y)
+#> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> sources     : filee5a82e149637.gpkg:DEM1  
+#>               filee5a82e149637.gpkg:DEM2  
+#> varnames    : filee5a82e149637 
+#>               filee5a82e149637 
+#> names       : DEM1, DEM2 
+#> min values  :   ? ,  195 
+#> max values  :   ? ,  500
+```
+
+#### Method 4: `gpkg_table()`
 
 With the `gpkg_table()` method you access a specific table (by name) and
-get a “lazy” `tibble` object referencing that table. This is achieved
-via {dplyr} and the {dbplyr} database connection to the GeoPackage via
-the {RSQLite} driver. The resulting object’s data can be used in more
-complex analyses by using other {dbplyr}/{tidyverse} functions.
+get a “lazy” `tibble` object referencing that table.
+
+This is achieved via {dplyr} and the {dbplyr} database connection to the
+GeoPackage via the {RSQLite} driver. The resulting object’s data can be
+used in more complex analyses by using other {dbplyr}/{tidyverse}
+functions.
 
 For example, we inspect the contents of the `gpkg_contents` table that
 contains critical information on the data contained in a GeoPackage.
@@ -291,13 +379,13 @@ contains critical information on the data contained in a GeoPackage.
 ``` r
 gpkg_table(g, "gpkg_contents")
 #> # Source:   table<gpkg_contents> [4 x 10]
-#> # Database: sqlite 3.41.2 [/tmp/RtmpL0d4J8/file174a6332a47c3.gpkg]
+#> # Database: sqlite 3.41.2 [/tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg]
 #>   table_name data_type   identifier description last_change   min_x min_y  max_x
 #>   <chr>      <chr>       <chr>      <chr>       <chr>         <dbl> <dbl>  <dbl>
-#> 1 DEM1       2d-gridded… DEM1       ""          2023-04-25…    6.01  49.7   6.27
-#> 2 DEM2       2d-gridded… DEM2       ""          2023-04-25…    6.01  49.7   6.27
-#> 3 bbox       features    bbox       ""          2023-04-25…    6.01  49.7   6.27
-#> 4 myattr     attributes  myattr     ""          2023-04-24… -180    -90   180   
+#> 1 DEM1       2d-gridded… DEM1       ""          2023-05-21…    6.01  49.7   6.27
+#> 2 DEM2       2d-gridded… DEM2       ""          2023-05-21…    6.01  49.7   6.27
+#> 3 bbox       features    bbox       ""          2023-05-21…    6.01  49.7   6.27
+#> 4 myattr     attributes  myattr     ""          2023-05-21… -180    -90   180   
 #> # ℹ 2 more variables: max_y <dbl>, srs_id <int>
 ```
 
@@ -335,10 +423,32 @@ gpkg_is_connected(g)
 
 # disconnect geopackage
 gpkg_disconnect(g)
+#> <geopackage>
+#> --------------------------------------------------------------------------------
+#> # of Tables: 18
+#>  
+#>  DEM1, DEM2, bbox, gpkg_2d_gridded_coverage_ancillary,
+#>  gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions,
+#>  gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys,
+#>  gpkg_tile_matrix, gpkg_tile_matrix_set, myattr, rtree_bbox_geom,
+#>  rtree_bbox_geom_node, rtree_bbox_geom_parent, rtree_bbox_geom_rowid,
+#>  sqlite_sequence
+#> --------------------------------------------------------------------------------
 
 # reconnect
 g <- gpkg_connect(g)
 
 # disconnect
 gpkg_disconnect(g)
+#> <geopackage>
+#> --------------------------------------------------------------------------------
+#> # of Tables: 18
+#>  
+#>  DEM1, DEM2, bbox, gpkg_2d_gridded_coverage_ancillary,
+#>  gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions,
+#>  gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys,
+#>  gpkg_tile_matrix, gpkg_tile_matrix_set, myattr, rtree_bbox_geom,
+#>  rtree_bbox_geom_node, rtree_bbox_geom_parent, rtree_bbox_geom_rowid,
+#>  sqlite_sequence
+#> --------------------------------------------------------------------------------
 ```

@@ -1,6 +1,6 @@
 #' Get Bounding Box of a GeoPackage Layer
 #' 
-#' This function is not currently exported. It relies on new features of the terra package and is intended primarily as a demonstration of an application of the OGR SQL query related features <https://gdal.org/user/sql_sqlite_dialect.html>.
+#' This function is not currently exported. It relies on new features of the terra package and is intended primarily as a demonstration of an application of the OGR SQL query related features <https://gdal.org/user/sql_sqlite_dialect.html> and <https://gdal.org/user/ogr_sql_dialect.html>
 #' 
 #' @param x A _geopackage_ object
 #' @param table_name character. One or more table names.

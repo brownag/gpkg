@@ -17,12 +17,12 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
-[![gpkg HTML Manual](https://img.shields.io/badge/docs-HTML-informational)](https://humus.rocks/gpkg/)
+[![gpkg HTML Manual](http://img.shields.io/badge/docs-HTML-informational)](https://humus.rocks/gpkg/)
 [![CRAN status](https://www.r-pkg.org/badges/version/gpkg)](https://CRAN.R-project.org/package=gpkg)
 [![Codecov test coverage](https://codecov.io/gh/brownag/gpkg/branch/main/graph/badge.svg)](https://app.codecov.io/gh/brownag/gpkg?branch=main)
 <!-- badges: end -->
 
-High-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://www.geopackage.org/). [GDAL](http://www.gdal.org/) utilities for read and write of spatial data ([vector](http://www.gdal.org/drv_geopackage.html) and [gridded](http://www.gdal.org/drv_geopackage_raster.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
+High-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://www.geopackage.org/). [GDAL](https://www.gdal.org/) utilities for read and write of spatial data ([vector](https://www.gdal.org/drv_geopackage.html) and [gridded](https://www.gdal.org/drv_geopackage_raster.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
 
 
 <a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png">
@@ -106,13 +106,25 @@ gpkg_write(list(myattr = z), destfile = gpkg_tmp, append = TRUE)
 
 ## Read a GeoPackage
 
-`geopackage()` is a constructor that can create a simple container for working with geopackages from several types of inputs. Often you will have a _character_ file path to a GeoPackage (.gpkg) file. Other times you may have a list of tables and layers you want to be in a GeoPackage that does not exist yet. Or, you may have a connection to a GeoPackage database already opened that you want to use. In any case (`character`, `list`, `SQLiteConnection`) there is an S3 method to facilitate creating the basic `geopackage` class provided by {gpkg}.
+`geopackage()` is a constructor that can create a simple container for working with geopackages from several types of inputs. Often you will have a _character_ file path to a GeoPackage (.gpkg) file. 
 
 ```{r}
 g <- geopackage(gpkg_tmp, connect = TRUE)
 g
 class(g)
 ```
+
+Other times you may have a list of tables and layers you want to be in a GeoPackage that does not exist yet. 
+
+```{r}
+g2 <- geopackage(list(dem = r, bbox = v))
+g2
+class(g2)
+```
+
+Note that a temporary GeoPackage (`r g2$dsn`) is automatically created when using the `geopackage(<list>)` constructor. 
+
+You also may have a _DBIConnection_ to a GeoPackage database already opened that you want to use. In any case (_character_, _list_, _SQLiteConnection_) there is an S3 method to facilitate creating the basic _geopackage_ class provided by {gpkg}. All other methods are designed to be able to work smoothly with _geopackage_ class input.
 
 ## Inspect Contents of GeoPackage
 
@@ -138,7 +150,7 @@ gpkg_collect(g, "gpkg_contents")
 
 There are several other methods that can be used for working with tabular data in a GeoPackage in a "lazy" fashion.
 
-### Lazy Tables and {dplyr} Integration
+### Lazy Data Access
 
 Two methods for 'lazy' access of table contents are available:
 
@@ -150,9 +162,39 @@ Two methods for 'lazy' access of table contents are available:
 head(gpkg_table_pragma(g))
 ```
 
-#### Method 2: `gpkg_table()`
+#### Method 2:  `gpkg_vect()` and `gpkg_query()`
 
-With the `gpkg_table()` method you access a specific table (by name) and get a "lazy" `tibble` object referencing that table. This is achieved via {dplyr} and the {dbplyr} database connection to the GeoPackage via the {RSQLite} driver. The resulting object's data can be used in more complex analyses by using other {dbplyr}/{tidyverse} functions.
+`gpkg_vect()` is a wrapper around `terra::vect()` you can use to create 'terra' `SpatVector` objects from the tables found in a GeoPackage. The table of interest need not have a geometry column, but this method does not work on GeoPackage that contain only gridded data, and some layer in the GeoPackage must have some geometry. 
+
+The _SpatVectorProxy_ is used for lazy referencing of vector and attribute contents of a GeoPackage, analogous to the _SpatRaster_ for gridded data. The 'terra' package provides "GDAL plumbing" for filter and query utilities. `gpkg_query()` by default uses the 'RSQLite' driver, but the richer capabilities of the [OGR SQLite dialect](https://gdal.org/user/ogr_sql_dialect.html) can be utilized with the `ogr=TRUE` argument to `gpkg_query()` (or `gpkg_ogr_query()` for short).
+
+For example, we can use the built-in SQL functions such as `ST_MinX()` to calculate summaries for selected geometries. In this case we expect the calculated quantities to match the coordinates/boundaries of the bounding box `"bbox"` geometry column `"geom"`:
+
+```{r}
+res <- gpkg_ogr_query(g, paste0("SELECT 
+                                   ST_MinX(geom) AS xmin,
+                                   ST_MinY(geom) AS ymin, 
+                                   ST_MaxX(geom) AS xmax, 
+                                   ST_MaxY(geom) AS ymax 
+                                 FROM bbox"))
+as.data.frame(res)
+```
+
+#### Method 3: `gpkg_rast()`
+
+Using `gpkg_rast()` you can quickly access references to all tile/gridded datasets in a GeoPackage.
+
+For example: 
+
+```{r}
+gpkg_rast(g)
+```
+
+#### Method 4: `gpkg_table()`
+
+With the `gpkg_table()` method you access a specific table (by name) and get a "lazy" `tibble` object referencing that table. 
+
+This is achieved via {dplyr} and the {dbplyr} database connection to the GeoPackage via the {RSQLite} driver. The resulting object's data can be used in more complex analyses by using other {dbplyr}/{tidyverse} functions.
 
 For example, we inspect the contents of the `gpkg_contents` table that contains critical information on the data contained in a GeoPackage.
 
