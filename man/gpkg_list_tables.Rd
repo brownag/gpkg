@@ -7,7 +7,7 @@
 gpkg_list_tables(x)
 }
 \arguments{
-\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}}
+\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \emph{SQLiteConnection}}
 }
 \value{
 a character vector with names of all tables and views in the database

@@ -21,7 +21,32 @@ gpkg_create_dummy_features <- function(x, table_name = "dummy_feature",
     geom GEOMETRY
   );")
   
-  if (isTRUE(res)) {
+  if (!inherits(res, 'try-error') && res == 0 && !"gpkg_spatial_ref_sys" %in% gpkg_list_tables(x)) {
+    res <- gpkg_execute(x, "CREATE TABLE gpkg_spatial_ref_sys (
+      srs_name TEXT NOT NULL,
+      srs_id INTEGER PRIMARY KEY,
+      organization TEXT NOT NULL,
+      organization_coordsys_id INTEGER NOT NULL,
+      definition  TEXT NOT NULL,
+      description TEXT
+    );")
+  }
+  
+  if (!inherits(res, 'try-error') && res == 0 && !"gpkg_geometry_columns" %in% gpkg_list_tables(x)) {
+    res <- gpkg_execute(x, " CREATE TABLE gpkg_geometry_columns (
+      table_name TEXT NOT NULL,
+      column_name TEXT NOT NULL,
+      geometry_type_name TEXT NOT NULL,
+      srs_id INTEGER NOT NULL,
+      z TINYINT NOT NULL,
+      m TINYINT NOT NULL,
+      CONSTRAINT pk_geom_cols PRIMARY KEY (table_name, column_name),
+      CONSTRAINT uk_gc_table_name UNIQUE (table_name),
+      CONSTRAINT fk_gc_tn FOREIGN KEY (table_name) REFERENCES gpkg_contents(table_name),
+      CONSTRAINT fk_gc_srs FOREIGN KEY (srs_id) REFERENCES gpkg_spatial_ref_sys (srs_id));")
+  }
+  
+  if (!inherits(res, 'try-error') && res == 0) {
     res <- gpkg_execute(x, paste0(
       "INSERT INTO gpkg_geometry_columns (table_name, column_name, 
                                           geometry_type_name, srs_id, z, m) 

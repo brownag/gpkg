@@ -133,7 +133,7 @@ g
 #>  sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg
+#>   Path: /tmp/RtmpyvnOrK/file10a4622c507b8.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -157,14 +157,14 @@ g2
 #>  sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/Rtmp1WYbZ1/Rgpkge5a82e9646e1.gpkg
+#>   Path: /tmp/RtmpyvnOrK/Rgpkg10a461ebea97.gpkg
 #>   Extensions: TRUE
 class(g2)
 #> [1] "geopackage"
 ```
 
 Note that a temporary GeoPackage
-(/tmp/Rtmp1WYbZ1/Rgpkge5a82e9646e1.gpkg) is automatically created when
+(/tmp/RtmpyvnOrK/Rgpkg10a461ebea97.gpkg) is automatically created when
 using the `geopackage(<list>)` constructor.
 
 You also may have a *DBIConnection* to a GeoPackage database already
@@ -195,15 +195,15 @@ gpkg_list_tables(g)
 #> [17] "rtree_bbox_geom_rowid"              "sqlite_sequence"
 
 # inspect tables
-gpkg_tables(g, collect = TRUE)
+gpkg_tables(g)
 #> $DEM1
 #> class       : SpatRaster 
 #> dimensions  : 30, 31, 1  (nrow, ncol, nlyr)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : filee5a82e149637.gpkg:DEM1 
-#> varname     : filee5a82e149637 
+#> source      : file10a4622c507b8.gpkg:DEM1 
+#> varname     : file10a4622c507b8 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -212,13 +212,38 @@ gpkg_tables(g, collect = TRUE)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : filee5a82e149637.gpkg:DEM2 
-#> varname     : filee5a82e149637 
+#> source      : file10a4622c507b8.gpkg:DEM2 
+#> varname     : file10a4622c507b8 
 #> name        : DEM2 
 #> min value   :  195 
 #> max value   :  500 
 #> 
 #> $myattr
+#> # Source:   table<myattr> [10 x 2]
+#> # Database: sqlite 3.41.2 [/tmp/RtmpyvnOrK/file10a4622c507b8.gpkg]
+#>        a b    
+#>    <int> <chr>
+#>  1     1 A    
+#>  2     2 B    
+#>  3     3 C    
+#>  4     4 D    
+#>  5     5 E    
+#>  6     6 F    
+#>  7     7 G    
+#>  8     8 H    
+#>  9     9 I    
+#> 10    10 J    
+#> 
+#> $bbox
+#>  class       : SpatVector 
+#>  geometry    : polygons 
+#>  dimensions  : 1, 0  (geometries, attributes)
+#>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
+#>  source      : file10a4622c507b8.gpkg (bbox)
+#>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
+
+# inspect a specific table
+gpkg_table(g, "myattr", collect = TRUE)
 #>     a b
 #> 1   1 A
 #> 2   2 B
@@ -230,22 +255,17 @@ gpkg_tables(g, collect = TRUE)
 #> 8   8 H
 #> 9   9 I
 #> 10 10 J
-#> 
-#> $bbox
-#>  class       : SpatVectorProxy
-#>  geometry    : polygons 
-#>  dimensions  : 1, 0  (geometries, attributes)
-#>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : filee5a82e149637.gpkg (bbox)
-#>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 ```
 
-Note that the `collect = TRUE` forces data be loaded into R memory.
+Note that the `collect = TRUE` forces data be loaded into R memory for
+vector and attribute data; this is the difference in result object class
+of *SpatVectorProxy*/*SpatVector* and
+*tbl_SQLiteConnection*/*data.frame* for vector and attribute data,
+respectively.
 
-`gpkg_collect()` is a helper method that calls
-`gpkg_table(..., collect = TRUE)` to do the same in-memory loading for
-specific tables. Note that you get a tabular result regardless of
-whether you have tile, vector, or attribute data.
+`gpkg_collect()` is a helper method to call
+`gpkg_table(..., collect = TRUE)` for in-memory loading of specific
+tables.
 
 ``` r
 gpkg_collect(g, "DEM1")
@@ -259,18 +279,20 @@ gpkg_collect(g, "gpkg_contents")
 #> 3       bbox            features       bbox            
 #> 4     myattr          attributes     myattr            
 #>                last_change       min_x     min_y      max_x    max_y srs_id
-#> 1 2023-05-21T21:24:37.157Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 2 2023-05-21T21:24:37.235Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 3 2023-05-21T21:24:37.570Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 4 2023-05-21T14:24:37.719Z -180.000000 -90.00000 180.000000 90.00000   4326
+#> 1 2023-05-21T22:42:10.037Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 2 2023-05-21T22:42:10.115Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 3 2023-05-21T22:42:10.431Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 4 2023-05-21T15:42:10.562Z -180.000000 -90.00000 180.000000 90.00000   4326
 ```
 
-There are several other methods that can be used for working with
-tabular data in a GeoPackage in a “lazy” fashion.
+Note that with grid data returned from `gpkg_collect()` you get a table
+result with the tile contents in a blob column of a *data.frame* instead
+of *SpatRaster* object.
 
 ### Lazy Data Access
 
-Two methods for ‘lazy’ access of table contents are available:
+There are several other methods that can be used for working with
+tabular data in a GeoPackage in a “lazy” fashion.
 
 #### Method 1: `gpkg_table_pragma()`
 
@@ -278,18 +300,18 @@ Two methods for ‘lazy’ access of table contents are available:
 important table information, but not values. The `PRAGMA table_info()`
 is stored as a nested data.frame `table_info`. This representation has
 no dependencies beyond {RSQLite} and is efficient for inspection of
-table structure and attributes. Though it is less useful for data
+table structure and attributes, though it is less useful for data
 analysis.
 
 ``` r
 head(gpkg_table_pragma(g))
-#>                                     dsn table_name nrow table_info.cid
-#> 1 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              0
-#> 2 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              1
-#> 3 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              2
-#> 4 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              3
-#> 5 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM1    1              4
-#> 6 /tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg       DEM2    1              0
+#>                                      dsn table_name nrow table_info.cid
+#> 1 /tmp/RtmpyvnOrK/file10a4622c507b8.gpkg       DEM1    1              0
+#> 2 /tmp/RtmpyvnOrK/file10a4622c507b8.gpkg       DEM1    1              1
+#> 3 /tmp/RtmpyvnOrK/file10a4622c507b8.gpkg       DEM1    1              2
+#> 4 /tmp/RtmpyvnOrK/file10a4622c507b8.gpkg       DEM1    1              3
+#> 5 /tmp/RtmpyvnOrK/file10a4622c507b8.gpkg       DEM1    1              4
+#> 6 /tmp/RtmpyvnOrK/file10a4622c507b8.gpkg       DEM2    1              0
 #>   table_info.name table_info.type table_info.notnull table_info.dflt_value
 #> 1              id         INTEGER                  0                  <NA>
 #> 2      zoom_level         INTEGER                  1                  <NA>
@@ -309,32 +331,59 @@ head(gpkg_table_pragma(g))
 #### Method 2: `gpkg_vect()` and `gpkg_query()`
 
 `gpkg_vect()` is a wrapper around `terra::vect()` you can use to create
-‘terra’ `SpatVector` objects from the tables found in a GeoPackage. The
-table of interest need not have a geometry column, but this method does
-not work on GeoPackage that contain only gridded data, and some layer in
-the GeoPackage must have some geometry.
-
-The *SpatVectorProxy* is used for lazy referencing of vector and
-attribute contents of a GeoPackage, analogous to the *SpatRaster* for
-gridded data. The ‘terra’ package provides “GDAL plumbing” for filter
-and query utilities. `gpkg_query()` by default uses the ‘RSQLite’
-driver, but the richer capabilities of the [OGR SQLite
-dialect](https://gdal.org/user/ogr_sql_dialect.html) can be utilized
-with the `ogr=TRUE` argument to `gpkg_query()` (or `gpkg_ogr_query()`
-for short).
-
-For example, we can use the built-in SQL functions such as `ST_MinX()`
-to calculate summaries for selected geometries. In this case we expect
-the calculated quantities to match the coordinates/boundaries of the
-bounding box `"bbox"` geometry column `"geom"`:
+‘terra’ `SpatVector` objects from the tables found in a GeoPackage.
 
 ``` r
-res <- gpkg_ogr_query(g, paste0("SELECT 
-                                   ST_MinX(geom) AS xmin,
-                                   ST_MinY(geom) AS ymin, 
-                                   ST_MaxX(geom) AS xmax, 
-                                   ST_MaxY(geom) AS ymax 
-                                 FROM bbox"))
+gpkg_vect(g, 'bbox')
+#>  class       : SpatVector 
+#>  geometry    : polygons 
+#>  dimensions  : 1, 0  (geometries, attributes)
+#>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
+#>  source      : file10a4622c507b8.gpkg (bbox)
+#>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
+```
+
+The table of interest need not have a geometry column, but this method
+does not work on GeoPackage that contain only gridded data, and some
+layer in the GeoPackage must have some geometry.
+
+``` r
+gpkg_vect(g, 'gpkg_ogr_contents')
+#>  class       : SpatVector 
+#>  geometry    : none 
+#>  dimensions  : 0, 2  (geometries, attributes)
+#>  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)
+#>  source      : file10a4622c507b8.gpkg (SELECT)
+#>  coord. ref. :  
+#>  names       : table_name feature_count
+#>  type        :      <chr>         <int>
+```
+
+The *SpatVectorProxy* is used for “lazy” references to of vector and
+attribute contents of a GeoPackage; this object for vector data is
+analogous to the *SpatRaster* for gridded data. The ‘terra’ package
+provides “GDAL plumbing” for filter and query utilities.
+
+`gpkg_query()` by default uses the ‘RSQLite’ driver, but the richer
+capabilities of OGR data sources can be harnessed with [SQLite SQL
+dialect](https://gdal.org/user/sql_sqlite_dialect.html). These
+additional features can be utilized with the `ogr=TRUE` argument to
+`gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that
+GDAL/OGR is built with support for SQLite (ideally also with Spatialite
+support).
+
+For example, we use built-in functions such as `ST_MinX()` to calculate
+summaries for `"bbox"` table, geometry column `"geom"`. In this case we
+expect the calculated quantities to match the coordinates/boundaries of
+the bounding box:
+
+``` r
+res <- gpkg_ogr_query(g, "SELECT 
+                           ST_MinX(geom) AS xmin,
+                           ST_MinY(geom) AS ymin, 
+                           ST_MaxX(geom) AS xmax, 
+                           ST_MaxY(geom) AS ymax 
+                          FROM bbox")
 as.data.frame(res)
 #>       xmin     ymin     xmax     ymax
 #> 1 6.008333 49.69167 6.266667 49.94167
@@ -354,10 +403,10 @@ gpkg_rast(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> sources     : filee5a82e149637.gpkg:DEM1  
-#>               filee5a82e149637.gpkg:DEM2  
-#> varnames    : filee5a82e149637 
-#>               filee5a82e149637 
+#> sources     : file10a4622c507b8.gpkg:DEM1  
+#>               file10a4622c507b8.gpkg:DEM2  
+#> varnames    : file10a4622c507b8 
+#>               file10a4622c507b8 
 #> names       : DEM1, DEM2 
 #> min values  :   ? ,  195 
 #> max values  :   ? ,  500
@@ -379,7 +428,7 @@ contains critical information on the data contained in a GeoPackage.
 ``` r
 gpkg_table(g, "gpkg_contents")
 #> # Source:   table<gpkg_contents> [4 x 10]
-#> # Database: sqlite 3.41.2 [/tmp/Rtmp1WYbZ1/filee5a82e149637.gpkg]
+#> # Database: sqlite 3.41.2 [/tmp/RtmpyvnOrK/file10a4622c507b8.gpkg]
 #>   table_name data_type   identifier description last_change   min_x min_y  max_x
 #>   <chr>      <chr>       <chr>      <chr>       <chr>         <dbl> <dbl>  <dbl>
 #> 1 DEM1       2d-gridded… DEM1       ""          2023-05-21…    6.01  49.7   6.27

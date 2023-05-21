@@ -7,7 +7,7 @@
 gpkg_2d_gridded_coverage_ancillary(x)
 }
 \arguments{
-\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}}
+\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \emph{SQLiteConnection}}
 }
 \value{
 a data.frame containing columns \code{id}, \code{tile_matrix_set_name}, \code{datatype}, \code{scale}, \code{offset}, \code{precision}, \code{data_null}, \code{grid_cell_encoding}, \code{uom}, \code{field_name}, \code{quantity_definition}

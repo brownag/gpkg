@@ -68,7 +68,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
  
 #' .gpkg_connection_from_x
 #'
-#' @param x A _geopackage_ object, a path to a GeoPackage or an `SQLiteConnection`
+#' @param x A _geopackage_ object, a path to a GeoPackage or an _SQLiteConnection_
 #' @return An SQLiteConnection with logical attribute `"disconnect"` indicating whether it should be disconnected after use.
 #' @noRd
 #' @keywords internal
@@ -89,7 +89,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
   } else if (inherits(x, 'SQLiteConnection')) {
     con <- x
     disconnect <- FALSE
-  } else stop('`x` should be `geopackage` object, a path to a GeoPackage or an `SQLiteConnection`')
+  } else stop('`x` should be `geopackage` object, a path to a GeoPackage or an _SQLiteConnection_')
   
   if (!is.null(con)) { 
     attr(con, 'disconnect') <- disconnect
@@ -109,7 +109,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
     con <- x$dsn
   } else if (inherits(x, 'SQLiteConnection')) {
     con <- x$con@dbname
-  } else stop('`x` should be `geopackage` object, a path to a GeoPackage, a `SpatVectorProxy`, or an `SQLiteConnection`')
+  } else stop('`x` should be `geopackage` object, a path to a GeoPackage, a `SpatVectorProxy`, or an _SQLiteConnection_')
   
   if (is.null(table_name)) {
     table_name <- ""

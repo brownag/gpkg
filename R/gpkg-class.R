@@ -20,6 +20,9 @@ geopackage <- function(x, ...)
 geopackage.list <- function(x, dsn = NULL, connect = FALSE, ...) {
   if (is.null(dsn)) {
     dsn <- tempfile("Rgpkg", fileext = ".gpkg")
+  }
+  
+  if (is.character(dsn) && !file.exists(dsn)) {
     gpkg_write(x, destfile = dsn, ...)
     dsn <- .gpkg_connection_from_x(dsn)
   }

@@ -4,7 +4,7 @@
 #' 
 #' For a given table, set column `updatecol` to scalar `updatevalue` where column `wherecol` is in vector `wherevector`.
 #' 
-#' @param x A _geopackage_ object, path to a GeoPackage or an `SQLiteConnection`.
+#' @param x A _geopackage_ object, path to a GeoPackage or an _SQLiteConnection_.
 #' @param table_name _character_. Table name.
 #' @param updatecol _character_. Column to update.
 #' @param updatevalue _character_, _numeric_, etc.; A scalar value to set.

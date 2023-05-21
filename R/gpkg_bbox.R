@@ -20,10 +20,10 @@
 #' 
 #' gpkg_bbox(g, 'bbox')
 #' }
-gpkg_bbox <- function(x, table_name) {
-  as.data.frame(gpkg_ogr_query(x, paste0("SELECT ST_MinX(geom) AS xmin, 
-                                                 ST_MinY(geom) AS ymin, 
-                                                 ST_MaxX(geom) AS xmax, 
-                                                 ST_MaxY(geom) AS ymax 
-                                          FROM ", table_name)))
-}
+# gpkg_bbox <- function(x, table_name) {
+#   as.data.frame(gpkg_ogr_query(x, paste0("SELECT ST_MinX(geom) AS xmin, 
+#                                                  ST_MinY(geom) AS ymin, 
+#                                                  ST_MaxX(geom) AS xmax, 
+#                                                  ST_MaxY(geom) AS ymax 
+#                                           FROM ", table_name)))
+# }

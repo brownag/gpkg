@@ -15,7 +15,7 @@ gpkg_update_table(
 )
 }
 \arguments{
-\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \code{SQLiteConnection}.}
+\item{x}{A \emph{geopackage} object, path to a GeoPackage or an \emph{SQLiteConnection}.}
 
 \item{table_name}{\emph{character}. Table name.}
 

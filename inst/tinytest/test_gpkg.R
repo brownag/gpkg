@@ -141,7 +141,17 @@ expect_true(gpkg_disconnect(g3$con))
 
 # add bounding polygon vector dataset
 b <- terra::as.polygons(gpkg_tables(g)[["DEM1"]], ext = TRUE)
-expect_silent(gpkg_write(b, destfile = gpkg_tmp, insert = TRUE))
+expect_silent(gpkg_write(list(layer1 = b, layerB = b), destfile = gpkg_tmp, insert = TRUE))
+
+if (utils::packageVersion("terra") >= "1.7.33") {
+  res <- gpkg_ogr_query(g, "SELECT 
+                             ST_MinX(geom) AS xmin,
+                             ST_MinY(geom) AS ymin, 
+                             ST_MaxX(geom) AS xmax, 
+                             ST_MaxY(geom) AS ymax 
+                            FROM layerB")
+  expect_equal(as.matrix(as.data.frame(res))[1,], terra::ext(b)[c(1,3,2,4)])
+}
 
 d  <- data.frame(a = 1:10, b = LETTERS[1:10])
 expect_silent(gpkg_write(list(myattr = d), destfile = gpkg_tmp, append = TRUE))
@@ -151,7 +161,7 @@ tl <- gpkg_list_tables(g)
 expect_true(is.character(tl) && all(c("layer1", "myattr") %in% tl))
 
 tlex <- gpkg_tables(g)
-expect_equal(length(tlex), 4)
+expect_equal(length(tlex), 5)
 
 expect_true(inherits(gpkg_2d_gridded_coverage_ancillary(g), 'data.frame'))
 
@@ -179,9 +189,32 @@ sink()
 unlink(tf)
 expect_true("bar" %in% gpkg_contents(g)$table_name)
 
-# disconnect it
-expect_false(gpkg_is_connected(gpkg_disconnect(g)))
+expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
 
 # cleanup
 unlink(gpkg_tmp)
 
+# geopackage<list> constructor with set outfile
+r <- terra::rast(dem)
+g <- geopackage(list(DEM1 = r, DEM2 = r, bar = data.frame(b = 2)), connect = FALSE, dsn = gpkg_tmp)
+expect_equal(names(gpkg_rast(g)), c("DEM1", "DEM2"))
+expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
+expect_false(gpkg_is_connected(gpkg_disconnect(g)))
+unlink(g$dsn)
+
+# two grids + attributes into temp gpkg
+r <- terra::rast(dem)
+g <- geopackage(list(DEM1 = r, DEM2 = r, bar = data.frame(b = 2)))
+expect_equal(names(gpkg_rast(g)), c("DEM1", "DEM2"))
+expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
+expect_false(gpkg_is_connected(gpkg_disconnect(g)))
+unlink(g$dsn)
+
+# attributes only (requires creation of "dummy" feature dataset) into temp gpkg
+expect_warning(g <- geopackage(list(bar = data.frame(b = 2))))
+gpkg_create_dummy_features(g)
+expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
+
+# disconnect it
+expect_false(gpkg_is_connected(gpkg_disconnect(g)))
+unlink(g$dsn)
