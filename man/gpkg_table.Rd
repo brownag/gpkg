@@ -8,6 +8,7 @@
 \alias{gpkg_table}
 \alias{gpkg_table.default}
 \alias{gpkg_collect}
+\alias{gpkg_rast}
 \alias{gpkg_vect}
 \title{Lazy Access to Tables by Name}
 \usage{
@@ -25,6 +26,8 @@ gpkg_table(x, table_name, collect = FALSE, query_string = FALSE, ...)
 
 gpkg_collect(x, table_name, query_string = FALSE, ...)
 
+gpkg_rast(x, table_name = NULL, ...)
+
 gpkg_vect(x, table_name, ...)
 }
 \arguments{
@@ -32,7 +35,7 @@ gpkg_vect(x, table_name, ...)
 
 \item{table_name}{\emph{character}. One or more table names; for \code{gpkg_table_pragma()} if \code{table_name=NULL} returns a record for each table. \code{gpkg_table()} requires \code{table_name} be specified}
 
-\item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used. For \code{gpkg_vect()} additional arguments (such as \code{proxy=TRUE}) are passed to \code{terra::vect()}.}
+\item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used. For \code{gpkg_rast()} additional arguments are passed to \code{terra::rast()}. For \code{gpkg_vect()} additional arguments (such as \code{proxy=TRUE}) are passed to \code{terra::vect()}.}
 
 \item{collect}{\emph{logical}. Materialize a data.frame object in memory? Default: \code{FALSE} requires 'dbplyr' package. \code{TRUE} uses 'RSQLite'.}
 
@@ -42,6 +45,8 @@ gpkg_vect(x, table_name, ...)
 \code{gpkg_table()}: A 'dbplyr' object of class \emph{tbl_SQLiteConnection}
 
 \code{gpkg_collect()}: An object of class \emph{data.frame}
+
+\code{gpkg_rast()}: A 'terra' object of class \emph{SpatRaster}
 
 \code{gpkg_vect()}: A 'terra' object of class \emph{SpatVector} (may not contain geometry columns)
 }
@@ -75,6 +80,8 @@ g <- geopackage(tf)
 
 # inspect gpkg_contents table
 gpkg_table(g, "gpkg_contents")
+
+gpkg_vect(g, "gpkg_contents")
 
 # materialize a data.frame from gpkg_2d_gridded_tile_ancillary
 library(dplyr, warn.conflicts = FALSE)
