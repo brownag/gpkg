@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9001</span>
       </span>
     </div>
 
@@ -51,6 +51,7 @@
 <h2 class="page-header" data-toc-text="0.0.4" id="gpkg-004">gpkg 0.0.4<a class="anchor" aria-label="anchor" href="#gpkg-004"></a></h2>
 <ul><li><p>Fixed bug in <code>.gpkg_gdaloptions_add()</code> that could cause addition of options with no value set</p></li>
 <li><p>Added <code><a href="../reference/gpkg_table.html">gpkg_vect()</a></code>: a <code><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">terra::vect()</a></code>-based analog of <code><a href="../reference/gpkg_table.html">gpkg_table()</a></code> for lazy manipulation of vector, grid, and attribute data in a GeoPackage</p></li>
+<li><p><code><a href="../reference/gpkg_update_table.html">gpkg_update_table()</a></code> defaults to <code>wherecol=NULL</code> which allows updating rows with no SQL <code>WHERE</code> clause specified</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.3" id="gpkg-003">gpkg 0.0.3<a class="anchor" aria-label="anchor" href="#gpkg-003"></a></h2>
@@ -58,8 +59,8 @@
 <p>Refactoring table accessor methods (<a href="https://github.com/brownag/gpkg/issues/2" class="external-link uri">https://github.com/brownag/gpkg/issues/2</a>)</p>
 <ul><li><p>Renamed <code>lazy.frame()</code> -&gt; <code><a href="../reference/gpkg_table.html">gpkg_table_pragma()</a></code></p></li>
 <li><p>Renamed <code>dplyr.frame()</code> -&gt; <code><a href="../reference/gpkg_table.html">gpkg_table()</a></code></p></li>
-<li><p><code><a href="../reference/gpkg_table.html">gpkg_table()</a></code> gains <code>collect</code> argument (toggles materializing whole data.frame v.s. dbplyr approach). <code>collect</code> requires only ‘RSQLite’ not ‘dbplyr’.</p></li>
-<li><p><code><a href="../reference/gpkg_tables.html">gpkg_tables()</a></code> gains <code>pragma</code> argument to toggle use of gpkg_table_pragma() over gpkg_table(). It also supports <code>collect</code> argument.</p></li>
+<li><p><code><a href="../reference/gpkg_table.html">gpkg_table()</a></code> gains <code>collect</code> argument (toggles materializing data.frame v.s. ‘dbplyr’ approach). <code>collect</code> requires only ‘RSQLite’ not ‘dbplyr’.</p></li>
+<li><p><code><a href="../reference/gpkg_tables.html">gpkg_tables()</a></code> gains <code>pragma</code> argument to toggle use of <code><a href="../reference/gpkg_table.html">gpkg_table_pragma()</a></code> over <code><a href="../reference/gpkg_table.html">gpkg_table()</a></code>. It also supports <code>collect</code> argument.</p></li>
 </ul></li>
 <li><p><code><a href="../reference/gpkg_update_table.html">gpkg_update_table()</a></code> is now exported; this method is/was used internally for updating the NoData entry for existing layers via <code><a href="../reference/gpkg_tile_set_data_null.html">gpkg_tile_set_data_null()</a></code></p></li>
 </ul></div>
