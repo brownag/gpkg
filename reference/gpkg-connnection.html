@@ -18,7 +18,7 @@ Create SQLite Connection to GeoPackage"><!-- mathjax --><script src="https://cdn
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9003</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@ Create SQLite Connection to GeoPackage"><!-- mathjax --><script src="https://cdn
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>A <code>geopackage</code> or <code>SQLiteConnection</code> object</p></dd>
+<dd><p>A <em>geopackage</em> or <em>SQLiteConnection</em> object</p></dd>
 
 </dl></div>
     <div id="value">
@@ -90,7 +90,7 @@ Create SQLite Connection to GeoPackage"><!-- mathjax --><script src="https://cdn
 <p>A DBIConnection (SQLiteConnection) object. <code>NULL</code> on error.</p>
 
 
-<p>Logical (invisible). <code>FALSE</code> if connection cannot be closed.</p>
+<p>If <code>x</code> is <em>geopackage</em>, the disconnected object is returned. If x is a <em>SQLiteConnection</em>, logical (<code>TRUE</code> if successfully disconnected).</p>
     </div>
 
   </div>
