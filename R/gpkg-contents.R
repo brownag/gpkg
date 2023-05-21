@@ -125,3 +125,21 @@ gpkg_create_contents <- function(x) {
   res <- gpkg_execute(x, q)
   !inherits(res, 'try-error')
 }
+
+# TODO: GDAL generally creates this as needed; consider add/update/delete/create
+# gpkg_create_ogr_contents <- function(x, dummy = FALSE) {
+#   res <- gpkg_execute(x,  "CREATE TABLE gpkg_ogr_contents (
+#           table_name TEXT NOT NULL PRIMARY KEY,
+#           feature_count INTEGER
+#         )")
+#   !inherits(res, 'try-error')
+# }
+# 
+# gpkg_add_ogr_contents <- function(x, table_name, feature_count) {
+#   res <- gpkg_execute(x, paste0(
+#     "INSERT INTO gpkg_ogr_contents (table_name, feature_count)
+#        VALUES ('", table_name, "', ", feature_count, ");"
+#   ))
+#   !inherits(res, 'try-error')
+# }
+

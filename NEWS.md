@@ -2,9 +2,11 @@
 
  - Fixed bug in `gpkg_tables()` when multiple attribute tables were present.
  
- - Added `gpkg_ogr_query()` (and `ogr` argument to `gpkg_query()`) to support querying OGR data sources using a 'terra' SpatVectorProxy backend. This allows for use of GeoPackage-specific SQL functions and the OGR SQLite dialect: <https://gdal.org/user/sql_sqlite_dialect.html>; requires latest 'terra' (1.7-33+)
+ - Added `gpkg_ogr_query()` (and `ogr` argument to `gpkg_query()`) to support querying OGR data sources using a 'terra' _SpatVectorProxy_ back end. This allows for use of GeoPackage-specific SQL functions and the OGR SQLite dialect: <https://gdal.org/user/sql_sqlite_dialect.html>; requires latest 'terra' (1.7-33+)
  
- - Add `gpkg_rast()` (analog of `gpkg_vect()` for `terra::rast()`) for lazy manipulation of gridded data in a GeoPackage
+ - Added `gpkg_rast()` (analog of `gpkg_vect()` for `terra::rast()`) for lazy manipulation of gridded data in a GeoPackage
+ 
+ - Added `gpkg_create_dummy_features()` which is a workaround for use of `gpkg_vect()` on a GeoPackage with only gridded or attribute data.
  
 # gpkg 0.0.4
 
