@@ -28,12 +28,12 @@ gpkg_disconnect(x)
 \method{gpkg_disconnect}{SQLiteConnection}(x)
 }
 \arguments{
-\item{x}{A \code{geopackage} or \code{SQLiteConnection} object}
+\item{x}{A \emph{geopackage} or \emph{SQLiteConnection} object}
 }
 \value{
 A DBIConnection (SQLiteConnection) object. \code{NULL} on error.
 
-Logical (invisible). \code{FALSE} if connection cannot be closed.
+If \code{x} is \emph{geopackage}, the disconnected object is returned. If x is a \emph{SQLiteConnection}, logical (\code{TRUE} if successfully disconnected).
 }
 \description{
 Create SQLite Connection to GeoPackage

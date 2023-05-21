@@ -55,7 +55,8 @@ expect_true(all(
 ))
 
 # disconnect
-expect_true(gpkg_disconnect(g))
+g <- gpkg_disconnect(g)
+expect_false(gpkg_is_connected(g))
 
 # create a geopackage then connect it
 g <- geopackage(gpkg_tmp, connect = TRUE)
@@ -179,7 +180,7 @@ unlink(tf)
 expect_true("bar" %in% gpkg_contents(g)$table_name)
 
 # disconnect it
-expect_true(gpkg_disconnect(g))
+expect_false(gpkg_is_connected(gpkg_disconnect(g)))
 
 # cleanup
 unlink(gpkg_tmp)

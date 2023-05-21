@@ -42,8 +42,8 @@ gpkg_is_connected.geopackage <- function(x) {
 
 #' Create SQLite Connection to GeoPackage
 #'
-#' @param x A `geopackage` or `SQLiteConnection` object
-#' @return Logical (invisible). `FALSE` if connection cannot be closed.
+#' @param x A _geopackage_ or _SQLiteConnection_ object
+#' @return If `x` is _geopackage_, the disconnected object is returned. If x is a _SQLiteConnection_, logical (`TRUE` if successfully disconnected).
 #' @export
 #' @importFrom DBI dbDisconnect
 #' @rdname gpkg-connnection
@@ -55,7 +55,9 @@ gpkg_disconnect <- function(x)
 gpkg_disconnect.geopackage <- function(x) {
   if (gpkg_is_connected(x)) {
     gpkg_disconnect(x$con)
+    x$con <- NULL
   }
+  x
 }
 
 #' @export
@@ -63,7 +65,7 @@ gpkg_disconnect.geopackage <- function(x) {
 gpkg_disconnect.SQLiteConnection <- function(x) {
  return(DBI::dbDisconnect(x))
 }
-
+ 
 #' .gpkg_connection_from_x
 #'
 #' @param x A _geopackage_ object, a path to a GeoPackage or an `SQLiteConnection`
