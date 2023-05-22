@@ -147,11 +147,17 @@ Note that the `collect = TRUE` forces data be loaded into R memory for vector an
 
 ```{r}
 gpkg_collect(g, "DEM1")
-
-gpkg_collect(g, "gpkg_contents")
 ```
 
 Note that with grid data returned from `gpkg_collect()` you get a table result with the tile contents in a blob column of a _data.frame_ instead of _SpatRaster_ object.
+
+The inverse function of `gpkg_collect()` is `gpkg_tbl()` which always returns a _tbl_SQLiteConnection_.
+
+```{r}
+gpkg_tbl(g, "gpkg_contents")
+```
+
+More on how to use this type of result next.
  
 ### Lazy Data Access
 
