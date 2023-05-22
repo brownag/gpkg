@@ -6,7 +6,7 @@
  
  - Added `gpkg_rast()` (analog of `gpkg_vect()` for `terra::rast()`) for lazy manipulation of gridded data in a GeoPackage
  
- - Added `gpkg_create_dummy_features()` which is a workaround for use of `gpkg_vect()` on a GeoPackage with only gridded or attribute data.
+ - Added `gpkg_create_dummy_features()` which is a workaround for use of `gpkg_vect()` on a GeoPackage with only attribute data. This creates innocuous entries in `gpkg_geometry_columns` and an empty table to "trick" GDAL into reading arbitrary data sources.
  
  - Added `gpkg_list_contents()` and `gpkg_ogr_contents()`; the former returns only table names registered in `gpkg_contents` table, which are optionally intersected with tables defined in `gpkg_ogr_contents` when `ogr=TRUE`.
  

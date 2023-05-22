@@ -141,6 +141,13 @@ gpkg_collect <- function(x, table_name, query_string = FALSE, ...) {
   gpkg_table(x, table_name, ..., query_string = query_string, collect = TRUE)
 }
 
+#' @description `gpkg_tbl()`: shorthand for `gpkg_table(..., collect=FALSE)`(default) that always returns a 'dplyr' object.
+#' @return `gpkg_tbl()`: An object of class _tbl_SQLiteConnection_
+#' @rdname gpkg_table
+#' @export
+gpkg_tbl <- function(x, table_name, ...) {
+  gpkg_table(x, table_name, ..., collect = FALSE)
+}
 
 #' @return `gpkg_rast()`: A 'terra' object of class _SpatRaster_
 #' @export

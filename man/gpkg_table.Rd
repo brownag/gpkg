@@ -8,6 +8,7 @@
 \alias{gpkg_table}
 \alias{gpkg_table.default}
 \alias{gpkg_collect}
+\alias{gpkg_tbl}
 \alias{gpkg_rast}
 \alias{gpkg_vect}
 \title{Lazy Access to Tables by Name}
@@ -25,6 +26,8 @@ gpkg_table(x, table_name, collect = FALSE, query_string = FALSE, ...)
 \method{gpkg_table}{default}(x, table_name, collect = FALSE, query_string = FALSE, ...)
 
 gpkg_collect(x, table_name, query_string = FALSE, ...)
+
+gpkg_tbl(x, table_name, ...)
 
 gpkg_rast(x, table_name = NULL, ...)
 
@@ -46,6 +49,8 @@ gpkg_vect(x, table_name, ...)
 
 \code{gpkg_collect()}: An object of class \emph{data.frame}
 
+\code{gpkg_tbl()}: An object of class \emph{tbl_SQLiteConnection}
+
 \code{gpkg_rast()}: A 'terra' object of class \emph{SpatRaster}
 
 \code{gpkg_vect()}: A 'terra' object of class \emph{SpatVector} (may not contain geometry columns)
@@ -56,6 +61,8 @@ gpkg_vect(x, table_name, ...)
 \code{gpkg_table()}: access a specific table (by name) and get a "lazy" \code{tibble} object referencing that table
 
 \code{gpkg_collect()}: alias for \code{gpkg_table(..., collect=TRUE)}
+
+\code{gpkg_tbl()}: shorthand for \code{gpkg_table(..., collect=FALSE)}(default) that always returns a 'dplyr' object.
 }
 \examples{
 \dontshow{if (!inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

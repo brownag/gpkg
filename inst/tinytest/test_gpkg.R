@@ -127,7 +127,7 @@ expect_true(inherits(d1, 'data.frame'))
 expect_true(inherits(gpkg_table_pragma(g3$con, "gpkg_contents"), 'data.frame'))
 
 expect_silent({d2 <- gpkg_table(g3$dsn, "gpkg_contents")})
-expect_true(inherits(gpkg_table(g3$con, "gpkg_contents"), 'tbl_SQLiteConnection'))
+expect_true(inherits(gpkg_tbl(g3$con, "gpkg_contents"), 'tbl_SQLiteConnection'))
 expect_true(inherits(d2, 'tbl_SQLiteConnection'))
 
 # verify insert/delete of dummy gpkg_contents rows
