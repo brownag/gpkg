@@ -1,3 +1,7 @@
+# gpkg 0.0.5.9001
+
+ - Improvement to `gpkg_add_contents()` and `gpkg_update_contents()`: more intelligent choice of data type when heterogeneous (non-attribute) data are in database but not registered. Fix for broken tests on Windows/GDAL 3.5.2.
+
 # gpkg 0.0.5
 
  - Fixed bug in `gpkg_tables()` when multiple attribute tables were present.

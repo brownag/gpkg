@@ -7,13 +7,19 @@
 \alias{gpkg_create_contents}
 \title{Add, Remove, Update and Create \code{gpkg_contents} table and records}
 \usage{
-gpkg_add_contents(x, table_name, description = "", template = NULL)
+gpkg_add_contents(
+  x,
+  table_name,
+  description = "",
+  template = NULL,
+  query_string = FALSE
+)
 
 gpkg_update_contents(x)
 
-gpkg_delete_contents(x, table_name)
+gpkg_delete_contents(x, table_name, query_string = FALSE)
 
-gpkg_create_contents(x)
+gpkg_create_contents(x, query_string = FALSE)
 }
 \arguments{
 \item{x}{A \emph{geopackage}}
@@ -23,6 +29,8 @@ gpkg_create_contents(x)
 \item{description}{Default \code{""}}
 
 \item{template}{Default \code{NULL} uses global EPSG:4326 with bounds -180,-90:180,90}
+
+\item{query_string}{\emph{logical}. Return SQLite statement rather than executing it? Default: \code{FALSE}}
 }
 \value{
 logical. TRUE on successful execution of SQL statements.
