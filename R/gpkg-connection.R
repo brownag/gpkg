@@ -57,7 +57,7 @@ gpkg_disconnect.geopackage <- function(x) {
     gpkg_disconnect(x$con)
     x$con <- NULL
   }
-  x
+  invisible(x)
 }
 
 #' @export
