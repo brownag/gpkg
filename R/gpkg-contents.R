@@ -58,17 +58,18 @@ gpkg_list_contents <- function(x, ogr = FALSE) {
 #' @param table_name Name of table to add or remove record for in _gpkg_contents_
 #' @param description Default `""`
 #' @param template Default `NULL` uses global EPSG:4326 with bounds -180,-90:180,90
-#'
+#' @param query_string _logical_. Return SQLite statement rather than executing it? Default: `FALSE`
 #' @return logical. TRUE on successful execution of SQL statements.
 #' @rdname gpkg-contents
 #' @export
-gpkg_add_contents <- function(x, table_name, description = "", template = NULL) {
-  
+gpkg_add_contents <- function(x, table_name, description = "", template = NULL, query_string = FALSE) {
+  dt <- NULL
   if (!missing(template) && !is.null(template)) {
     # template as a list
     if (is.list(template) && all(c("ext", "srsid") %in% names(template))) {
       ex <- template$ext
       cr <- as.integer(template$srsid)
+      dt <- template$data_type
     } else {
       ## TODO: calculate ext from object, calculate srsid from WKT (?)
       # if (!requireNamespace("terra", quietly = TRUE)) {
@@ -91,31 +92,58 @@ gpkg_add_contents <- function(x, table_name, description = "", template = NULL) 
     cr <- 4326
   }
   
+  if (is.null(dt)) {
+    gtp <- try(gpkg_table_pragma(x, table_name), silent = TRUE)
+    if (inherits(gtp, 'try-error')) {
+      gtp <- NULL
+    }
+    if (all(
+      c("id", "zoom_level", "tile_column", "tile_row", "tile_data")
+      %in% gtp$table_info.name
+    )) {
+      # has tile information: 2D coverage
+      dt <- "2d-gridded-coverage"
+    } else if (any(c("POINT", "CURVE","LINESTRING", "SURFACE",
+                     "CURVEPOLYGON", "POLYGON", "GEOMETRYCOLLECTION",
+                     "MULTISURFACE", "MULTIPOLYGON", "MULTICURVE", 
+                     "MULTILINESTRING", "MULTIPOINT")
+                   %in% gtp$table_info.type)) {
+      # has a geometry column: vector geometry
+      dt <- "features"
+    } else {
+      # all other cases are attributes
+      dt <- "attributes"
+    }
+  }
+  
   # create gpkg_contents empty table if needed
   if (!"gpkg_contents" %in% gpkg_list_tables(x)) {
     x <- gpkg_create_contents(x)
   }
-  
-  # append to gpkg_contents
-  x <- gpkg_execute(x,
-                    paste0(
-                      "INSERT INTO gpkg_contents (table_name, data_type, identifier, 
+  q <- paste0(
+    "INSERT INTO gpkg_contents (table_name, data_type, identifier, 
                                   description, last_change,
                                   min_x, min_y, max_x, max_y, srs_id) 
        VALUES ('",
-                      table_name ,
-                      "', 'attributes', '",
-                      table_name,
-                      "', '",
-                      description,
-                      "','",
-                      strftime(Sys.time(), '%Y-%m-%dT%H:%M:%OS3Z'),
-                      "', ", ex[1], ", ", ex[2], ", ",
-                             ex[3], ", ", ex[4], ", ", 
-                             cr,"
-                      );"
-                    )
-  )
+          table_name ,
+          "', '", dt, "', '",
+          table_name,
+          "', '",
+          description,
+          "','",
+          strftime(Sys.time(), '%Y-%m-%dT%H:%M:%OS3Z'),
+          "', ", ex[1], ", ", ex[2], ", ",
+          ex[3], ", ", ex[4], ", ", 
+          cr,"
+                            );")
+  
+  if (query_string) {
+    return(q)
+  }
+  
+  # append to gpkg_contents
+  x <- gpkg_execute(x, q)
+
   !inherits(x, 'try-error')
 }
 
@@ -153,15 +181,20 @@ gpkg_update_contents <- function(x) {
 #' @description `gpkg_delete_contents()`: Delete a record from `gpkg_contents` based on table name
 #' @rdname gpkg-contents
 #' @export
-gpkg_delete_contents <- function(x, table_name) {
-  res <- gpkg_execute(x, paste0("DELETE FROM gpkg_contents WHERE table_name = '", table_name, "'"))
+gpkg_delete_contents <- function(x, table_name, query_string = FALSE) {
+  q <- paste0("DELETE FROM gpkg_contents WHERE table_name = '", table_name, "'")
+  
+  if (query_string) {
+    return(q)
+  }
+  res <- gpkg_execute(x, q)
   !inherits(res, 'try-error')
 }
 
 #' @description `gpkg_create_contents()`: Create an empty `gpkg_contents` table
 #' @rdname gpkg-contents
 #' @export
-gpkg_create_contents <- function(x) {
+gpkg_create_contents <- function(x, query_string = FALSE) {
   q <- "CREATE TABLE gpkg_contents (
           table_name TEXT NOT NULL PRIMARY KEY,
           data_type TEXT NOT NULL,
@@ -175,6 +208,10 @@ gpkg_create_contents <- function(x) {
           srs_id INTEGER,
           CONSTRAINT fk_gc_r_srs_id FOREIGN KEY (srs_id) REFERENCES gpkg_spatial_ref_sys(srs_id)
         )"
+  
+  if (query_string) {
+    return(q)
+  }
   res <- gpkg_execute(x, q)
   !inherits(res, 'try-error')
 }
