@@ -186,7 +186,7 @@ gpkg_vect(g, 'gpkg_ogr_contents')
 
 The _SpatVectorProxy_ is used for "lazy" references to of vector and attribute contents of a GeoPackage; this object for vector data is analogous to the _SpatRaster_ for gridded data. The 'terra' package provides "GDAL plumbing" for filter and query utilities. 
 
-`gpkg_query()` by default uses the 'RSQLite' driver, but the richer capabilities of OGR data sources can be harnessed with [SQLite SQL dialect](https://gdal.org/user/sql_sqlite_dialect.html). These additional features can be utilized with the `ogr=TRUE` argument to `gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that GDAL/OGR is built with support for SQLite (ideally also with Spatialite support).
+`gpkg_query()` by default uses the 'RSQLite' driver, but the richer capabilities of OGR data sources can be harnessed with [SQLite SQL dialect](https://gdal.org/user/sql_sqlite_dialect.html). These additional features can be utilized with the `ogr=TRUE` argument to `gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that GDAL is built with support for SQLite (and ideally also with support for Spatialite).
 
 For example, we use built-in functions such as `ST_MinX()` to calculate summaries for `"bbox"` table, geometry column `"geom"`. In this case we expect the calculated quantities to match the coordinates/boundaries of the bounding box:
 

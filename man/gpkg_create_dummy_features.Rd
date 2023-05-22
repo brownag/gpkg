@@ -4,12 +4,7 @@
 \alias{gpkg_create_dummy_features}
 \title{Create a Dummy Feature Dataset in a GeoPackage}
 \usage{
-gpkg_create_dummy_features(
-  x,
-  table_name = "dummy_feature",
-  values = paste0("'", table_name,
-    "', \\n                                                       'geom', 'GEOMETRY', -1, 0, 0")
-)
+gpkg_create_dummy_features(x, table_name = "dummy_feature", values = NULL)
 }
 \arguments{
 \item{x}{A \emph{geopackage} object}

@@ -133,7 +133,7 @@ g
 #>  sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpD9BEIk/file13a68483b2538.gpkg
+#>   Path: /tmp/RtmpEUM5hM/file1498947138696.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -157,14 +157,14 @@ g2
 #>  sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpD9BEIk/Rgpkg13a68241601a0.gpkg
+#>   Path: /tmp/RtmpEUM5hM/Rgpkg1498971adbff9.gpkg
 #>   Extensions: TRUE
 class(g2)
 #> [1] "geopackage"
 ```
 
 Note that a temporary GeoPackage
-(/tmp/RtmpD9BEIk/Rgpkg13a68241601a0.gpkg) is automatically created when
+(/tmp/RtmpEUM5hM/Rgpkg1498971adbff9.gpkg) is automatically created when
 using the `geopackage(<list>)` constructor.
 
 You also may have a *DBIConnection* to a GeoPackage database already
@@ -202,8 +202,8 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file13a68483b2538.gpkg:DEM1 
-#> varname     : file13a68483b2538 
+#> source      : file1498947138696.gpkg:DEM1 
+#> varname     : file1498947138696 
 #> name        : DEM1 
 #> 
 #> $DEM2
@@ -212,15 +212,15 @@ gpkg_tables(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file13a68483b2538.gpkg:DEM2 
-#> varname     : file13a68483b2538 
+#> source      : file1498947138696.gpkg:DEM2 
+#> varname     : file1498947138696 
 #> name        : DEM2 
 #> min value   :  195 
 #> max value   :  500 
 #> 
 #> $myattr
 #> # Source:   table<myattr> [10 x 2]
-#> # Database: sqlite 3.41.2 [/tmp/RtmpD9BEIk/file13a68483b2538.gpkg]
+#> # Database: sqlite 3.41.2 [/tmp/RtmpEUM5hM/file1498947138696.gpkg]
 #>        a b    
 #>    <int> <chr>
 #>  1     1 A    
@@ -239,7 +239,7 @@ gpkg_tables(g)
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file13a68483b2538.gpkg (bbox)
+#>  source      : file1498947138696.gpkg (bbox)
 #>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 
 # inspect a specific table
@@ -283,7 +283,7 @@ returns a *tbl_SQLiteConnection*.
 ``` r
 gpkg_tbl(g, "gpkg_contents")
 #> # Source:   table<gpkg_contents> [4 x 10]
-#> # Database: sqlite 3.41.2 [/tmp/RtmpD9BEIk/file13a68483b2538.gpkg]
+#> # Database: sqlite 3.41.2 [/tmp/RtmpEUM5hM/file1498947138696.gpkg]
 #>   table_name data_type   identifier description last_change   min_x min_y  max_x
 #>   <chr>      <chr>       <chr>      <chr>       <chr>         <dbl> <dbl>  <dbl>
 #> 1 DEM1       2d-gridded… DEM1       ""          2023-05-22…    6.01  49.7   6.27
@@ -312,12 +312,12 @@ analysis.
 ``` r
 head(gpkg_table_pragma(g))
 #>                                      dsn table_name nrow table_info.cid
-#> 1 /tmp/RtmpD9BEIk/file13a68483b2538.gpkg       DEM1    1              0
-#> 2 /tmp/RtmpD9BEIk/file13a68483b2538.gpkg       DEM1    1              1
-#> 3 /tmp/RtmpD9BEIk/file13a68483b2538.gpkg       DEM1    1              2
-#> 4 /tmp/RtmpD9BEIk/file13a68483b2538.gpkg       DEM1    1              3
-#> 5 /tmp/RtmpD9BEIk/file13a68483b2538.gpkg       DEM1    1              4
-#> 6 /tmp/RtmpD9BEIk/file13a68483b2538.gpkg       DEM2    1              0
+#> 1 /tmp/RtmpEUM5hM/file1498947138696.gpkg       DEM1    1              0
+#> 2 /tmp/RtmpEUM5hM/file1498947138696.gpkg       DEM1    1              1
+#> 3 /tmp/RtmpEUM5hM/file1498947138696.gpkg       DEM1    1              2
+#> 4 /tmp/RtmpEUM5hM/file1498947138696.gpkg       DEM1    1              3
+#> 5 /tmp/RtmpEUM5hM/file1498947138696.gpkg       DEM1    1              4
+#> 6 /tmp/RtmpEUM5hM/file1498947138696.gpkg       DEM2    1              0
 #>   table_info.name table_info.type table_info.notnull table_info.dflt_value
 #> 1              id         INTEGER                  0                  <NA>
 #> 2      zoom_level         INTEGER                  1                  <NA>
@@ -345,7 +345,7 @@ gpkg_vect(g, 'bbox')
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file13a68483b2538.gpkg (bbox)
+#>  source      : file1498947138696.gpkg (bbox)
 #>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 ```
 
@@ -359,7 +359,7 @@ gpkg_vect(g, 'gpkg_ogr_contents')
 #>  geometry    : none 
 #>  dimensions  : 0, 2  (geometries, attributes)
 #>  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)
-#>  source      : file13a68483b2538.gpkg (SELECT)
+#>  source      : file1498947138696.gpkg (SELECT)
 #>  coord. ref. :  
 #>  names       : table_name feature_count
 #>  type        :      <chr>         <int>
@@ -374,9 +374,9 @@ provides “GDAL plumbing” for filter and query utilities.
 capabilities of OGR data sources can be harnessed with [SQLite SQL
 dialect](https://gdal.org/user/sql_sqlite_dialect.html). These
 additional features can be utilized with the `ogr=TRUE` argument to
-`gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that
-GDAL/OGR is built with support for SQLite (ideally also with Spatialite
-support).
+`gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that GDAL
+is built with support for SQLite (and ideally also with support for
+Spatialite).
 
 For example, we use built-in functions such as `ST_MinX()` to calculate
 summaries for `"bbox"` table, geometry column `"geom"`. In this case we
@@ -409,10 +409,10 @@ gpkg_rast(g)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> sources     : file13a68483b2538.gpkg:DEM1  
-#>               file13a68483b2538.gpkg:DEM2  
-#> varnames    : file13a68483b2538 
-#>               file13a68483b2538 
+#> sources     : file1498947138696.gpkg:DEM1  
+#>               file1498947138696.gpkg:DEM2  
+#> varnames    : file1498947138696 
+#>               file1498947138696 
 #> names       : DEM1, DEM2 
 #> min values  :   ? ,  195 
 #> max values  :   ? ,  500
@@ -434,7 +434,7 @@ contains critical information on the data contained in a GeoPackage.
 ``` r
 gpkg_table(g, "gpkg_contents")
 #> # Source:   table<gpkg_contents> [4 x 10]
-#> # Database: sqlite 3.41.2 [/tmp/RtmpD9BEIk/file13a68483b2538.gpkg]
+#> # Database: sqlite 3.41.2 [/tmp/RtmpEUM5hM/file1498947138696.gpkg]
 #>   table_name data_type   identifier description last_change   min_x min_y  max_x
 #>   <chr>      <chr>       <chr>      <chr>       <chr>         <dbl> <dbl>  <dbl>
 #> 1 DEM1       2d-gridded… DEM1       ""          2023-05-22…    6.01  49.7   6.27

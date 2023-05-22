@@ -6,12 +6,12 @@
 \alias{gpkg-package}
 \title{gpkg: Utilities for the OGC 'GeoPackage' Format}
 \description{
-High-level wrapper functions to build Open Geospatial Consortium (OGC) 'GeoPackage' files (\url{https://geopackage.org}). 'GDAL' utilities for read and write of spatial data are provided via the 'terra' package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the 'RSQLite' package.
+High-level wrapper functions to build Open Geospatial Consortium (OGC) 'GeoPackage' files (\url{https://www.geopackage.org/}). 'GDAL' utilities for read and write of spatial data are provided via the 'terra' package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the 'RSQLite' package.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://humus.rocks/gpkg}
+  \item \url{https://humus.rocks/gpkg/}
   \item \url{https://github.com/brownag/gpkg}
   \item Report bugs at \url{https://github.com/brownag/gpkg/issues}
 }

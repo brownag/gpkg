@@ -12,14 +12,20 @@
 #'
 #' @return logical. `TRUE` on success.
 #' @export
-gpkg_create_dummy_features <- function(x, table_name = "dummy_feature", 
-                                       values = paste0("'", table_name, "', 
-                                                       'geom', 'GEOMETRY', -1, 0, 0")) {
-
-  res <- gpkg_execute(x, "CREATE TABLE dummy_feature (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    geom GEOMETRY
-  );")
+gpkg_create_dummy_features <- function(x, 
+                                       table_name = "dummy_feature", 
+                                       values = NULL) {
+  if (is.null(values)) {
+    values <- paste0("'", table_name, "', 'geom', 'GEOMETRY', -1, 0, 0")
+  }
+  
+  res <- 0
+  if (!table_name %in% gpkg_list_tables(x)) {
+    res <- gpkg_execute(x, paste0("CREATE TABLE ", table_name, " (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      geom GEOMETRY
+    );"))
+  }
   
   if (!inherits(res, 'try-error') && res == 0 && !"gpkg_spatial_ref_sys" %in% gpkg_list_tables(x)) {
     res <- gpkg_execute(x, "CREATE TABLE gpkg_spatial_ref_sys (
@@ -32,7 +38,8 @@ gpkg_create_dummy_features <- function(x, table_name = "dummy_feature",
     );")
   }
   
-  if (!inherits(res, 'try-error') && res == 0 && !"gpkg_geometry_columns" %in% gpkg_list_tables(x)) {
+  if (!inherits(res, 'try-error') && res == 0 && 
+      !"gpkg_geometry_columns" %in% gpkg_list_tables(x)) {
     res <- gpkg_execute(x, " CREATE TABLE gpkg_geometry_columns (
       table_name TEXT NOT NULL,
       column_name TEXT NOT NULL,
@@ -47,11 +54,13 @@ gpkg_create_dummy_features <- function(x, table_name = "dummy_feature",
   }
   
   if (!inherits(res, 'try-error') && res == 0) {
-    res <- gpkg_execute(x, paste0(
-      "INSERT INTO gpkg_geometry_columns (table_name, column_name, 
-                                          geometry_type_name, srs_id, z, m) 
-       VALUES (", values, ");"
-    ))
+    if (!table_name %in% gpkg_collect(x, "gpkg_geometry_columns")$table_name) {
+      res <- gpkg_execute(x, paste0(
+        "INSERT INTO gpkg_geometry_columns (table_name, column_name, 
+                                            geometry_type_name, srs_id, z, m) 
+         VALUES (", values, ");"
+      ))
+    }
   }
   
   !inherits(res, 'try-error')

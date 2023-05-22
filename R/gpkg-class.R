@@ -25,6 +25,10 @@ geopackage.list <- function(x, dsn = NULL, connect = FALSE, ...) {
   if (is.character(dsn) && !file.exists(dsn)) {
     gpkg_write(x, destfile = dsn, ...)
     dsn <- .gpkg_connection_from_x(dsn)
+  } else {
+    if (!all(names(x) %in% gpkg_list_tables(dsn))) {
+      stop("File (", dsn, ") already exists! `geopackage(<list>)` should only be used when the GeoPackage `dsn` needs to be created. See the `geopackage(<character>)` and `geopackage(<SQLiteConnection>)` methods (without list input) to use existing databases.", call. = FALSE)
+    }
   }
   obj <- .geopackage(dsn = dsn, connect = connect, ...)
   obj$tables <- x
