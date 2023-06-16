@@ -36,7 +36,8 @@ A DBIConnection (SQLiteConnection) object. \code{NULL} on error.
 If \code{x} is \emph{geopackage}, the disconnected object is returned. If x is a \emph{SQLiteConnection}, logical (\code{TRUE} if successfully disconnected).
 }
 \description{
-Create SQLite Connection to GeoPackage
-
-Create SQLite Connection to GeoPackage
+Method for creating and connecting \code{SQLiteConnection} object stored within \code{geopackage} object.
+}
+\details{
+The S3 method for \code{geopackage} objects uses in-place modification to update the parent object by name. That is, if you call \code{gpkg_connect()} on an object \code{g} then as a side-effect \code{g} is updated in the user environment. This behavior is considered by many to be non-idiomatic for R, but it is useful to provide a simple way to connect an existing object without having to retain references to pointers to connection objects. To avoid replacement of object values in the parent frame, you can use the \code{character} method. That is \code{g <- gpkg_connect(g$dsn)} is equivalent to \code{gpkg_connect(g)} when \code{g} is a \code{geopackage}.
 }
