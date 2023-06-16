@@ -93,10 +93,8 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
   } else stop('`x` should be `geopackage` object, a path to a GeoPackage or an _SQLiteConnection_')
   
   if (!DBI::dbIsValid(con)) {
-    con <- NULL
-  }
-  
-  if (!is.null(con)) { 
+    attr(con, 'disconnect') <- TRUE
+  } else if (!is.null(con)) { 
     attr(con, 'disconnect') <- disconnect
   }
   con
