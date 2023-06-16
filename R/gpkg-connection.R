@@ -71,6 +71,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
 #' @param x A _geopackage_ object, a path to a GeoPackage or an _SQLiteConnection_
 #' @return An SQLiteConnection with logical attribute `"disconnect"` indicating whether it should be disconnected after use.
 #' @noRd
+#' @imporFrom DBI dbIsValid
 #' @keywords internal
 .gpkg_connection_from_x <- function(x) {
   
@@ -90,6 +91,10 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
     con <- x
     disconnect <- FALSE
   } else stop('`x` should be `geopackage` object, a path to a GeoPackage or an _SQLiteConnection_')
+  
+  if (!DBI::dbIsValid(con)) {
+    con <- NULL
+  }
   
   if (!is.null(con)) { 
     attr(con, 'disconnect') <- disconnect
