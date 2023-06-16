@@ -1,6 +1,9 @@
 
 #' Create SQLite Connection to GeoPackage
 #'
+#' Method for creating and connecting `SQLiteConnection` object stored within `geopackage` object.
+#' @details The S3 method for `geopackage` objects uses in-place modification to update the parent object by name. That is, if you call `gpkg_connect()` on an object `g` then as a side-effect `g` is updated in the user environment. This behavior is considered by many to be non-idiomatic for R, but it is useful to provide a simple way to connect an existing object without having to retain references to pointers to connection objects. To avoid replacement of object values in the parent frame, you can use the `character` method. That is `g <- gpkg_connect(g$dsn)` is equivalent to `gpkg_connect(g)` when `g` is a `geopackage`.
+#'
 #' @param x Path to GeoPackage
 #'
 #' @return A DBIConnection (SQLiteConnection) object. `NULL` on error.
@@ -12,7 +15,10 @@ gpkg_connect <- function(x)
 #' @export
 #' @rdname gpkg-connnection
 gpkg_connect.geopackage <- function(x) {
+  obj <- as.character(substitute(x))
   x$con <- gpkg_connect(x$dsn)$con
+  # update object in parent frame
+  try(assign(obj, x, envir = parent.frame()))
   x
 }
 
@@ -71,6 +77,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
 #' @param x A _geopackage_ object, a path to a GeoPackage or an _SQLiteConnection_
 #' @return An SQLiteConnection with logical attribute `"disconnect"` indicating whether it should be disconnected after use.
 #' @noRd
+#' @importFrom DBI dbIsValid
 #' @keywords internal
 .gpkg_connection_from_x <- function(x) {
   
@@ -91,7 +98,9 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
     disconnect <- FALSE
   } else stop('`x` should be `geopackage` object, a path to a GeoPackage or an _SQLiteConnection_')
   
-  if (!is.null(con)) { 
+  if (!DBI::dbIsValid(con)) {
+    attr(con, 'disconnect') <- TRUE
+  } else if (!is.null(con)) { 
     attr(con, 'disconnect') <- disconnect
   }
   con

@@ -126,9 +126,11 @@ expect_warning({d1 <- gpkg_table_pragma(g3$dsn, "gpkg_contents")})
 expect_true(inherits(d1, 'data.frame'))
 expect_true(inherits(gpkg_table_pragma(g3$con, "gpkg_contents"), 'data.frame'))
 
-expect_silent({d2 <- gpkg_table(g3$dsn, "gpkg_contents")})
-expect_true(inherits(gpkg_tbl(g3$con, "gpkg_contents"), 'tbl_SQLiteConnection'))
-expect_true(inherits(d2, 'tbl_SQLiteConnection'))
+if (requireNamespace("dbplyr", quietly = TRUE)) {
+  expect_silent({d2 <- gpkg_table(g3$dsn, "gpkg_contents")})
+  expect_true(inherits(gpkg_tbl(g3$con, "gpkg_contents"), 'tbl_SQLiteConnection'))
+  expect_true(inherits(d2, 'tbl_SQLiteConnection'))
+}
 
 # verify insert/delete of dummy gpkg_contents rows
 expect_equal(nrow(gpkg_query(g3, "select * from gpkg_contents;")), 2)
@@ -140,7 +142,7 @@ expect_equal(gpkg_execute(g3, "select * from gpkg_contents;"), 0)
 expect_true(gpkg_disconnect(g3$con))
 
 # add bounding polygon vector dataset
-b <- terra::as.polygons(gpkg_tables(g)[["DEM1"]], ext = TRUE)
+b <- terra::as.polygons(gpkg_rast(g, "DEM1"), ext = TRUE)
 expect_silent(gpkg_write(list(layer1 = b, layerB = b), destfile = gpkg_tmp, insert = TRUE))
 
 if (utils::packageVersion("terra") >= "1.7.33") {
@@ -160,8 +162,10 @@ expect_silent(gpkg_write(list(myattr = d), destfile = gpkg_tmp, append = TRUE))
 tl <- gpkg_list_tables(g)
 expect_true(is.character(tl) && all(c("layer1", "myattr") %in% tl))
 
-tlex <- gpkg_tables(g)
-expect_equal(length(tlex), 5)
+if (requireNamespace("dbplyr", quietly = TRUE)) {
+  tlex <- gpkg_tables(g)
+  expect_equal(length(tlex), 5)
+}
 
 expect_true(inherits(gpkg_2d_gridded_coverage_ancillary(g), 'data.frame'))
 
@@ -173,8 +177,11 @@ expect_true(gpkg_is_connected(g))
 expect_stdout(gpkg_read(g))
 
 # extensions
-expect_equal(gpkg_add_metadata_extension(g), 0)
-expect_equal(gpkg_add_relatedtables_extension(g), 0)
+gempty <- geopackage(connect = TRUE)
+expect_equal(gpkg_add_metadata_extension(gempty), 0)
+expect_equal(gpkg_add_relatedtables_extension(gempty), 0)
+gpkg_disconnect(gempty)
+unlink(gempty$dsn)
 
 # TODO: validator
 expect_error(gpkg_validate(g))

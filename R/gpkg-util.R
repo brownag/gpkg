@@ -56,8 +56,8 @@ gpkg_source.geopackage <- function(x) {
 #' @export
 gpkg_list_tables <- function(x) {
   con <- .gpkg_connection_from_x(x)
-  res <- NULL
-  if (!is.null(con)) {
+  res <- character(0)
+  if (!is.null(con) && DBI::dbIsValid(con)) {
     res <- DBI::dbListTables(con)
     if (attr(con, 'disconnect')) {
       DBI::dbDisconnect(con)
