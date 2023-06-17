@@ -19,7 +19,12 @@ gpkg_connect.geopackage <- function(x) {
   obj <- as.character(substitute(x))
   x$con <- gpkg_connect(x$dsn)$con
   # update object in parent frame
-  try(assign(obj, x, envir = parent.frame()))
+  for (o in obj) {
+    if (exists(o, envir = parent.frame())) {
+      try(assign(o, x, envir = parent.frame()))
+      break
+    }
+  }
   x
 }
 
