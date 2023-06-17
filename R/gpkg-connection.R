@@ -2,7 +2,8 @@
 #' Create SQLite Connection to GeoPackage
 #'
 #' Method for creating and connecting `SQLiteConnection` object stored within `geopackage` object.
-#' @details The S3 method for `geopackage` objects uses in-place modification to update the parent object by name. That is, if you call `gpkg_connect()` on an object `g` then as a side-effect `g` is updated in the user environment. This behavior is considered by many to be non-idiomatic for R, but it is useful to provide a simple way to connect an existing object without having to retain references to pointers to connection objects. To avoid replacement of object values in the parent frame, you can use the `character` method. That is `g <- gpkg_connect(g$dsn)` is equivalent to `gpkg_connect(g)` when `g` is a `geopackage`.
+#' 
+#' @details The S3 method for `geopackage` objects uses in-place modification to update the parent object by name. That is, if you call `gpkg_connect()` on an object `g` then as a side-effect `g` is updated in the calling environment. This behavior is considered by many to be non-idiomatic for R, but it is useful to provide a simple way to connect an existing object without having to retain references to pointers to connection objects. To avoid replacement of object values in the parent frame, you can use the `character` method. That is, `g <- gpkg_connect(g$dsn)` is equivalent to `gpkg_connect(g)` when `g` is a `geopackage`.
 #'
 #' @param x Path to GeoPackage
 #'
