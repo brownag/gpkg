@@ -9,15 +9,15 @@ gpkg_add_metadata_extension <- function(x) {
     .gpkg_add_extensions(x, tbls)
   
   # TODO: insert if not exists
-  RSQLite::dbExecute(x$con, "INSERT INTO gpkg_extensions(table_name,column_name,extension_name,definition,scope) VALUES (
+  RSQLite::dbExecute(x$env$con, "INSERT INTO gpkg_extensions(table_name,column_name,extension_name,definition,scope) VALUES (
   'gpkg_metadata', NULL, 'gpkg_metadata', 'http://www.geopackage.org/spec121/#extension_metadata', 'read-write'
   )")
-  RSQLite::dbExecute(x$con, "INSERT INTO gpkg_extensions(table_name,column_name,extension_name,definition,scope) VALUES (
+  RSQLite::dbExecute(x$env$con, "INSERT INTO gpkg_extensions(table_name,column_name,extension_name,definition,scope) VALUES (
   'gpkg_metadata_reference', NULL, 'gpkg_metadata', 'http://www.geopackage.org/spec121/#extension_metadata', 'read-write'
   )")
 
   if (!"gpkg_metadata" %in% tbls)
-    RSQLite::dbExecute(x$con, "CREATE TABLE gpkg_metadata (
+    RSQLite::dbExecute(x$env$con, "CREATE TABLE gpkg_metadata (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       md_scope TEXT NOT NULL DEFAULT 'dataset',
       md_standard_uri TEXT NOT NULL,
@@ -26,7 +26,7 @@ gpkg_add_metadata_extension <- function(x) {
     );")
   
   if (!"gpkg_metadata_reference" %in% tbls)
-    RSQLite::dbExecute(x$con, "CREATE TABLE gpkg_metadata_reference (
+    RSQLite::dbExecute(x$env$con, "CREATE TABLE gpkg_metadata_reference (
       reference_scope TEXT NOT NULL,
       table_name TEXT,
       column_name TEXT,
@@ -52,12 +52,12 @@ gpkg_add_relatedtables_extension <- function(x) {
   if (!"gpkg_extensions" %in% tbls)
     .gpkg_add_extensions(x, tbls)
     
-  RSQLite::dbExecute(x$con, "INSERT INTO gpkg_extensions(table_name,column_name,extension_name,definition,scope) VALUES (
+  RSQLite::dbExecute(x$env$con, "INSERT INTO gpkg_extensions(table_name,column_name,extension_name,definition,scope) VALUES (
     'gpkgext_relations', NULL, 'related_tables', 'http://docs.opengeospatial.org/is/18-000/18-000.html#_gpkg_extensions', 'read-write'
   )")
   
   if (!"gpkgext_relations" %in% tbls)
-    RSQLite::dbExecute(x$con, "CREATE TABLE 'gpkgext_relations' (
+    RSQLite::dbExecute(x$env$con, "CREATE TABLE 'gpkgext_relations' (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       base_table_name TEXT NOT NULL,
       base_primary_column TEXT NOT NULL DEFAULT 'id',
@@ -72,7 +72,7 @@ gpkg_add_relatedtables_extension <- function(x) {
 .gpkg_add_extensions <- function(x, tbls = gpkg_list_tables(x)) {
   
   if (!"gpkg_extensions" %in% tbls)
-    RSQLite::dbExecute(x$con, "CREATE TABLE gpkg_extensions (
+    RSQLite::dbExecute(x$env$con, "CREATE TABLE gpkg_extensions (
         table_name TEXT,
         column_name TEXT,
         extension_name TEXT NOT NULL,

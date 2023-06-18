@@ -80,7 +80,7 @@ geopackage.character <- function(x, connect = FALSE, ...) {
   }
   obj <- structure(list(
     tables = list(),
-    con = con,
+    env = list2env(list(con = con)),
     dsn = dsn
   ), class = "geopackage")
 }
@@ -96,7 +96,7 @@ print.geopackage <- function(x, ...) {
   cat("\t")
   cat(strwrap(paste0(xx, collapse = ", ")), sep = "\n\t")
   cat(y, sep = "\n")
-  if (!is.null(x$con)) {
-    show(x$con)
+  if (!is.null(x$env$con)) {
+    show(x$env$con)
   }
 }

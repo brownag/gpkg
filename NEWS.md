@@ -1,4 +1,8 @@
-# gpkg 0.0.5.9001
+# gpkg 0.0.6
+
+ - `geopackage()` internal connection object has been moved to an internal environment (`<geopackage>$env$con` rather than `<geopackage>$con`)
+ 
+ - `gpkg_connect()` allows for in-place modification of an existing object for the purposes of creating an internal _SQLiteConnection_
 
  - Improvement to `gpkg_add_contents()` and `gpkg_update_contents()`: more intelligent choice of data type when heterogeneous (non-attribute) data are in database but not registered. Fix for broken tests on Windows/GDAL 3.5.2.
 

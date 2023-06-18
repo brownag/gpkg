@@ -9,30 +9,24 @@
 #'
 #' @return A DBIConnection (SQLiteConnection) object. `NULL` on error.
 #' @export
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 #' 
 #' 
 gpkg_connect <- function(x)
   UseMethod("gpkg_connect", x)
 
 #' @export
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 gpkg_connect.geopackage <- function(x) {
-  obj <- as.character(substitute(x))
-  x$con <- gpkg_connect(x$dsn)$con
-  # # update object in parent frame
-  # for (o in obj) {
-  #   if (exists(o, envir = parent.frame())) {
-  #     try(assign(o, x, envir = parent.frame()))
-  #     break
-  #   }
-  # }
+  econ <- x$env$con
+  if (is.null(econ) || !DBI::dbIsValid(econ))
+    x$env$con <- gpkg_connect(x$dsn)$env$con
   x
 }
 
 #' @export
 #' @importFrom DBI dbConnect
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 gpkg_connect.character <- function(x) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) 
     stop('package `RSQLite` is required to open a connection to a GeoPackage', call. = FALSE)
@@ -44,14 +38,14 @@ gpkg_connect.character <- function(x) {
 }
 
 #' @export
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 gpkg_is_connected <- function(x)
   UseMethod("gpkg_is_connected", x)
 
 #' @export
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 gpkg_is_connected.geopackage <- function(x) {
-  !is.null(x$con)
+  !is.null(x$env$con)
 }
 
 #' Create SQLite Connection to GeoPackage
@@ -60,22 +54,22 @@ gpkg_is_connected.geopackage <- function(x) {
 #' @return If `x` is _geopackage_, the disconnected object is returned. If x is a _SQLiteConnection_, logical (`TRUE` if successfully disconnected).
 #' @export
 #' @importFrom DBI dbDisconnect
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 gpkg_disconnect <- function(x)
   UseMethod("gpkg_disconnect", x)
 
 #' @export
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 gpkg_disconnect.geopackage <- function(x) {
   if (gpkg_is_connected(x)) {
-    gpkg_disconnect(x$con)
-    x$con <- NULL
+    gpkg_disconnect(x$env$con)
+    x$env$con <- NULL
   }
   invisible(x)
 }
 
 #' @export
-#' @rdname gpkg-connnection
+#' @rdname gpkg-connection
 gpkg_disconnect.SQLiteConnection <- function(x) {
  return(DBI::dbDisconnect(x))
 }
@@ -92,13 +86,13 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
   disconnect <- TRUE
   
   if (is.character(x)) {
-    con <- gpkg_connect(x)$con
+    con <- gpkg_connect(x)$env$con
   } else if (inherits(x, 'geopackage')) {
     if (!gpkg_is_connected(x)) {
       p <- x$dsn
-      con <- gpkg_connect(p)$con
+      con <- gpkg_connect(p)$env$con
     } else {
-      con <- x$con
+      con <- x$env$con
       disconnect <- FALSE
     }
   } else if (inherits(x, 'SQLiteConnection')) {
@@ -125,7 +119,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
   } else if (inherits(x, 'geopackage')) {
     con <- x$dsn
   } else if (inherits(x, 'SQLiteConnection')) {
-    con <- x$con@dbname
+    con <- x$env$con@dbname
   } else stop('`x` should be `geopackage` object, a path to a GeoPackage, a `SpatVectorProxy`, or an _SQLiteConnection_')
   
   if (is.null(table_name)) {
