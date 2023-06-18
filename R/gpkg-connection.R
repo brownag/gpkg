@@ -18,8 +18,9 @@ gpkg_connect <- function(x)
 #' @export
 #' @rdname gpkg-connection
 gpkg_connect.geopackage <- function(x) {
-  obj <- as.character(substitute(x))
-  x$env$con <- gpkg_connect(x$dsn)$env$con
+  econ <- x$env$con
+  if (is.null(econ) || !DBI::dbIsValid(econ))
+    x$env$con <- gpkg_connect(x$dsn)$env$con
   x
 }
 
