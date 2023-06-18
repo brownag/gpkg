@@ -124,11 +124,11 @@ expect_true(gpkg_write_attributes(g3, data.frame(id = 1), "A", "the letter A"))
 # try various 'lazy' accessor methods
 expect_warning({d1 <- gpkg_table_pragma(g3$dsn, "gpkg_contents")})
 expect_true(inherits(d1, 'data.frame'))
-expect_true(inherits(gpkg_table_pragma(g3$con, "gpkg_contents"), 'data.frame'))
+expect_true(inherits(gpkg_table_pragma(g3, "gpkg_contents"), 'data.frame'))
 
 if (requireNamespace("dbplyr", quietly = TRUE)) {
   expect_silent({d2 <- gpkg_table(g3$dsn, "gpkg_contents")})
-  expect_true(inherits(gpkg_tbl(g3$con, "gpkg_contents"), 'tbl_SQLiteConnection'))
+  expect_true(inherits(gpkg_tbl(g3, "gpkg_contents"), 'tbl_SQLiteConnection'))
   expect_true(inherits(d2, 'tbl_SQLiteConnection'))
 }
 
@@ -139,7 +139,7 @@ expect_true(gpkg_delete_contents(g3, "foo"))
 expect_equal(gpkg_execute(g3, "select * from gpkg_contents;"), 0)
 
 # # disconnect sqliteconnection directly
-expect_true(gpkg_disconnect(g3$con))
+expect_true(gpkg_disconnect(g3$env$con))
 
 # add bounding polygon vector dataset
 b <- terra::as.polygons(gpkg_rast(g, "DEM1"), ext = TRUE)
@@ -187,8 +187,8 @@ unlink(gempty$dsn)
 expect_error(gpkg_validate(g))
 
 # checking ability to clean up corrupted contents
-RSQLite::dbRemoveTable(g$con, "gpkg_contents")
-RSQLite::dbWriteTable(g$con, "bar", data.frame(b = 2))
+RSQLite::dbRemoveTable(g$env$con, "gpkg_contents")
+RSQLite::dbWriteTable(g$env$con, "bar", data.frame(b = 2))
 tf <- tempfile()
 sink(file = tf)
 expect_stdout(gpkg_update_contents(g))
