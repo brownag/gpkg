@@ -92,7 +92,7 @@
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The S3 method for <code>geopackage</code> objects uses in-place modification to update the parent object by name. That is, if you call <code>gpkg_connect()</code> on an object <code>g</code> then as a side-effect <code>g</code> is updated in the calling environment. This behavior is considered by many to be non-idiomatic for R, but it is useful to provide a simple way to connect an existing object without having to retain references to pointers to connection objects. To avoid replacement of object values in the parent frame, you can use the <code>character</code> method. That is, <code>g &lt;- gpkg_connect(g$dsn)</code> is equivalent to <code>gpkg_connect(g)</code> when <code>g</code> is a <code>geopackage</code>.</p>
+    <p>The S3 method for <code>geopackage</code> objects requires the use of assignment to create an object containing an active SQLiteConnection. e.g. <code>g &lt;- gpkg_connect(g)</code> or <code>g &lt;- gpkg_connect(g$dsn)</code> or <code>g &lt;- geopackage(..., connect=TRUE)</code></p>
     </div>
 
   </div>
