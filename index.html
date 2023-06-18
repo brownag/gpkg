@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.6</span>
       </span>
     </div>
 
@@ -196,7 +196,7 @@
 <div class="section level2">
 <h2 id="inspect-contents-of-geopackage">Inspect Contents of GeoPackage<a class="anchor" aria-label="anchor" href="#inspect-contents-of-geopackage"></a>
 </h2>
-<p>We can list the table names in a GeoPackage with <code><a href="reference/gpkg_list_tables.html">gpkg_list_tables()</a></code> and fetch pointers (SpatRaster, SpatVectorProxy, and lazy data.frame) to the data in them with <code><a href="reference/gpkg_table.html">gpkg_table()</a></code>. We can check the status of the internal <code>geopackage</code> class <code>SQLiteConnection</code> with <code><a href="reference/gpkg-connnection.html">gpkg_is_connected()</a></code> and disconnect it with <code><a href="reference/gpkg-connnection.html">gpkg_disconnect()</a></code>.</p>
+<p>We can list the table names in a GeoPackage with <code><a href="reference/gpkg_list_tables.html">gpkg_list_tables()</a></code> and fetch pointers (SpatRaster, SpatVectorProxy, and lazy data.frame) to the data in them with <code><a href="reference/gpkg_table.html">gpkg_table()</a></code>. We can check the status of the internal <code>geopackage</code> class <code>SQLiteConnection</code> with <code><a href="reference/gpkg-connection.html">gpkg_is_connected()</a></code> and disconnect it with <code><a href="reference/gpkg-connection.html">gpkg_disconnect()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># enumerate tables</span></span>
 <span><span class="fu"><a href="reference/gpkg_list_tables.html">gpkg_list_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
@@ -422,17 +422,17 @@
 <p>Several helper methods are available for checking GeoPackage <code>SQLiteConnection</code> status, as well as connecting and disconnecting an existing <code>geopackage</code> object (<code>g</code>).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># still connected</span></span>
-<span><span class="fu"><a href="reference/gpkg-connnection.html">gpkg_is_connected</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gpkg-connection.html">gpkg_is_connected</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span></span>
 <span><span class="co"># disconnect geopackage</span></span>
-<span><span class="fu"><a href="reference/gpkg-connnection.html">gpkg_disconnect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gpkg-connection.html">gpkg_disconnect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># reconnect</span></span>
-<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpkg-connnection.html">gpkg_connect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpkg-connection.html">gpkg_connect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># disconnect</span></span>
-<span><span class="fu"><a href="reference/gpkg-connnection.html">gpkg_disconnect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/gpkg-connection.html">gpkg_disconnect</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
