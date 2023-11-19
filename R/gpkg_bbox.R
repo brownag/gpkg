@@ -11,7 +11,7 @@
 #' @export
 #' @examplesIf !inherits(try(requireNamespace("terra", quietly=TRUE), silent=TRUE), 'try-error')
 #' 
-#' \dontrun{
+#' \donttest{
 #' tf <- tempfile(fileext = ".gpkg")
 #' 
 #' r <- terra::rast(system.file("extdata", "dem.tif", package = "gpkg"))

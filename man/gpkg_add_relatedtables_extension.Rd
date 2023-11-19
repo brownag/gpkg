@@ -2,13 +2,16 @@
 % Please edit documentation in R/gpkg-extensions.R
 \name{gpkg_add_relatedtables_extension}
 \alias{gpkg_add_relatedtables_extension}
-\title{Add Related Tables extension}
+\title{Add 'Related Tables' extension}
 \usage{
 gpkg_add_relatedtables_extension(x)
 }
 \arguments{
 \item{x}{a \code{geopackage}}
 }
+\value{
+\code{0} (invisible). Called for side effects.
+}
 \description{
-Add Related Tables extension
+Adds the "Related Tables" extension tables.
 }

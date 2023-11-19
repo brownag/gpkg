@@ -4,7 +4,7 @@ Title: Utilities for the Open Geospatial Consortium 'GeoPackage' Format
 Version: 0.0.7
 Authors@R: person(given="Andrew", family="Brown", email="brown.andrewg@gmail.com", role = c("aut", "cre"))
 Maintainer: Andrew Brown <brown.andrewg@gmail.com>
-Description: Functions to build Open Geospatial Consortium 'GeoPackage' files (<https://www.geopackage.org/>). 'GDAL' utilities for read and write of spatial data are provided via the 'terra' package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the 'RSQLite' package.
+Description: Build Open Geospatial Consortium 'GeoPackage' files (<https://www.geopackage.org/>). 'GDAL' utilities for reading and writing spatial data are provided by the 'terra' package. Additional 'GeoPackage' and 'SQLite' features for attributes and tabular data are implemented with the 'RSQLite' package.
 URL: https://humus.rocks/gpkg/, https://github.com/brownag/gpkg
 BugReports: https://github.com/brownag/gpkg/issues 
 Imports:

@@ -1,7 +1,3 @@
-# cleanup
-if (interactive()) 
-  rm(list = ls())
-
 # RSQLite and terra used heavily in tests
 # d(b)plyr used conditionally
 if (requireNamespace("tinytest", quietly = TRUE)) library(tinytest)

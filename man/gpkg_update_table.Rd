@@ -29,6 +29,9 @@ gpkg_update_table(
 
 \item{query_string}{\emph{logical}. Return SQLite query rather than executing it? Default: \code{FALSE}}
 }
+\value{
+\emph{integer}. Number of rows updated by executing \code{UPDATE} query. Or \code{character} SQL query string if \code{query_string=TRUE}.
+}
 \description{
 For a given table, set column \code{updatecol} to scalar \code{updatevalue} where column \code{wherecol} is in vector \code{wherevector}.
 }

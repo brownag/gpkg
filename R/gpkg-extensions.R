@@ -1,6 +1,9 @@
-#' Add Metadata extension
+#' Add 'Metadata' extension
+#'
+#' Adds the "Metadata" extension tables.
 #'
 #' @param x a `geopackage`
+#' @return `0` (invisible). Called for side effects.
 #' @export
 gpkg_add_metadata_extension <- function(x) {
   tbls <- gpkg_list_tables(x)
@@ -37,13 +40,15 @@ gpkg_add_metadata_extension <- function(x) {
       CONSTRAINT crmr_mfi_fk FOREIGN KEY (md_file_id) REFERENCES gpkg_metadata(id),
       CONSTRAINT crmr_mpi_fk FOREIGN KEY (md_parent_id) REFERENCES gpkg_metadata(id)
     );")
-  
-  0
+  invisible(0)
 }
 
-#' Add Related Tables extension
+#' Add 'Related Tables' extension
 #'
+#' Adds the "Related Tables" extension tables.
+#' 
 #' @param x a `geopackage`
+#' @return `0` (invisible). Called for side effects.
 #' @export
 gpkg_add_relatedtables_extension <- function(x) {
   

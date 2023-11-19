@@ -11,6 +11,7 @@
 #' @param wherecol _character_. Column used to constrain update.
 #' @param wherevector _character_, _numeric_, etc.; Vector of values where update should be made.
 #' @param query_string _logical_. Return SQLite query rather than executing it? Default: `FALSE`
+#' @return _integer_. Number of rows updated by executing `UPDATE` query. Or `character` SQL query string if `query_string=TRUE`.
 #' @export
 gpkg_update_table <- function(x, table_name, 
                               updatecol, updatevalue, 

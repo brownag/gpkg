@@ -6,7 +6,7 @@
 \alias{gpkg-package}
 \title{gpkg: Utilities for the Open Geospatial Consortium 'GeoPackage' Format}
 \description{
-Functions to build Open Geospatial Consortium 'GeoPackage' files (\url{https://www.geopackage.org/}). 'GDAL' utilities for read and write of spatial data are provided via the 'terra' package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the 'RSQLite' package.
+Build Open Geospatial Consortium 'GeoPackage' files (\url{https://www.geopackage.org/}). 'GDAL' utilities for reading and writing spatial data are provided by the 'terra' package. Additional 'GeoPackage' and 'SQLite' features for attributes and tabular data are implemented with the 'RSQLite' package.
 }
 \seealso{
 Useful links:
