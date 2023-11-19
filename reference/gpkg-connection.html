@@ -92,7 +92,7 @@
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The S3 method for <code>geopackage</code> objects requires the use of assignment to create an object containing an active SQLiteConnection. e.g. <code>g &lt;- gpkg_connect(g)</code> or <code>g &lt;- gpkg_connect(g$dsn)</code> or <code>g &lt;- geopackage(..., connect=TRUE)</code></p>
+    <p>The S3 method for <code>geopackage</code> objects does not require the use of assignment to create an object containing an active SQLiteConnection. e.g. <code>gpkg_connect(g)</code> connects the existing <code>geopackage</code> object <code>g</code></p>
     </div>
 
   </div>
