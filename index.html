@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Utilities for the OGC GeoPackage Format • gpkg</title>
+<title>Utilities for the Open Geospatial Consortium GeoPackage Format • gpkg</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Utilities for the OGC GeoPackage Format">
-<meta property="og:description" content="High-level wrapper functions to build Open Geospatial Consortium (OGC) GeoPackage files (&lt;https://www.geopackage.org/&gt;). GDAL utilities for read and write of spatial data are provided via the terra package. Additional GeoPackage and SQLite specific functions manipulate attributes and tabular data via the RSQLite package.">
+<script src="pkgdown.js"></script><meta property="og:title" content="Utilities for the Open Geospatial Consortium GeoPackage Format">
+<meta property="og:description" content="Functions to build Open Geospatial Consortium GeoPackage files (&lt;https://www.geopackage.org/&gt;). GDAL utilities for read and write of spatial data are provided via the terra package. Additional GeoPackage and SQLite specific functions manipulate attributes and tabular data via the RSQLite package.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.7</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>High-level wrapper functions to build <a href="https://www.geopackage.org/" class="external-link">Open Geospatial Consortium (OGC) ‘GeoPackage’ files</a>. <a href="https://www.gdal.org/" class="external-link">GDAL</a> utilities for read and write of spatial data (<a href="https://www.gdal.org/drv_geopackage.html" class="external-link">vector</a> and <a href="https://www.gdal.org/drv_geopackage_raster.html" class="external-link">gridded</a>) are provided via the {<a href="https://cran.r-project.org/package=terra" class="external-link">terra</a>} package. Additional ‘GeoPackage’ and ‘SQLite’ specific functions manipulate attributes and tabular data via the {<a href="https://cran.r-project.org/package=RSQLite" class="external-link">RSQLite</a>} package.</p>
+<p>High-level wrapper functions to build <a href="https://www.geopackage.org/" class="external-link">Open Geospatial Consortium (OGC) ‘GeoPackage’ files</a>. <a href="https://gdal.org/" class="external-link">GDAL</a> utilities for read and write of spatial data (<a href="https://gdal.org/drv_geopackage.html" class="external-link">vector</a> and <a href="https://gdal.org/drv_geopackage_raster.html" class="external-link">gridded</a>) are provided via the {<a href="https://cran.r-project.org/package=terra" class="external-link">terra</a>} package. Additional ‘GeoPackage’ and ‘SQLite’ specific functions manipulate attributes and tabular data via the {<a href="https://cran.r-project.org/package=RSQLite" class="external-link">RSQLite</a>} package.</p>
 <p><a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" class="external-link"> <img src="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png" alt="gpkg hexsticker" title="gpkg hexsticker: {gpkg} provides high-level wrapper functions to build GeoPackages containing a variety of different data." width="35%" height="35%" hspace="25" vspace="25" align="right"></a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -87,7 +87,7 @@
 <div class="section level3">
 <h3 id="what-is-a-geopackage">What is a GeoPackage?<a class="anchor" aria-label="anchor" href="#what-is-a-geopackage"></a>
 </h3>
-<p><a href="https://www.geopackage.org/" class="external-link">GeoPackage</a> is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The <a href="https://www.ogc.org/standards/geopackage" class="external-link">GeoPackage Encoding Standard</a> describes a set of conventions for storing the following within an SQLite database:</p>
+<p><a href="https://www.geopackage.org/" class="external-link">GeoPackage</a> is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The <a href="https://www.ogc.org/standard/geopackage/" class="external-link">GeoPackage Encoding Standard</a> describes a set of conventions for storing the following within an SQLite database:</p>
 <ul>
 <li><p>vector features</p></li>
 <li><p>tile matrix sets of imagery and raster maps at various scales</p></li>
@@ -103,7 +103,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/gpkg/" class="external-link">gpkg</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.33</span></span>
+<span><span class="co">#&gt; terra 1.7.60</span></span>
 <span></span>
 <span><span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dem.tif"</span>, package <span class="op">=</span> <span class="st">"gpkg"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">dem</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -136,7 +136,7 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add bounding polygon vector layer via named list</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span><span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="st">'DEM1'</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span>, ext <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.polygons.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span>, ext <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="va">v</span><span class="op">)</span>, destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -156,17 +156,17 @@
 <span><span class="va">g</span></span>
 <span><span class="co">#&gt; &lt;geopackage&gt;</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; # of Tables: 18</span></span>
+<span><span class="co">#&gt; # of Tables: 20</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  DEM1, DEM2, bbox, gpkg_2d_gridded_coverage_ancillary,</span></span>
 <span><span class="co">#&gt;  gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions,</span></span>
-<span><span class="co">#&gt;  gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys,</span></span>
-<span><span class="co">#&gt;  gpkg_tile_matrix, gpkg_tile_matrix_set, myattr, rtree_bbox_geom,</span></span>
-<span><span class="co">#&gt;  rtree_bbox_geom_node, rtree_bbox_geom_parent, rtree_bbox_geom_rowid,</span></span>
-<span><span class="co">#&gt;  sqlite_sequence</span></span>
+<span><span class="co">#&gt;  gpkg_geometry_columns, gpkg_metadata, gpkg_metadata_reference,</span></span>
+<span><span class="co">#&gt;  gpkg_ogr_contents, gpkg_spatial_ref_sys, gpkg_tile_matrix,</span></span>
+<span><span class="co">#&gt;  gpkg_tile_matrix_set, myattr, rtree_bbox_geom, rtree_bbox_geom_node,</span></span>
+<span><span class="co">#&gt;  rtree_bbox_geom_parent, rtree_bbox_geom_rowid, sqlite_sequence</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
-<span><span class="co">#&gt;   Path: /tmp/RtmpTcoPmX/file14eb059d893a.gpkg</span></span>
+<span><span class="co">#&gt;   Path: /tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg</span></span>
 <span><span class="co">#&gt;   Extensions: TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "geopackage"</span></span></code></pre></div>
@@ -176,21 +176,21 @@
 <span><span class="va">g2</span></span>
 <span><span class="co">#&gt; &lt;geopackage&gt;</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; # of Tables: 16</span></span>
+<span><span class="co">#&gt; # of Tables: 18</span></span>
 <span><span class="co">#&gt;  </span></span>
 <span><span class="co">#&gt;  bbox, dem, gpkg_2d_gridded_coverage_ancillary,</span></span>
 <span><span class="co">#&gt;  gpkg_2d_gridded_tile_ancillary, gpkg_contents, gpkg_extensions,</span></span>
-<span><span class="co">#&gt;  gpkg_geometry_columns, gpkg_ogr_contents, gpkg_spatial_ref_sys,</span></span>
-<span><span class="co">#&gt;  gpkg_tile_matrix, gpkg_tile_matrix_set, rtree_bbox_geom,</span></span>
-<span><span class="co">#&gt;  rtree_bbox_geom_node, rtree_bbox_geom_parent, rtree_bbox_geom_rowid,</span></span>
-<span><span class="co">#&gt;  sqlite_sequence</span></span>
+<span><span class="co">#&gt;  gpkg_geometry_columns, gpkg_metadata, gpkg_metadata_reference,</span></span>
+<span><span class="co">#&gt;  gpkg_ogr_contents, gpkg_spatial_ref_sys, gpkg_tile_matrix,</span></span>
+<span><span class="co">#&gt;  gpkg_tile_matrix_set, rtree_bbox_geom, rtree_bbox_geom_node,</span></span>
+<span><span class="co">#&gt;  rtree_bbox_geom_parent, rtree_bbox_geom_rowid, sqlite_sequence</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
-<span><span class="co">#&gt;   Path: /tmp/RtmpTcoPmX/Rgpkg14eb02cc57f13.gpkg</span></span>
+<span><span class="co">#&gt;   Path: /tmp/RtmpQn6rEk/Rgpkg1dace68186eca.gpkg</span></span>
 <span><span class="co">#&gt;   Extensions: TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "geopackage"</span></span></code></pre></div>
-<p>Note that a temporary GeoPackage (/tmp/RtmpTcoPmX/Rgpkg14eb02cc57f13.gpkg) is automatically created when using the <code>geopackage(&lt;list&gt;)</code> constructor.</p>
+<p>Note that a temporary GeoPackage (/tmp/RtmpQn6rEk/Rgpkg1dace68186eca.gpkg) is automatically created when using the <code>geopackage(&lt;list&gt;)</code> constructor.</p>
 <p>You also may have a <em>DBIConnection</em> to a GeoPackage database already opened that you want to use. In any case (<em>character</em>, <em>list</em>, <em>SQLiteConnection</em>) there is an S3 method to facilitate creating the basic <em>geopackage</em> class provided by {gpkg}. All other methods are designed to be able to work smoothly with <em>geopackage</em> class input.</p>
 </div>
 <div class="section level2">
@@ -204,11 +204,12 @@
 <span><span class="co">#&gt;  [3] "bbox"                               "gpkg_2d_gridded_coverage_ancillary"</span></span>
 <span><span class="co">#&gt;  [5] "gpkg_2d_gridded_tile_ancillary"     "gpkg_contents"                     </span></span>
 <span><span class="co">#&gt;  [7] "gpkg_extensions"                    "gpkg_geometry_columns"             </span></span>
-<span><span class="co">#&gt;  [9] "gpkg_ogr_contents"                  "gpkg_spatial_ref_sys"              </span></span>
-<span><span class="co">#&gt; [11] "gpkg_tile_matrix"                   "gpkg_tile_matrix_set"              </span></span>
-<span><span class="co">#&gt; [13] "myattr"                             "rtree_bbox_geom"                   </span></span>
-<span><span class="co">#&gt; [15] "rtree_bbox_geom_node"               "rtree_bbox_geom_parent"            </span></span>
-<span><span class="co">#&gt; [17] "rtree_bbox_geom_rowid"              "sqlite_sequence"</span></span>
+<span><span class="co">#&gt;  [9] "gpkg_metadata"                      "gpkg_metadata_reference"           </span></span>
+<span><span class="co">#&gt; [11] "gpkg_ogr_contents"                  "gpkg_spatial_ref_sys"              </span></span>
+<span><span class="co">#&gt; [13] "gpkg_tile_matrix"                   "gpkg_tile_matrix_set"              </span></span>
+<span><span class="co">#&gt; [15] "myattr"                             "rtree_bbox_geom"                   </span></span>
+<span><span class="co">#&gt; [17] "rtree_bbox_geom_node"               "rtree_bbox_geom_parent"            </span></span>
+<span><span class="co">#&gt; [19] "rtree_bbox_geom_rowid"              "sqlite_sequence"</span></span>
 <span></span>
 <span><span class="co"># inspect tables</span></span>
 <span><span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
@@ -218,9 +219,11 @@
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file14eb059d893a.gpkg:DEM1 </span></span>
-<span><span class="co">#&gt; varname     : file14eb059d893a </span></span>
+<span><span class="co">#&gt; source      : file1dace273bcd3c.gpkg:DEM1 </span></span>
+<span><span class="co">#&gt; varname     : file1dace273bcd3c </span></span>
 <span><span class="co">#&gt; name        : DEM1 </span></span>
+<span><span class="co">#&gt; min value   :  195 </span></span>
+<span><span class="co">#&gt; max value   :  500 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $DEM2</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
@@ -228,15 +231,15 @@
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file14eb059d893a.gpkg:DEM2 </span></span>
-<span><span class="co">#&gt; varname     : file14eb059d893a </span></span>
+<span><span class="co">#&gt; source      : file1dace273bcd3c.gpkg:DEM2 </span></span>
+<span><span class="co">#&gt; varname     : file1dace273bcd3c </span></span>
 <span><span class="co">#&gt; name        : DEM2 </span></span>
 <span><span class="co">#&gt; min value   :  195 </span></span>
 <span><span class="co">#&gt; max value   :  500 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $myattr</span></span>
 <span><span class="co">#&gt; # Source:   table&lt;myattr&gt; [10 x 2]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/tmp/RtmpTcoPmX/file14eb059d893a.gpkg]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg]</span></span>
 <span><span class="co">#&gt;        a b    </span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;</span></span>
 <span><span class="co">#&gt;  1     1 A    </span></span>
@@ -255,7 +258,8 @@
 <span><span class="co">#&gt;  geometry    : polygons </span></span>
 <span><span class="co">#&gt;  dimensions  : 1, 0  (geometries, attributes)</span></span>
 <span><span class="co">#&gt;  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt;  source      : file14eb059d893a.gpkg (bbox)</span></span>
+<span><span class="co">#&gt;  source      : file1dace273bcd3c.gpkg (bbox)</span></span>
+<span><span class="co">#&gt;  layer       : bbox </span></span>
 <span><span class="co">#&gt;  coord. ref. : lon/lat WGS 84 (EPSG:4326)</span></span>
 <span></span>
 <span><span class="co"># inspect a specific table</span></span>
@@ -282,13 +286,13 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gpkg_table.html">gpkg_tbl</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Source:   table&lt;gpkg_contents&gt; [4 x 10]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/tmp/RtmpTcoPmX/file14eb059d893a.gpkg]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg]</span></span>
 <span><span class="co">#&gt;   table_name data_type   identifier description last_change   min_x min_y  max_x</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 DEM1       2d-gridded… DEM1       ""          2023-05-22…    6.01  49.7   6.27</span></span>
-<span><span class="co">#&gt; 2 DEM2       2d-gridded… DEM2       ""          2023-05-22…    6.01  49.7   6.27</span></span>
-<span><span class="co">#&gt; 3 bbox       features    bbox       ""          2023-05-22…    6.01  49.7   6.27</span></span>
-<span><span class="co">#&gt; 4 myattr     attributes  myattr     ""          2023-05-21… -180    -90   180   </span></span>
+<span><span class="co">#&gt; 1 DEM1       2d-gridded… DEM1       ""          2023-11-19…    6.01  49.7   6.27</span></span>
+<span><span class="co">#&gt; 2 DEM2       2d-gridded… DEM2       ""          2023-11-19…    6.01  49.7   6.27</span></span>
+<span><span class="co">#&gt; 3 bbox       features    bbox       ""          2023-11-19…    6.01  49.7   6.27</span></span>
+<span><span class="co">#&gt; 4 myattr     attributes  myattr     ""          2023-11-18… -180    -90   180   </span></span>
 <span><span class="co">#&gt; # ℹ 2 more variables: max_y &lt;dbl&gt;, srs_id &lt;int&gt;</span></span></code></pre></div>
 <p>More on how to use this type of result next.</p>
 <div class="section level3">
@@ -302,13 +306,13 @@
 <p><code><a href="reference/gpkg_table.html">gpkg_table_pragma()</a></code> is a low-frills <code>data.frame</code> result containing important table information, but not values. The <code>PRAGMA table_info()</code> is stored as a nested data.frame <code>table_info</code>. This representation has no dependencies beyond {RSQLite} and is efficient for inspection of table structure and attributes, though it is less useful for data analysis.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/gpkg_table.html">gpkg_table_pragma</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                     dsn table_name nrow table_info.cid</span></span>
-<span><span class="co">#&gt; 1 /tmp/RtmpTcoPmX/file14eb059d893a.gpkg       DEM1    1              0</span></span>
-<span><span class="co">#&gt; 2 /tmp/RtmpTcoPmX/file14eb059d893a.gpkg       DEM1    1              1</span></span>
-<span><span class="co">#&gt; 3 /tmp/RtmpTcoPmX/file14eb059d893a.gpkg       DEM1    1              2</span></span>
-<span><span class="co">#&gt; 4 /tmp/RtmpTcoPmX/file14eb059d893a.gpkg       DEM1    1              3</span></span>
-<span><span class="co">#&gt; 5 /tmp/RtmpTcoPmX/file14eb059d893a.gpkg       DEM1    1              4</span></span>
-<span><span class="co">#&gt; 6 /tmp/RtmpTcoPmX/file14eb059d893a.gpkg       DEM2    1              0</span></span>
+<span><span class="co">#&gt;                                      dsn table_name nrow table_info.cid</span></span>
+<span><span class="co">#&gt; 1 /tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg       DEM1    1              0</span></span>
+<span><span class="co">#&gt; 2 /tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg       DEM1    1              1</span></span>
+<span><span class="co">#&gt; 3 /tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg       DEM1    1              2</span></span>
+<span><span class="co">#&gt; 4 /tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg       DEM1    1              3</span></span>
+<span><span class="co">#&gt; 5 /tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg       DEM1    1              4</span></span>
+<span><span class="co">#&gt; 6 /tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg       DEM2    1              0</span></span>
 <span><span class="co">#&gt;   table_info.name table_info.type table_info.notnull table_info.dflt_value</span></span>
 <span><span class="co">#&gt; 1              id         INTEGER                  0                  &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2      zoom_level         INTEGER                  1                  &lt;NA&gt;</span></span>
@@ -335,7 +339,7 @@
 <span><span class="co">#&gt;  geometry    : polygons </span></span>
 <span><span class="co">#&gt;  dimensions  : 1, 0  (geometries, attributes)</span></span>
 <span><span class="co">#&gt;  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt;  source      : file14eb059d893a.gpkg (bbox)</span></span>
+<span><span class="co">#&gt;  source      : file1dace273bcd3c.gpkg (bbox)</span></span>
 <span><span class="co">#&gt;  coord. ref. : lon/lat WGS 84 (EPSG:4326)</span></span></code></pre></div>
 <p>The table of interest need not have a geometry column, but this method does not work on GeoPackage that contain only gridded data, and some layer in the GeoPackage must have some geometry.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -344,7 +348,7 @@
 <span><span class="co">#&gt;  geometry    : none </span></span>
 <span><span class="co">#&gt;  dimensions  : 0, 2  (geometries, attributes)</span></span>
 <span><span class="co">#&gt;  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt;  source      : file14eb059d893a.gpkg (SELECT)</span></span>
+<span><span class="co">#&gt;  source      : file1dace273bcd3c.gpkg (SELECT)</span></span>
 <span><span class="co">#&gt;  coord. ref. :  </span></span>
 <span><span class="co">#&gt;  names       : table_name feature_count</span></span>
 <span><span class="co">#&gt;  type        :      &lt;chr&gt;         &lt;int&gt;</span></span></code></pre></div>
@@ -375,13 +379,13 @@
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; sources     : file14eb059d893a.gpkg:DEM1  </span></span>
-<span><span class="co">#&gt;               file14eb059d893a.gpkg:DEM2  </span></span>
-<span><span class="co">#&gt; varnames    : file14eb059d893a </span></span>
-<span><span class="co">#&gt;               file14eb059d893a </span></span>
+<span><span class="co">#&gt; sources     : file1dace273bcd3c.gpkg:DEM1  </span></span>
+<span><span class="co">#&gt;               file1dace273bcd3c.gpkg:DEM2  </span></span>
+<span><span class="co">#&gt; varnames    : file1dace273bcd3c </span></span>
+<span><span class="co">#&gt;               file1dace273bcd3c </span></span>
 <span><span class="co">#&gt; names       : DEM1, DEM2 </span></span>
-<span><span class="co">#&gt; min values  :   ? ,  195 </span></span>
-<span><span class="co">#&gt; max values  :   ? ,  500</span></span></code></pre></div>
+<span><span class="co">#&gt; min values  :  195,  195 </span></span>
+<span><span class="co">#&gt; max values  :  500,  500</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="method-4-gpkg_table">Method 4: <code>gpkg_table()</code>
@@ -393,13 +397,13 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gpkg_table.html">gpkg_table</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Source:   table&lt;gpkg_contents&gt; [4 x 10]</span></span>
-<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/tmp/RtmpTcoPmX/file14eb059d893a.gpkg]</span></span>
+<span><span class="co">#&gt; # Database: sqlite 3.41.2 [/tmp/RtmpQn6rEk/file1dace273bcd3c.gpkg]</span></span>
 <span><span class="co">#&gt;   table_name data_type   identifier description last_change   min_x min_y  max_x</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 DEM1       2d-gridded… DEM1       ""          2023-05-22…    6.01  49.7   6.27</span></span>
-<span><span class="co">#&gt; 2 DEM2       2d-gridded… DEM2       ""          2023-05-22…    6.01  49.7   6.27</span></span>
-<span><span class="co">#&gt; 3 bbox       features    bbox       ""          2023-05-22…    6.01  49.7   6.27</span></span>
-<span><span class="co">#&gt; 4 myattr     attributes  myattr     ""          2023-05-21… -180    -90   180   </span></span>
+<span><span class="co">#&gt; 1 DEM1       2d-gridded… DEM1       ""          2023-11-19…    6.01  49.7   6.27</span></span>
+<span><span class="co">#&gt; 2 DEM2       2d-gridded… DEM2       ""          2023-11-19…    6.01  49.7   6.27</span></span>
+<span><span class="co">#&gt; 3 bbox       features    bbox       ""          2023-11-19…    6.01  49.7   6.27</span></span>
+<span><span class="co">#&gt; 4 myattr     attributes  myattr     ""          2023-11-18… -180    -90   180   </span></span>
 <span><span class="co">#&gt; # ℹ 2 more variables: max_y &lt;dbl&gt;, srs_id &lt;int&gt;</span></span></code></pre></div>
 <p>As a more complicated example we access the <code>gpkg_2d_gridded_tile_ancillary</code> table, and perform some data processing.</p>
 <p>We <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> <code>mean</code> and <code>std_dev</code> columns from the <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>ed rows where <code>tpudt_name == "DEM2"</code>. Finally we materialize a <code>tibble</code> with <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">dplyr::collect()</a></code>:</p>
