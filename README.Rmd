@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/brownag/gpkg/branch/main/graph/badge.svg)](https://app.codecov.io/gh/brownag/gpkg?branch=main)
 <!-- badges: end -->
 
-High-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://www.geopackage.org/). [GDAL](https://www.gdal.org/) utilities for read and write of spatial data ([vector](https://www.gdal.org/drv_geopackage.html) and [gridded](https://www.gdal.org/drv_geopackage_raster.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
+High-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://www.geopackage.org/). [GDAL](https://gdal.org/) utilities for read and write of spatial data ([vector](https://gdal.org/drv_geopackage.html) and [gridded](https://gdal.org/drv_geopackage_raster.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
 
 
 <a href="https://raw.githubusercontent.com/brownag/gpkg/main/man/figures/gpkg_sticker_v1.png">
@@ -41,7 +41,7 @@ remotes::install_github("brownag/gpkg")
 ## Background
 ### What is a GeoPackage?
 
-[GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standards/geopackage) describes a set of conventions for storing the following within an SQLite database:
+[GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standard/geopackage/) describes a set of conventions for storing the following within an SQLite database:
 
   *  vector features
   

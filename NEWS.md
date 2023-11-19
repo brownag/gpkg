@@ -1,3 +1,7 @@
+# gpkg 0.0.7
+
+ - Added `gpkg_bbox()` as an application of `gpkg_ogr_query()`
+ 
 # gpkg 0.0.6
 
  - `geopackage()` internal connection object has been moved to an internal environment (`<geopackage>$env$con` rather than `<geopackage>$con`)
