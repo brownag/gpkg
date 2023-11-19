@@ -17,7 +17,7 @@ Suggests:
     tinytest,
     dplyr,
     dbplyr
-License: GPL-3 + file LICENSE
+License: CC0
 Depends: R (>= 3.1.0)
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)

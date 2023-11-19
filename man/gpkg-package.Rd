@@ -4,9 +4,9 @@
 \name{gpkg-package}
 \alias{gpkg}
 \alias{gpkg-package}
-\title{gpkg: Utilities for the OGC 'GeoPackage' Format}
+\title{gpkg: Utilities for the Open Geospatial Consortium 'GeoPackage' Format}
 \description{
-High-level wrapper functions to build Open Geospatial Consortium (OGC) 'GeoPackage' files (\url{https://www.geopackage.org/}). 'GDAL' utilities for read and write of spatial data are provided via the 'terra' package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the 'RSQLite' package.
+Functions to build Open Geospatial Consortium 'GeoPackage' files (\url{https://www.geopackage.org/}). 'GDAL' utilities for read and write of spatial data are provided via the 'terra' package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the 'RSQLite' package.
 }
 \seealso{
 Useful links:

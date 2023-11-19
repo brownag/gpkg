@@ -3,8 +3,7 @@
 #'
 #' Method for creating and connecting `SQLiteConnection` object stored within `geopackage` object.
 #' 
-#' @details The S3 method for `geopackage` objects requires the use of assignment to create an object containing an active SQLiteConnection. e.g. `g <- gpkg_connect(g)` or `g <- gpkg_connect(g$dsn)` or `g <- geopackage(..., connect=TRUE)`
-#'
+#' @details The S3 method for `geopackage` objects does not require the use of assignment to create an object containing an active SQLiteConnection. e.g. `gpkg_connect(g)` connects the existing `geopackage` object `g`
 #' @param x Path to GeoPackage
 #'
 #' @return A DBIConnection (SQLiteConnection) object. `NULL` on error.

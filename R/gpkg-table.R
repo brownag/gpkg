@@ -93,6 +93,8 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 #'   dplyr::filter(tpudt_name == "DEM2") %>% 
 #'   dplyr::select(mean, std_dev) %>% 
 #'   dplyr::collect()
+#' 
+#' gpkg_disconnect(g)
 gpkg_table <- function(x,
                        table_name,
                        collect = FALSE,

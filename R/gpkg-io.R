@@ -56,7 +56,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
   names(res2) <- do.call('c', lapply(res, function(x) names(x$tables)))
   g <- geopackage(res2, dsn = x)
   if (connect) {
-    g <- gpkg_connect(g)
+    gpkg_connect(g)
   }
   g
 }

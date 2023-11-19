@@ -7,3 +7,6 @@ misc
 ^data-raw$
 ^\.github$
 ^codecov\.yml$
+^cran-comments\.md$
+^LICENSE\.md$
+^CRAN-SUBMISSION$

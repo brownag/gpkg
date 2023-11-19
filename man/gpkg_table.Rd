@@ -97,4 +97,6 @@ gpkg_table(g, "gpkg_2d_gridded_tile_ancillary") \%>\%
   dplyr::filter(tpudt_name == "DEM2") \%>\% 
   dplyr::select(mean, std_dev) \%>\% 
   dplyr::collect()
+
+gpkg_disconnect(g)
 }

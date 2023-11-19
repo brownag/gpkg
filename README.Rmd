@@ -30,7 +30,13 @@ High-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPack
 
 ## Installation
 
-The package can be installed from GitHub with {remotes}
+Install the latest release from CRAN:
+
+```r
+install.packages("gpkg")
+```
+
+The development package can be installed from GitHub with {remotes}
 
 ```r
 if (!requireNamespace("remotes")) 
@@ -247,7 +253,7 @@ gpkg_is_connected(g)
 gpkg_disconnect(g)
 
 # reconnect
-g <- gpkg_connect(g)
+gpkg_connect(g)
 
 # disconnect
 gpkg_disconnect(g)

@@ -39,5 +39,5 @@ If \code{x} is \emph{geopackage}, the disconnected object is returned. If x is a
 Method for creating and connecting \code{SQLiteConnection} object stored within \code{geopackage} object.
 }
 \details{
-The S3 method for \code{geopackage} objects requires the use of assignment to create an object containing an active SQLiteConnection. e.g. \code{g <- gpkg_connect(g)} or \code{g <- gpkg_connect(g$dsn)} or \code{g <- geopackage(..., connect=TRUE)}
+The S3 method for \code{geopackage} objects does not require the use of assignment to create an object containing an active SQLiteConnection. e.g. \code{gpkg_connect(g)} connects the existing \code{geopackage} object \code{g}
 }
