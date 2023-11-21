@@ -15,7 +15,7 @@
 #' tf <- tempfile(fileext = ".gpkg")
 #' 
 #' r <- terra::rast(system.file("extdata", "dem.tif", package = "gpkg"))
-#' v <- as.polygons(r, ext = TRUE)
+#' v <- terra::as.polygons(r, ext = TRUE)
 #' g <- geopackage(list(bbox = v))
 #' 
 #' gpkg_bbox(g, 'bbox')
