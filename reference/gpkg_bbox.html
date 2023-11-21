@@ -86,13 +86,18 @@
 <span class="r-in"><span><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".gpkg"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dem.tif"</span>, package <span class="op">=</span> <span class="st">"gpkg"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.polygons.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span>, ext <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as.polygons(r, ext = TRUE):</span> could not find function "as.polygons"</span>
+<span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.polygons.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span>, ext <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="va">v</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'v' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_bbox</span><span class="op">(</span><span class="va">g</span>, <span class="st">'bbox'</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'g' not found</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>In ExecuteSQL(): sqlite3_prepare_v2(SELECT </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>                                                  ST_MinX(geom) AS xmin,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>                                                  ST_MinY(geom) AS ymin,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>                                                  ST_MaxX(geom) AS xmax,</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>                                                  ST_MaxY(geom) AS ymax</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>                                                FROM ):</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   incomplete input (GDAL error 1)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> [vect] Query failed</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
