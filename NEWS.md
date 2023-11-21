@@ -1,3 +1,7 @@
+# gpkg 0.0.8
+
+ - Added `gpkg_create_spatial_view()` for creating spatial views, which dynamic layers that are accessible as if they were typical static geometry layers (for #6).
+
 # gpkg 0.0.7
 
  - Added `gpkg_bbox()` as an application of `gpkg_ogr_query()`
