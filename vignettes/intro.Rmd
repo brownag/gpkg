@@ -1,0 +1,230 @@
+---
+title: "Introduction to gpkg"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to gpkg}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Background
+### What is a GeoPackage?
+
+[GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standard/geopackage/) describes a set of conventions for storing the following within an SQLite database:
+
+  *  vector features
+  
+  *  tile matrix sets of imagery and raster maps at various scales
+  
+  *  attributes (non-spatial data)
+  
+  *  extensions
+
+## Create a Geopackage
+
+`gpkg_write()` can handle a variety of different input types. Here we start by adding two DEM (GeoTIFF) files.
+
+```{r}
+library(gpkg)
+library(terra)
+
+dem <- system.file("extdata", "dem.tif", package = "gpkg")
+stopifnot(nchar(dem) > 0)
+gpkg_tmp <- tempfile(fileext = ".gpkg")
+
+if (file.exists(gpkg_tmp))
+  file.remove(gpkg_tmp)
+
+# write a gpkg with two DEMs in it
+gpkg_write(
+  dem,
+  destfile = gpkg_tmp,
+  RASTER_TABLE = "DEM1",
+  FIELD_NAME = "Elevation"
+)
+
+gpkg_write(
+  dem,
+  destfile = gpkg_tmp,
+  append = TRUE,
+  RASTER_TABLE = "DEM2",
+  FIELD_NAME = "Elevation",
+  NoData = -9999
+)
+```
+
+## Insert Vector Layers
+
+We can also write vector data to GeoPackage. Here we use `gpkg_write()` to add a bounding box polygon layer derived from extent of `"DEM1"`.
+
+```{r}
+# add bounding polygon vector layer via named list
+r <- gpkg_tables(geopackage(gpkg_tmp))[['DEM1']]
+v <- terra::as.polygons(r, ext = TRUE)
+gpkg_write(list(bbox = v), destfile = gpkg_tmp, append = TRUE)
+```
+
+## Insert Attribute Table
+
+Similarly, `data.frame`-like objects (non-spatial "attributes") can be written to GeoPackage.
+
+```{r}
+z <- data.frame(a = 1:10, b = LETTERS[1:10])
+gpkg_write(list(myattr = z), destfile = gpkg_tmp, append = TRUE)
+```
+
+## Read a GeoPackage
+
+`geopackage()` is a constructor that can create a simple container for working with geopackages from several types of inputs. Often you will have a _character_ file path to a GeoPackage (.gpkg) file. 
+
+```{r}
+g <- geopackage(gpkg_tmp, connect = TRUE)
+g
+class(g)
+```
+
+Other times you may have a list of tables and layers you want to be in a GeoPackage that does not exist yet. 
+
+```{r}
+g2 <- geopackage(list(dem = r, bbox = v))
+g2
+class(g2)
+```
+
+Note that a temporary GeoPackage (`r g2$dsn`) is automatically created when using the `geopackage(<list>)` constructor. 
+
+You also may have a _DBIConnection_ to a GeoPackage database already opened that you want to use. In any case (_character_, _list_, _SQLiteConnection_) there is an S3 method to facilitate creating the basic _geopackage_ class provided by {gpkg}. All other methods are designed to be able to work smoothly with _geopackage_ class input.
+
+## Inspect Contents of GeoPackage
+
+We can list the table names in a GeoPackage with `gpkg_list_tables()` and fetch pointers (SpatRaster, SpatVectorProxy, and lazy data.frame) to the data in them with `gpkg_table()`. We can check the status of the internal `geopackage` class `SQLiteConnection` with `gpkg_is_connected()` and disconnect it with `gpkg_disconnect()`.
+
+```{r}
+# enumerate tables
+gpkg_list_tables(g)
+
+# inspect tables
+gpkg_tables(g)
+
+# inspect a specific table
+gpkg_table(g, "myattr", collect = TRUE)
+```
+
+Note that the `collect = TRUE` forces data be loaded into R memory for vector and attribute data; this is the difference in result object class of _SpatVectorProxy_/_SpatVector_ and _tbl_SQLiteConnection_/_data.frame_ for vector and attribute data, respectively.
+
+`gpkg_collect()` is a helper method to call `gpkg_table(..., collect = TRUE)` for in-memory loading of specific tables.
+
+```{r}
+gpkg_collect(g, "DEM1")
+```
+
+Note that with grid data returned from `gpkg_collect()` you get a table result with the tile contents in a blob column of a _data.frame_ instead of _SpatRaster_ object.
+
+The inverse function of `gpkg_collect()` is `gpkg_tbl()` which always returns a _tbl_SQLiteConnection_.
+
+```{r}
+gpkg_tbl(g, "gpkg_contents")
+```
+
+More on how to use this type of result next.
+ 
+### Lazy Data Access
+
+There are several other methods that can be used for working with tabular data in a GeoPackage in a "lazy" fashion.
+
+#### Method 1: `gpkg_table_pragma()`
+
+`gpkg_table_pragma()` is a low-frills `data.frame` result containing important table information, but not values.  The `PRAGMA table_info()` is stored as a nested data.frame `table_info`. This representation has no dependencies beyond {RSQLite} and is efficient for inspection of table structure and attributes, though it is less useful for data analysis.
+
+```{r}
+head(gpkg_table_pragma(g))
+```
+
+#### Method 2:  `gpkg_vect()` and `gpkg_query()`
+
+`gpkg_vect()` is a wrapper around `terra::vect()` you can use to create 'terra' `SpatVector` objects from the tables found in a GeoPackage. 
+```{r}
+gpkg_vect(g, 'bbox')
+```
+
+The table of interest need not have a geometry column, but this method does not work on GeoPackage that contain only gridded data, and some layer in the GeoPackage must have some geometry. 
+
+```{r}
+gpkg_vect(g, 'gpkg_ogr_contents')
+```
+
+The _SpatVectorProxy_ is used for "lazy" references to of vector and attribute contents of a GeoPackage; this object for vector data is analogous to the _SpatRaster_ for gridded data. The 'terra' package provides "GDAL plumbing" for filter and query utilities. 
+
+`gpkg_query()` by default uses the 'RSQLite' driver, but the richer capabilities of OGR data sources can be harnessed with [SQLite SQL dialect](https://gdal.org/user/sql_sqlite_dialect.html). These additional features can be utilized with the `ogr=TRUE` argument to `gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that GDAL is built with support for SQLite (and ideally also with support for Spatialite).
+
+For example, we use built-in functions such as `ST_MinX()` to calculate summaries for `"bbox"` table, geometry column `"geom"`. In this case we expect the calculated quantities to match the coordinates/boundaries of the bounding box:
+
+```{r}
+res <- gpkg_ogr_query(g, "SELECT 
+                           ST_MinX(geom) AS xmin,
+                           ST_MinY(geom) AS ymin, 
+                           ST_MaxX(geom) AS xmax, 
+                           ST_MaxY(geom) AS ymax 
+                          FROM bbox")
+as.data.frame(res)
+```
+
+#### Method 3: `gpkg_rast()`
+
+Using `gpkg_rast()` you can quickly access references to all tile/gridded datasets in a GeoPackage.
+
+For example: 
+
+```{r}
+gpkg_rast(g)
+```
+
+#### Method 4: `gpkg_table()`
+
+With the `gpkg_table()` method you access a specific table (by name) and get a "lazy" `tibble` object referencing that table. 
+
+This is achieved via {dplyr} and the {dbplyr} database connection to the GeoPackage via the {RSQLite} driver. The resulting object's data can be used in more complex analyses by using other {dbplyr}/{tidyverse} functions.
+
+For example, we inspect the contents of the `gpkg_contents` table that contains critical information on the data contained in a GeoPackage.
+
+```{r}
+gpkg_table(g, "gpkg_contents")
+```
+
+As a more complicated example we access the `gpkg_2d_gridded_tile_ancillary` table, and perform some data processing.
+
+We `dplyr::select()` `mean` and `std_dev` columns from the `dplyr::filter()`ed rows where `tpudt_name == "DEM2"`. Finally we materialize a `tibble`  with `dplyr::collect()`:
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+
+gpkg_table(g, "gpkg_2d_gridded_tile_ancillary") %>% 
+  filter(tpudt_name == "DEM2") %>% 
+  select(mean, std_dev) %>% 
+  collect()
+```
+
+### Managing Connections
+
+Several helper methods are available for checking GeoPackage `SQLiteConnection` status, as well as connecting and disconnecting an existing `geopackage` object (`g`).
+
+```{r}
+# still connected
+gpkg_is_connected(g)
+
+# disconnect geopackage
+gpkg_disconnect(g)
+
+# reconnect
+gpkg_connect(g)
+
+# disconnect
+gpkg_disconnect(g)
+```
