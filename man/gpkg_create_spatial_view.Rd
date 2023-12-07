@@ -10,6 +10,7 @@ gpkg_create_spatial_view(
   viewquery,
   geom_column = "geom",
   geometry_type_name = "GEOMETRY",
+  spatialite_computed = FALSE,
   data_type = "features",
   srs_id = 4326,
   z = 0,
@@ -27,16 +28,21 @@ gpkg_create_spatial_view(
 
 \item{geometry_type_name}{\emph{character}. View geometry type. Default: \code{"GEOMETRY"}}
 
+\item{spatialite_computed}{\emph{logical}. Register definition of \code{geom_column} as
+the result of a Spatialite spatial function via
+\code{"gdal_spatialite_computed_geom_column"} extension.
+Default: \code{FALSE}}
+
 \item{data_type}{\emph{character}. View data type. Default \code{"features"}}
 
-\item{srs_id}{integer. Spatial Reference System ID. Default: \code{4326} (WGS84)}
+\item{srs_id}{\emph{integer}. Spatial Reference System ID. Default: \code{4326} (WGS84)}
 
-\item{z}{integer. Default: \code{0}}
+\item{z}{\emph{integer}. Default: \code{0}}
 
-\item{m}{integer. Default: \code{0}}
+\item{m}{\emph{integer}. Default: \code{0}}
 }
 \value{
-\code{1} if a new record in \code{gpkg_geometry_columns} is successfully made.
+\emph{integer}. Returns \code{1} if a new record in \code{gpkg_geometry_columns} is successfully made.
 }
 \description{
 Create a Spatial View

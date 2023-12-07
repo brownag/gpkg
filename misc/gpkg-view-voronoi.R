@@ -17,7 +17,8 @@ gpkg_create_spatial_view(g, "my_vor", "SELECT lux.fid AS OGC_FID,
                                               ST_VoronojDiagram(geom) AS geom2 
                                        FROM lux WHERE ID_2 <= 3", 
                          geom_column = "geom2", 
-                         geometry_type_name = "MULTIPOLYGON") 
+                         geometry_type_name = "MULTIPOLYGON",
+                         spatialite_computed = TRUE) 
                          # NB: terra::vect() sensitive to geom type
 gpkg_contents(g)
 
