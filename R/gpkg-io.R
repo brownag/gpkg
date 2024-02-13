@@ -102,7 +102,7 @@ gpkg_write <- function(x,
 }
 
 .gpkg_process_sources <- function(x, ...) {
-  if (!is.list(x)) {
+  if (!is.list(x) || is.data.frame(x)) {
     x <- list(x)
   }
   
