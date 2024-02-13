@@ -28,7 +28,14 @@ gpkg_tables.geopackage <- function(x, collect = FALSE, pragma = FALSE) {
   unlist(lapply(names(y), function(z) {
     switch(z, 
            "2d-gridded-coverage" = { sapply(y[[z]]$table_name, function(i) terra::rast(src, i)) },
-           "features" = { sapply(y[[z]]$table_name, function(i) terra::vect(src, proxy = !collect, layer = i)) },
+           "features" = { sapply(y[[z]]$table_name, function(i) {
+             res <- try(terra::vect(src, proxy = !collect, layer = i), silent = TRUE)
+             if (inherits(res, 'try-error')) {
+               message(i, " : ", res[1])
+               res <- .LAZY.FUN(xx, table_name = i)
+             }
+             res
+            }) },
            "attributes" = { sapply(y[[z]]$table_name, function(i) list(.LAZY.FUN(xx, table_name = i))) })
   }), recursive = FALSE)
 }
