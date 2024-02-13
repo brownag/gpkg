@@ -18,3 +18,4 @@ gpkg_table(x, "muaggatt_sda")
 gpkg_contents(x)
 y <- gpkg_tables(x)
 y[["muaggatt_sda"]]
+y[["mupoint"]]
