@@ -11,7 +11,7 @@ all_ssurgo
 v <- gpkg_vect(all_ssurgo, "sapolygon")
 plot(v)
 
-gpkg_table(all_ssurgo, "sdvcatalog")
+gpkg_table(all_ssurgo, "sacatalog")
 
 # terra query very powerful / fast on large 100GB gpkg
 gpkg_vect(all_ssurgo, "mupolygon", proxy = TRUE) |>

@@ -17,4 +17,4 @@ gpkg_update_contents(x)
 gpkg_table(x, "muaggatt_sda")
 gpkg_contents(x)
 y <- gpkg_tables(x)
-y
+y[["muaggatt_sda"]]
