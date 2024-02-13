@@ -291,6 +291,10 @@ gpkg_write <- function(x,
 
   gdal_options <- unique(c(gdal_options, .lut_gpkg_creation(...)))
   
+  if (inherits(x, 'SpatVectorProxy')) {
+    x <- terra::query(x)
+  }
+  
   if (!inherits(x, 'SpatVector')) {
     x <- terra::vect(x)
   }
