@@ -79,18 +79,18 @@
 
 
 <dt>ogr</dt>
-<dd><p><em>logical</em>. Use the OGR query interface (via <code><a href="https://rdrr.io/pkg/terra/man/query.html" class="external-link">terra::query()</a></code>). See details. Default: <code>FALSE</code> uses 'RSQLite' driver instead of 'terra'.</p></dd>
+<dd><p><em>logical</em>. Use the OGR query interface (via <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code>). See details. Default: <code>FALSE</code> uses 'RSQLite' driver instead of 'terra'.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Additional arguments to <code><a href="https://rdrr.io/pkg/terra/man/query.html" class="external-link">terra::query()</a></code> (such as  <code>start</code>, <code>n</code>, <code>vars</code>, <code>where</code>, <code>extent</code>, <code>filter</code>) are passed when <code>ogr=TRUE</code> (or using alias <code>gpkg_ogr_query()</code>). Otherwise not used.</p></dd>
+<dd><p>Additional arguments to <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code> (such as  <code>start</code>, <code>n</code>, <code>vars</code>, <code>where</code>, <code>extent</code>, <code>filter</code>) are passed when <code>ogr=TRUE</code> (or using alias <code>gpkg_ogr_query()</code>). Otherwise not used.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>a <em>data.frame</em> result of <code>RSQLite::dbGetQuery()</code> or <em>SpatVector</em> result from <code><a href="https://rdrr.io/pkg/terra/man/query.html" class="external-link">terra::query()</a></code>.</p>
+<p>a <em>data.frame</em> result of <code>RSQLite::dbGetQuery()</code> or <em>SpatVector</em> result from <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>

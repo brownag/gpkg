@@ -105,7 +105,7 @@ gpkg_tbl(): shorthand for gpkg_table(..., collect=FALSE)(default) that always re
 
 
 <dt>...</dt>
-<dd><p>Additional arguments. In <code>gpkg_table()</code> arguments in <code>...</code> are passed to <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">dplyr::tbl()</a></code>. For <code>gpkg_table_pragma()</code>, <code>...</code> arguments are (currently) not used. For <code>gpkg_rast()</code> additional arguments are passed to <code><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">terra::rast()</a></code>. For <code>gpkg_vect()</code> additional arguments (such as <code>proxy=TRUE</code>) are passed to <code><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">terra::vect()</a></code>.</p></dd>
+<dd><p>Additional arguments. In <code>gpkg_table()</code> arguments in <code>...</code> are passed to <code><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">dplyr::tbl()</a></code>. For <code>gpkg_table_pragma()</code>, <code>...</code> arguments are (currently) not used. For <code>gpkg_rast()</code> additional arguments are passed to <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">terra::rast()</a></code>. For <code>gpkg_vect()</code> additional arguments (such as <code>proxy=TRUE</code>) are passed to <code><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">terra::vect()</a></code>.</p></dd>
 
 
 <dt>collect</dt>
@@ -144,7 +144,7 @@ gpkg_tbl(): shorthand for gpkg_table(..., collect=FALSE)(default) that always re
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".gpkg"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dem.tif"</span>, package <span class="op">=</span> <span class="st">"gpkg"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dem.tif"</span>, package <span class="op">=</span> <span class="st">"gpkg"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="va">r</span>,</span></span>
 <span class="r-in"><span>           destfile <span class="op">=</span> <span class="va">tf</span>,</span></span>
@@ -162,11 +162,11 @@ gpkg_tbl(): shorthand for gpkg_table(..., collect=FALSE)(default) that always re
 <span class="r-in"><span><span class="co"># inspect gpkg_contents table</span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_table</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;gpkg_contents&gt; [2 x 10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.43.2 [/tmp/RtmpUm9LoX/file1b55a75dd9c.gpkg]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/RtmpxHu7rT/file1bea666492e0.gpkg]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   table_name data_type      identifier description last_change min_x min_y max_x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2023-12-07…  6.01  49.7  6.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2023-12-07…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2024-02-19…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2024-02-19…  6.01  49.7  6.27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: max_y &lt;dbl&gt;, srs_id &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_vect</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
@@ -174,7 +174,7 @@ gpkg_tbl(): shorthand for gpkg_table(..., collect=FALSE)(default) that always re
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geometry    : none </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  dimensions  : 0, 10  (geometries, attributes)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  source      : file1b55a75dd9c.gpkg (SELECT)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  source      : file1bea666492e0.gpkg (SELECT)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  coord. ref. :  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  names       : table_name data_type identifier description last_change min_x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  type        :      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;num&gt;</span>

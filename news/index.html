@@ -59,7 +59,13 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.8" id="gpkg-008">gpkg 0.0.8<a class="anchor" aria-label="anchor" href="#gpkg-008"></a></h2>
-<ul><li>Added <code><a href="../reference/gpkg_create_spatial_view.html">gpkg_create_spatial_view()</a></code> for creating spatial views, which dynamic layers that are accessible as if they were typical static geometry layers (for <a href="https://github.com/brownag/gpkg/issues/6" class="external-link">#6</a>).</li>
+<ul><li><p>Added <code><a href="../reference/gpkg_create_spatial_view.html">gpkg_create_spatial_view()</a></code> for creating spatial views, which are dynamic layers accessible as if they were typical static geometry layers (for <a href="https://github.com/brownag/gpkg/issues/6" class="external-link">#6</a>).</p></li>
+<li><p><code><a href="../reference/gpkg_write.html">gpkg_write()</a></code> now properly writing attributes from a <em>data.frame</em> source (which is not nested in a list) when <code>table_name</code> argument is</p></li>
+<li>
+<p><code><a href="../reference/gpkg_tables.html">gpkg_tables()</a></code> better handling for <code><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">terra::vect()</a></code> failures with non-spatial table function fallback.</p>
+<ul><li>Found a regression in {terra} behavior that was reported and fixed, so the likelihood of error in the future is lower.</li>
+</ul></li>
+<li><p><code><a href="../reference/gpkg_write.html">gpkg_write()</a></code> now can handle <em>SpatVectorProxy</em> input by querying it. Note this will not work for data that will not fit in memory. May try to implement an ogr2ogr-like interface for this in the future (<a href="https://github.com/brownag/gpkg/issues/15" class="external-link">#15</a>).</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.7" id="gpkg-007">gpkg 0.0.7<small>2023-11-21</small><a class="anchor" aria-label="anchor" href="#gpkg-007"></a></h2>
@@ -76,14 +82,14 @@
 <h2 class="page-header" data-toc-text="0.0.5" id="gpkg-005">gpkg 0.0.5<a class="anchor" aria-label="anchor" href="#gpkg-005"></a></h2>
 <ul><li><p>Fixed bug in <code><a href="../reference/gpkg_tables.html">gpkg_tables()</a></code> when multiple attribute tables were present.</p></li>
 <li><p>Added <code><a href="../reference/gpkg_query.html">gpkg_ogr_query()</a></code> (and <code>ogr</code> argument to <code><a href="../reference/gpkg_query.html">gpkg_query()</a></code>) to support querying OGR data sources using a ‘terra’ <em>SpatVectorProxy</em> back end. This allows for use of GeoPackage-specific SQL functions and the OGR/SQLite dialects: <a href="https://gdal.org/user/sql_sqlite_dialect.html" class="external-link uri">https://gdal.org/user/sql_sqlite_dialect.html</a> and <a href="https://gdal.org/user/ogr_sql_dialect.html" class="external-link uri">https://gdal.org/user/ogr_sql_dialect.html</a>; requires latest ‘terra’ (1.7-33+)</p></li>
-<li><p>Added <code><a href="../reference/gpkg_table.html">gpkg_rast()</a></code> (analog of <code><a href="../reference/gpkg_table.html">gpkg_vect()</a></code> for <code><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">terra::rast()</a></code>) for lazy manipulation of gridded data in a GeoPackage</p></li>
+<li><p>Added <code><a href="../reference/gpkg_table.html">gpkg_rast()</a></code> (analog of <code><a href="../reference/gpkg_table.html">gpkg_vect()</a></code> for <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">terra::rast()</a></code>) for lazy manipulation of gridded data in a GeoPackage</p></li>
 <li><p>Added <code><a href="../reference/gpkg_create_dummy_features.html">gpkg_create_dummy_features()</a></code> which is a workaround for use of <code><a href="../reference/gpkg_table.html">gpkg_vect()</a></code> on a GeoPackage with only attribute data. This creates innocuous entries in <code>gpkg_geometry_columns</code> and an empty table to “trick” GDAL into reading arbitrary data sources.</p></li>
 <li><p>Added <code><a href="../reference/gpkg_list_contents.html">gpkg_list_contents()</a></code> and <code><a href="../reference/gpkg_contents.html">gpkg_ogr_contents()</a></code>; the former returns only table names registered in <code>gpkg_contents</code> table, which are optionally intersected with tables defined in <code>gpkg_ogr_contents</code> when <code>ogr=TRUE</code>.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.4" id="gpkg-004">gpkg 0.0.4<a class="anchor" aria-label="anchor" href="#gpkg-004"></a></h2>
 <ul><li><p>Fixed bug in <code>.gpkg_gdaloptions_add()</code> that could cause addition of options with no value set</p></li>
-<li><p>Added <code><a href="../reference/gpkg_table.html">gpkg_vect()</a></code>: a <code><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">terra::vect()</a></code>-based analog of <code><a href="../reference/gpkg_table.html">gpkg_table()</a></code> for lazy manipulation of vector and attribute data in a GeoPackage</p></li>
+<li><p>Added <code><a href="../reference/gpkg_table.html">gpkg_vect()</a></code>: a <code><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">terra::vect()</a></code>-based analog of <code><a href="../reference/gpkg_table.html">gpkg_table()</a></code> for lazy manipulation of vector and attribute data in a GeoPackage</p></li>
 <li><p><code><a href="../reference/gpkg_update_table.html">gpkg_update_table()</a></code> defaults to <code>wherecol=NULL</code> which allows updating rows with no SQL <code>WHERE</code> clause specified</p></li>
 </ul></div>
     <div class="section level2">

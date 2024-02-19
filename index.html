@@ -151,7 +151,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add bounding polygon vector layer via named list</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gpkg_tables.html">gpkg_tables</a></span><span class="op">(</span><span class="fu"><a href="reference/geopackage-class.html">geopackage</a></span><span class="op">(</span><span class="va">gpkg_tmp</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="st">'DEM1'</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.polygons.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span>, ext <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.polygons.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">r</span>, ext <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bbox <span class="op">=</span> <span class="va">v</span><span class="op">)</span>, destfile <span class="op">=</span> <span class="va">gpkg_tmp</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -320,7 +320,7 @@
 </h4>
 <p><code><a href="reference/gpkg_table.html">gpkg_table_pragma()</a></code> is a low-frills <code>data.frame</code> result containing important table information, but not values. The <code>PRAGMA table_info()</code> is stored as a nested data.frame <code>table_info</code>. This representation has no dependencies beyond {RSQLite} and is efficient for inspection of table structure and attributes, though it is less useful for data analysis.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/gpkg_table.html">gpkg_table_pragma</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/gpkg_table.html">gpkg_table_pragma</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                      dsn table_name nrow table_info.cid</span></span>
 <span><span class="co">#&gt; 1 /tmp/RtmpQZ3zKV/file304b339abcc96.gpkg       DEM1    1              0</span></span>
 <span><span class="co">#&gt; 2 /tmp/RtmpQZ3zKV/file304b339abcc96.gpkg       DEM1    1              1</span></span>
@@ -347,7 +347,7 @@
 <h4 id="method-2-gpkg_vect-and-gpkg_query">Method 2: <code>gpkg_vect()</code> and <code>gpkg_query()</code>
 <a class="anchor" aria-label="anchor" href="#method-2-gpkg_vect-and-gpkg_query"></a>
 </h4>
-<p><code><a href="reference/gpkg_table.html">gpkg_vect()</a></code> is a wrapper around <code><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">terra::vect()</a></code> you can use to create ‘terra’ <code>SpatVector</code> objects from the tables found in a GeoPackage.</p>
+<p><code><a href="reference/gpkg_table.html">gpkg_vect()</a></code> is a wrapper around <code><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">terra::vect()</a></code> you can use to create ‘terra’ <code>SpatVector</code> objects from the tables found in a GeoPackage.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gpkg_table.html">gpkg_vect</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">'bbox'</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  class       : SpatVector </span></span>
@@ -377,7 +377,7 @@
 <span><span class="st">                           ST_MaxX(geom) AS xmax, </span></span>
 <span><span class="st">                           ST_MaxY(geom) AS ymax </span></span>
 <span><span class="st">                          FROM bbox"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       xmin     ymin     xmax     ymax</span></span>
 <span><span class="co">#&gt; 1 6.008333 49.69167 6.266667 49.94167</span></span></code></pre></div>
 </div>
