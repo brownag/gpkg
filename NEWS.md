@@ -1,6 +1,13 @@
 # gpkg 0.0.8
 
- - Added `gpkg_create_spatial_view()` for creating spatial views, which dynamic layers that are accessible as if they were typical static geometry layers (for #6).
+ - Added `gpkg_create_spatial_view()` for creating spatial views, which are dynamic layers accessible as if they were typical static geometry layers (for #6).
+ 
+ - `gpkg_write()` now properly writing attributes from a _data.frame_ source (which is not nested in a list) when `table_name` argument is 
+ 
+ - `gpkg_tables()` better handling for `terra::vect()` failures with non-spatial table function fallback. 
+   - Found a regression in {terra} behavior that was reported and fixed, so the likelihood of error in the future is lower. 
+ 
+ - `gpkg_write()` now can handle _SpatVectorProxy_ input by querying it. Note this will not work for data that will not fit in memory. May try to implement an ogr2ogr-like interface for this in the future (#15).
 
 # gpkg 0.0.7
 
