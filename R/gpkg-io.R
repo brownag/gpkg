@@ -102,20 +102,57 @@ gpkg_write <- function(x,
 }
 
 .gpkg_process_sources <- function(x, ...) {
+  
   if (!is.list(x) || is.data.frame(x)) {
     x <- list(x)
   }
   
-  # TODO: extend this; only intended for prototyping before general sln
-  
-  # objects with a file-based
+  # objects with a file source
   src_raster <- vapply(x, inherits, logical(1), c('SpatRaster', 'SpatRasterCollection'))
   src_vector <- vapply(x, inherits, logical(1), 'SpatVectorProxy')
   obj_vector <- vapply(x, inherits, logical(1), c('sf', 'SpatVector'))
   obj_attrib <- vapply(x, inherits, logical(1), 'data.frame')
-  pth_raster <- vapply(x, .is.file, logical(1),  "tif+|vrt|grd|png")
-  pth_vector <- vapply(x, .is.file, logical(1),  "shp|gpkg")
-  pth_attrib <- vapply(x, .is.file, logical(1),  "csv")
+  
+  # pth_raster <- vapply(x, .is.file, logical(1),  "tif+|vrt|grd|png")
+  # pth_vector <- vapply(x, .is.file, logical(1),  "shp|gpkg")
+  # pth_attrib <- vapply(x, .is.file, logical(1),  "csv")
+  pth_file <- vapply(x, .is.file, logical(1), ".*")
+  
+  # TODO: gdal is not used to read attributes,
+  #       provide support for some other tabular data formats?
+  #       arrow? openxlsx? 
+  pth_attrib <- pth_file & vapply(x, .is.file, logical(1),  "csv")
+  pth_raster <- rep(FALSE, length(x))  
+  pth_vector <- rep(FALSE, length(x))
+  
+  if (any(pth_file)) {
+    if (!requireNamespace("vapour")) {
+      stop("package 'vapour' is required to auto-detect GDAL drivers needed to read from arbitrary file paths", call. = FALSE)
+    }
+    
+    gdal_drv <- vapply(x, function(y) {
+      if (!is.character(y)) {
+        ""
+      } else
+        vapour::vapour_driver(y)
+    }, character(1))
+    
+    drv <- vapour::vapour_all_drivers()
+    drm <- match(gdal_drv, drv$driver)
+    
+    
+    pth_raster <- pth_file & drv$raster[drm]
+    
+    # TODO: how to handle GPKG as a raster and vector source?
+    pth_raster[gdal_drv == "GPKG"] <- FALSE
+    
+    pth_vector <- pth_file & drv$vector[drm]
+    
+    # TODO: handling of CSV files as attributes/without GDAL
+    #       filter vapour drivers to subset that terra can readwrite
+    pth_vector[gdal_drv == "CSV"] <- FALSE
+  }
+  
   
   # classify list of object input  grid, features, attributes
   #  - each processing function handles local objects and/or file paths

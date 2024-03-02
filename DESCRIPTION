@@ -1,7 +1,7 @@
 Package: gpkg
 Type: Package
 Title: Utilities for the Open Geospatial Consortium 'GeoPackage' Format
-Version: 0.0.8
+Version: 0.0.9
 Authors@R: person(given="Andrew", family="Brown", email="brown.andrewg@gmail.com", role = c("aut", "cre"))
 Maintainer: Andrew Brown <brown.andrewg@gmail.com>
 Description: Build Open Geospatial Consortium 'GeoPackage' files (<https://www.geopackage.org/>). 'GDAL' utilities for reading and writing spatial data are provided by the 'terra' package. Additional 'GeoPackage' and 'SQLite' features for attributes and tabular data are implemented with the 'RSQLite' package.
@@ -14,6 +14,7 @@ Imports:
 Suggests: 
     RSQLite,
     terra (>= 1.6),
+    vapour,
     tinytest,
     dplyr,
     dbplyr,
@@ -21,7 +22,7 @@ Suggests:
     rmarkdown
 License: CC0
 Depends: R (>= 3.1.0)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 LazyData: true
