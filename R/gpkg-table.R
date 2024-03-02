@@ -60,7 +60,7 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 #' @export
 #' @rdname gpkg_table
 #' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
-#' @description `gpkg_table()`: access a specific table (by name) and get a "lazy" `tibble` object referencing that table
+#' @description `gpkg_table()`: Access a specific table (by name) and get a "lazy" {dbplyr} _tbl_SQLiteConnection_ object referencing that table
 #' @return `gpkg_table()`: A 'dbplyr' object of class _tbl_SQLiteConnection_
 #' @examples 
 #' 
@@ -135,7 +135,7 @@ gpkg_table.default <- function(x,
   dplyr::tbl(con, table_name, ...)
 }
 
-#' @description `gpkg_collect()`: alias for `gpkg_table(..., collect=TRUE)`
+#' @description `gpkg_collect()`: Alias for `gpkg_table(..., collect=TRUE)`
 #' @return `gpkg_collect()`: An object of class _data.frame_
 #' @rdname gpkg_table
 #' @export
@@ -143,7 +143,7 @@ gpkg_collect <- function(x, table_name, query_string = FALSE, ...) {
   gpkg_table(x, table_name, ..., query_string = query_string, collect = TRUE)
 }
 
-#' @description `gpkg_tbl()`: shorthand for `gpkg_table(..., collect=FALSE)`(default) that always returns a 'dplyr' object.
+#' @description `gpkg_tbl()`: Alias for `gpkg_table(..., collect=FALSE)`(default) that _always_ returns a _tbl_SQLiteConnection_ object.
 #' @return `gpkg_tbl()`: An object of class _tbl_SQLiteConnection_
 #' @rdname gpkg_table
 #' @export
@@ -151,6 +151,7 @@ gpkg_tbl <- function(x, table_name, ...) {
   gpkg_table(x, table_name, ..., collect = FALSE)
 }
 
+#' @description `gpkg_rast()`: Get a _SpatRaster_ object corresponding to the specified `table_name`
 #' @return `gpkg_rast()`: A 'terra' object of class _SpatRaster_
 #' @export
 #' @rdname gpkg_table
@@ -167,6 +168,7 @@ gpkg_rast <- function(x, table_name = NULL, ...) {
 }
 
 
+#' @description `gpkg_rast()`: Get a _SpatVector_ object corresponding to the specified `table_name`
 #' @return `gpkg_vect()`: A 'terra' object of class _SpatVector_ (may not contain geometry columns)
 #' @export
 #' @rdname gpkg_table

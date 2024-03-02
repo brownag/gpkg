@@ -43,6 +43,8 @@ Write data to a GeoPackage
 }
 \details{
 Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed \href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{here} or in the \code{gpkg_creation_options} dataset. The name of the argument is \code{creation_option} and the value is selected from one of the elements of \code{values} for that option.
+
+If \code{x} contains source file paths, any comma-separated value (CSV) files are treated as attribute data--even if they contain a geometry column. GeoPackage source file paths are always treated as vector data sources, and only one layer will be read from the source and written to the target. If you need to read raster data from a GeoPackage first create a \code{SpatRaster}  from the layer of interest (see \code{gpkg_rast()}) before passing to \code{gpkg_write()}. If you need to read multiple layers from any multi-layer source read them individually into suitable objects. For a source GeoPackage containing multiple layers you can use \code{gpkg_read()} (returns a \emph{geopackage} object) or \code{gpkg_tables()} (returns a \emph{list} object).
 }
 \seealso{
 \link{gpkg_creation_options}
