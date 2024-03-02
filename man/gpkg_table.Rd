@@ -58,11 +58,15 @@ gpkg_vect(x, table_name, ...)
 \description{
 \code{gpkg_table_pragma()}: Get information on a table in a GeoPackage (without returning the whole table).
 
-\code{gpkg_table()}: access a specific table (by name) and get a "lazy" \code{tibble} object referencing that table
+\code{gpkg_table()}: Access a specific table (by name) and get a "lazy" {dbplyr} \emph{tbl_SQLiteConnection} object referencing that table
 
-\code{gpkg_collect()}: alias for \code{gpkg_table(..., collect=TRUE)}
+\code{gpkg_collect()}: Alias for \code{gpkg_table(..., collect=TRUE)}
 
-\code{gpkg_tbl()}: shorthand for \code{gpkg_table(..., collect=FALSE)}(default) that always returns a 'dplyr' object.
+\code{gpkg_tbl()}: Alias for \code{gpkg_table(..., collect=FALSE)}(default) that \emph{always} returns a \emph{tbl_SQLiteConnection} object.
+
+\code{gpkg_rast()}: Get a \emph{SpatRaster} object corresponding to the specified \code{table_name}
+
+\code{gpkg_rast()}: Get a \emph{SpatVector} object corresponding to the specified \code{table_name}
 }
 \examples{
 \dontshow{if (!inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

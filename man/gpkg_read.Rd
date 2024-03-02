@@ -17,6 +17,9 @@ gpkg_read(x, connect = FALSE, quiet = TRUE)
 A \emph{geopackage} object (list containing tables, grids and vector data)
 }
 \description{
-Experimental: This function is being evaluated for its scope compared to other more general functions that perform similar operations (i.e. \code{gpkg_tables()}).
+This function creates a \emph{geopackage} object with references to all tables from the GeoPackage source specified in \code{x}. For a simple list of tables see \code{gpkg_tables()}.
+}
+\seealso{
+\code{\link[=gpkg_tables]{gpkg_tables()}}
 }
 \keyword{io}
