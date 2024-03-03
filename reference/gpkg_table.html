@@ -166,11 +166,11 @@ gpkg_rast(): Get a SpatVector object corresponding to the specified table_name'>
 <span class="r-in"><span><span class="co"># inspect gpkg_contents table</span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_table</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;gpkg_contents&gt; [2 x 10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/RtmpzUMFQs/file1be94fcc4acc.gpkg]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/Rtmp1GXLRf/file1b35e12218f.gpkg]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   table_name data_type      identifier description last_change min_x min_y max_x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2024-03-02…  6.01  49.7  6.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2024-03-02…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2024-03-03…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2024-03-03…  6.01  49.7  6.27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: max_y &lt;dbl&gt;, srs_id &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_vect</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
@@ -178,7 +178,7 @@ gpkg_rast(): Get a SpatVector object corresponding to the specified table_name'>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geometry    : none </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  dimensions  : 0, 10  (geometries, attributes)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  source      : file1be94fcc4acc.gpkg (SELECT)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  source      : file1b35e12218f.gpkg (SELECT)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  coord. ref. :  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  names       : table_name data_type identifier description last_change min_x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  type        :      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;num&gt;</span>
