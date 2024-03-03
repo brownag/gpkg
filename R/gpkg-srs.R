@@ -40,10 +40,11 @@ gpkg_create_spatial_ref_sys <- function(x, default = TRUE, query_string = FALSE)
       definition  TEXT NOT NULL,
       description TEXT
     );"
+    gsrs <- data.frame(srs_id = integer(0L))
   } else {
     q <- character()
+    gsrs <- gpkg_spatial_ref_sys(x)
   }
-  gsrs <- gpkg_spatial_ref_sys(x)
   if (isTRUE(default) || is.character(default)) {
     if (is.logical(default) || length(default) == 0) {
       default <- c("cartesian", "geographic", "EPSG:4326")
