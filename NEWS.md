@@ -1,3 +1,14 @@
+# gpkg 0.0.9
+
+ - Implemented GDAL driver detection for file paths via {vapour} for #15
+ 
+ - Implemented functions for creating, adding, and removing spatial reference systems from `gpkg_spatial_ref_sys`:
+   - `gpkg_create_spatial_ref_sys()`, `gpkg_add_spatial_ref_sys()` `gpkg_delete_spatial_ref_sys()`, `gpkg_list_srs()`
+
+ - Implemented basic `gpkg_validate()` routine (will be expanded)
+   - Checks that `gpkg_contents` and `gpkg_spatial_ref_sys` exist
+   - Checks that at least one tile or vector dataset (with at least 0 rows) is in the database and `gpkg_contents`
+ 
 # gpkg 0.0.8
 
  - Added `gpkg_create_spatial_view()` for creating spatial views, which are dynamic layers accessible as if they were typical static geometry layers (for #6).

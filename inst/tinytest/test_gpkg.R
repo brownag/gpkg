@@ -179,8 +179,7 @@ expect_equal(gpkg_add_relatedtables_extension(gempty), 0)
 gpkg_disconnect(gempty)
 unlink(gempty$dsn)
 
-# TODO: validator
-expect_error(gpkg_validate(g))
+expect_true(gpkg_validate(g))
 
 # checking ability to clean up corrupted contents
 RSQLite::dbRemoveTable(g$env$con, "gpkg_contents")
