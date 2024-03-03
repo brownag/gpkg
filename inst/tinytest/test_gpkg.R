@@ -109,10 +109,9 @@ expect_true(gpkg_create_contents(g3))
 
 # add dummy row
 expect_true(gpkg_add_contents(g3, "foo", "bar",
-                              template = list(
                                 ext = c(0, 0, 0, 0),
-                                srsid = 4326
-                              )))
+                                srs_id = 4326
+                              ))
 
 # add dummy attribute table
 expect_true(gpkg_write_attributes(g3, data.frame(id = 1), "A", "the letter A"))

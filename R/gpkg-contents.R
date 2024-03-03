@@ -54,17 +54,35 @@ gpkg_list_contents <- function(x, ogr = FALSE) {
 
 #' Add, Remove, Update and Create `gpkg_contents` table and records
 #' @description `gpkg_add_contents()`: Add a record to `gpkg_contents`
+#'
 #' @param x A _geopackage_
 #' @param table_name Name of table to add or remove record for in _gpkg_contents_
-#' @param description Default `""`
-#' @param template Default `NULL` uses global EPSG:4326 with bounds -180,-90:180,90
+#' @param description Default: `""`
+#' @param template Deprecated. A list containing elements `"srsid"` and `"ext"`.
+#' @param srs_id _integer_. Spatial Reference System ID. Must be defined in `gpkg_spatial_ref_sys` table. 
+#' @param ext _numeric_. A numeric vector of length four specifying the bounding box extent.
 #' @param query_string _logical_. Return SQLite statement rather than executing it? Default: `FALSE`
+#'
 #' @return logical. TRUE on successful execution of SQL statements.
 #' @rdname gpkg-contents
 #' @export
-gpkg_add_contents <- function(x, table_name, description = "", template = NULL, query_string = FALSE) {
+gpkg_add_contents <- function(x, table_name, description = "", srs_id = NULL, ext = NULL, template = NULL, query_string = FALSE) {
   dt <- NULL
+  
+  if (!missing(srs_id) && !is.null(srs_id)) {
+    if (!length(srs_id) == 1 || !is.integer(as.integer(srs_id)))
+      stop("`srs_id` should be an integer of length 1")
+    cr <- srs_id
+  } 
+  
+  if (!missing(ext) && !is.null(ext)) {
+    if (!length(ext) == 4 || !is.numeric(ext))
+      stop("`ext` should be a numeric vector of length 4")
+    ex <- ext
+  }
+  
   if (!missing(template) && !is.null(template)) {
+    .Deprecated(msg = "`template` argument is deprecated, use `ext` and `srs_id` arguments directly")
     # template as a list
     if (is.list(template) && all(c("ext", "srsid") %in% names(template))) {
       ex <- template$ext
