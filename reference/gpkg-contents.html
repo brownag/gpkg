@@ -73,6 +73,8 @@ gpkg_create_contents(): Create an empty gpkg_contents table"><!-- mathjax --><sc
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">table_name</span>,</span>
 <span>  description <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  srs_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ext <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  template <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  query_string <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -95,11 +97,19 @@ gpkg_create_contents(): Create an empty gpkg_contents table"><!-- mathjax --><sc
 
 
 <dt>description</dt>
-<dd><p>Default <code>""</code></p></dd>
+<dd><p>Default: <code>""</code></p></dd>
+
+
+<dt>srs_id</dt>
+<dd><p><em>integer</em>. Spatial Reference System ID. Must be defined in <code>gpkg_spatial_ref_sys</code> table.</p></dd>
+
+
+<dt>ext</dt>
+<dd><p><em>numeric</em>. A numeric vector of length four specifying the bounding box extent.</p></dd>
 
 
 <dt>template</dt>
-<dd><p>Default <code>NULL</code> uses global EPSG:4326 with bounds -180,-90:180,90</p></dd>
+<dd><p>Deprecated. A list containing elements <code>"srsid"</code> and <code>"ext"</code>.</p></dd>
 
 
 <dt>query_string</dt>
