@@ -27,16 +27,7 @@ gpkg_create_dummy_features <- function(x,
     );"))
   }
   
-  if (!inherits(res, 'try-error') && res == 0 && !"gpkg_spatial_ref_sys" %in% gpkg_list_tables(x)) {
-    res <- gpkg_execute(x, "CREATE TABLE gpkg_spatial_ref_sys (
-      srs_name TEXT NOT NULL,
-      srs_id INTEGER PRIMARY KEY,
-      organization TEXT NOT NULL,
-      organization_coordsys_id INTEGER NOT NULL,
-      definition  TEXT NOT NULL,
-      description TEXT
-    );")
-  }
+  gpkg_create_spatial_ref_sys(x)
   
   if (!inherits(res, 'try-error') && res == 0 && 
       !"gpkg_geometry_columns" %in% gpkg_list_tables(x)) {
