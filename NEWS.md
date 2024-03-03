@@ -2,7 +2,7 @@
 
  - Implemented GDAL driver detection for file paths via {vapour} for #15
  
- - Implemented functions for creating, adding, and removing spatial reference systems from `gpkg_spatial_ref_sys`:
+ - Implemented functions for creating `gpkg_spatial_ref_sys` table and adding or removing spatial reference system records:
    - `gpkg_create_spatial_ref_sys()`, `gpkg_add_spatial_ref_sys()` `gpkg_delete_spatial_ref_sys()`, `gpkg_list_srs()`
 
  - Implemented basic `gpkg_validate()` routine (will be expanded)
