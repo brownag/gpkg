@@ -21,9 +21,23 @@ gpkg_table_pragma(x, table_name = NULL, ...)
 
 \method{gpkg_table_pragma}{geopackage}(x, table_name = NULL, ...)
 
-gpkg_table(x, table_name, collect = FALSE, query_string = FALSE, ...)
+gpkg_table(
+  x,
+  table_name,
+  collect = FALSE,
+  column_names = "*",
+  query_string = FALSE,
+  ...
+)
 
-\method{gpkg_table}{default}(x, table_name, collect = FALSE, query_string = FALSE, ...)
+\method{gpkg_table}{default}(
+  x,
+  table_name,
+  collect = FALSE,
+  column_names = "*",
+  query_string = FALSE,
+  ...
+)
 
 gpkg_collect(x, table_name, query_string = FALSE, ...)
 
@@ -41,6 +55,8 @@ gpkg_vect(x, table_name, ...)
 \item{...}{Additional arguments. In \code{gpkg_table()} arguments in \code{...} are passed to \code{dplyr::tbl()}. For \code{gpkg_table_pragma()}, \code{...} arguments are (currently) not used. For \code{gpkg_rast()} additional arguments are passed to \code{terra::rast()}. For \code{gpkg_vect()} additional arguments (such as \code{proxy=TRUE}) are passed to \code{terra::vect()}.}
 
 \item{collect}{\emph{logical}. Materialize a data.frame object in memory? Default: \code{FALSE} requires 'dbplyr' package. \code{TRUE} uses 'RSQLite'.}
+
+\item{column_names}{\emph{character}. Used only when \code{collect=TRUE}. A \emph{character} vector of column names to select from \code{table_name}.}
 
 \item{query_string}{\emph{logical}. Return SQLite query rather than executing it? Default: \code{FALSE}}
 }

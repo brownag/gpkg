@@ -26,6 +26,7 @@ gpkg_table_pragma.SQLiteConnection <- function(x, table_name, ...) {
 #' @param x A _geopackage_ object or character path to GeoPackage file
 #' @param table_name _character_. One or more table names; for `gpkg_table_pragma()` if `table_name=NULL` returns a record for each table. `gpkg_table()` requires `table_name` be specified
 #' @param collect _logical_. Materialize a data.frame object in memory? Default: `FALSE` requires 'dbplyr' package. `TRUE` uses 'RSQLite'.
+#' @param column_names _character_. Used only when `collect=TRUE`. A _character_ vector of column names to select from `table_name`.
 #' @param query_string _logical_. Return SQLite query rather than executing it? Default: `FALSE`
 #' @param ... Additional arguments. In `gpkg_table()` arguments in `...` are passed to `dplyr::tbl()`. For `gpkg_table_pragma()`, `...` arguments are (currently) not used. For `gpkg_rast()` additional arguments are passed to `terra::rast()`. For `gpkg_vect()` additional arguments (such as `proxy=TRUE`) are passed to `terra::vect()`.
 #' @export
@@ -98,6 +99,7 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 gpkg_table <- function(x,
                        table_name,
                        collect = FALSE,
+                       column_names = "*",
                        query_string = FALSE,
                        ...)
   UseMethod("gpkg_table", x)
@@ -107,6 +109,7 @@ gpkg_table <- function(x,
 gpkg_table.default <- function(x,
                                table_name,
                                collect = FALSE,
+                               column_names = "*",
                                query_string = FALSE,
                                ...) {
     
@@ -117,8 +120,12 @@ gpkg_table.default <- function(x,
     if (attr(con, 'disconnect')) {
       on.exit(DBI::dbDisconnect(con))
     }
-    
-    q <- sprintf("SELECT * FROM %s", table_name)
+    if (is.null(column_names) || 
+        length(column_names) == 0 || 
+        nchar(as.character(column_names)) == 0) {
+      column_names <- "*"
+    }
+    q <- sprintf("SELECT %s FROM %s", paste0(column_names, collapse = ", "), table_name)
     if (query_string) {
       return(q)
     }
