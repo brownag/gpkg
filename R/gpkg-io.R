@@ -55,11 +55,10 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 
   res2 <- do.call('c', lapply(res, function(x) x$tables))
   names(res2) <- do.call('c', lapply(res, function(x) names(x$tables)))
-  g <- geopackage(res2, dsn = x)
-  if (connect) {
-    gpkg_connect(g)
-  }
-  g
+  
+  obj <- .geopackage(dsn = x, connect = connect)
+  obj$tables <- x
+  obj  
 }
 
 #' Write data to a GeoPackage
