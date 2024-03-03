@@ -7,13 +7,21 @@
 gpkg_validate(x, diagnostics = FALSE)
 }
 \arguments{
-\item{x}{Path to GeoPackages}
+\item{x}{A \emph{geopackage} object, or \emph{character} path to GeoPackage}
 
-\item{diagnostics}{Return a list containing diagnostics (missing table names, invalid values, other errors)}
+\item{diagnostics}{Return a list containing individual diagnostic test results (see Details)}
 }
 \value{
-\code{TRUE} if valid. \code{FALSE} if one or more problems are found. For full diagnostics run with \code{diagnostics = TRUE} to return a list containing results for each input GeoPackage.
+\emph{logical}. \code{TRUE} if valid. \code{FALSE} if one or more problems are found. For full diagnostics run with \code{diagnostics = TRUE} to return a list containing results for each test run on the input GeoPackage.
 }
 \description{
 Checks for presence of required tables, valid values and other constraints.
+}
+\details{
+Several tests are run on the input GeoPackage, including:
+\itemize{
+\item \code{required_tables}: \emph{logical}. \code{TRUE} if \code{gpkg_contents} and \code{gpkg_spatial_ref_sys} tables exist
+\item \code{has_contents}: \emph{logical}. \code{TRUE} if the number of rows in \code{gpkg_contents} table is greater than \code{0} and all tables listed in \code{gpkg_contents} are in the database
+\item \code{has_spatial_tables}: \emph{logical}. \code{TRUE} if the number of tables in \code{gpkg_contents} with \code{data_type} \code{"features"} or \code{"2d-gridded-coverage"} is greater than \code{0}
+}
 }

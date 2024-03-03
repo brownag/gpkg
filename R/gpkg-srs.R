@@ -26,7 +26,7 @@ gpkg_list_srs <- function(x, column_name = "srs_id") {
 }
 
 #' @param default _logical_ or _character_. If `TRUE`, or one or more of `"cartesian"`, `"geographic"`, or `"crs84"`, then these default Spatial Reference Systems are added.
-#' @return `gpkg_list_srs()`: _vector_ of values from specified `column_name`
+#' @return `gpkg_create_spatial_ref_sys()`: _integer_. Result of running sequential `gpkg_execute()` statements. This method is run for the side-effect of creating the table if needed, and adding any "default" records.
 #' @export
 #' @rdname gpkg-srs
 gpkg_create_spatial_ref_sys <- function(x, default = TRUE, query_string = FALSE) { 
@@ -114,7 +114,7 @@ gpkg_create_spatial_ref_sys <- function(x, default = TRUE, query_string = FALSE)
 #' @param organization _character_. Organization, for example `"EPSG"`
 #' @param organization_coordsys_id _integer_. Organization Coordinate System ID, for example `4326L`
 #' @param definition _character_. WKT2019 Coordinate Reference System description string
-#' @param description _character. Description
+#' @param description _character_. Description
 #' @param query_string _logical_. Return SQL queries without executing? Default: `FALSE`
 #'
 #' @return `gpkg_add_spatial_ref_sys()`: _integer_ result of executing SQL statement

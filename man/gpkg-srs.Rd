@@ -46,14 +46,14 @@ gpkg_delete_spatial_ref_sys(x, srs_id = NULL)
 
 \item{definition}{\emph{character}. WKT2019 Coordinate Reference System description string}
 
-\item{description}{_character. Description}
+\item{description}{\emph{character}. Description}
 }
 \value{
 \code{gpkg_spatial_ref_sys()}: \emph{data.frame}
 
 \code{gpkg_list_srs()}: \emph{vector} of values from specified \code{column_name}
 
-\code{gpkg_list_srs()}: \emph{vector} of values from specified \code{column_name}
+\code{gpkg_create_spatial_ref_sys()}: \emph{integer}. Result of running sequential \code{gpkg_execute()} statements. This method is run for the side-effect of creating the table if needed, and adding any "default" records.
 
 \code{gpkg_add_spatial_ref_sys()}: \emph{integer} result of executing SQL statement
 
