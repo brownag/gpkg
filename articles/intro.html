@@ -186,7 +186,7 @@ Often you will have a <em>character</em> file path to a GeoPackage
 <span><span class="co">#&gt;  sqlite_sequence</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
-<span><span class="co">#&gt;   Path: /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg</span></span>
+<span><span class="co">#&gt;   Path: /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg</span></span>
 <span><span class="co">#&gt;   Extensions: TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "geopackage"</span></span></code></pre></div>
@@ -207,12 +207,12 @@ in a GeoPackage that does not exist yet.</p>
 <span><span class="co">#&gt;  sqlite_sequence</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
-<span><span class="co">#&gt;   Path: /tmp/RtmpvJqhkn/Rgpkg1d6e35f09722.gpkg</span></span>
+<span><span class="co">#&gt;   Path: /tmp/Rtmp2dDbAM/Rgpkg1cba2f16d082.gpkg</span></span>
 <span><span class="co">#&gt;   Extensions: TRUE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">g2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "geopackage"</span></span></code></pre></div>
 <p>Note that a temporary GeoPackage
-(/tmp/RtmpvJqhkn/Rgpkg1d6e35f09722.gpkg) is automatically created when
+(/tmp/Rtmp2dDbAM/Rgpkg1cba2f16d082.gpkg) is automatically created when
 using the <code>geopackage(&lt;list&gt;)</code> constructor.</p>
 <p>You also may have a <em>DBIConnection</em> to a GeoPackage database
 already opened that you want to use. In any case (<em>character</em>,
@@ -252,8 +252,8 @@ SpatVectorProxy, and lazy data.frame) to the data in them with
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file1d6e7d779478.gpkg:DEM1 </span></span>
-<span><span class="co">#&gt; varname     : file1d6e7d779478 </span></span>
+<span><span class="co">#&gt; source      : file1cba35ea0acf.gpkg:DEM1 </span></span>
+<span><span class="co">#&gt; varname     : file1cba35ea0acf </span></span>
 <span><span class="co">#&gt; name        : DEM1 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $DEM2</span></span>
@@ -262,15 +262,15 @@ SpatVectorProxy, and lazy data.frame) to the data in them with
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; source      : file1d6e7d779478.gpkg:DEM2 </span></span>
-<span><span class="co">#&gt; varname     : file1d6e7d779478 </span></span>
+<span><span class="co">#&gt; source      : file1cba35ea0acf.gpkg:DEM2 </span></span>
+<span><span class="co">#&gt; varname     : file1cba35ea0acf </span></span>
 <span><span class="co">#&gt; name        : DEM2 </span></span>
 <span><span class="co">#&gt; min value   :  195 </span></span>
 <span><span class="co">#&gt; max value   :  500 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $myattr</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   table&lt;myattr&gt; [10 x 2]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/RtmpvJqhkn/file1d6e7d779478.gpkg]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg]</span></span></span>
 <span><span class="co">#&gt;        a b    </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 A    </span></span>
@@ -289,7 +289,7 @@ SpatVectorProxy, and lazy data.frame) to the data in them with
 <span><span class="co">#&gt;  geometry    : polygons </span></span>
 <span><span class="co">#&gt;  dimensions  : 1, 0  (geometries, attributes)</span></span>
 <span><span class="co">#&gt;  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt;  source      : file1d6e7d779478.gpkg (bbox)</span></span>
+<span><span class="co">#&gt;  source      : file1cba35ea0acf.gpkg (bbox)</span></span>
 <span><span class="co">#&gt;  layer       : bbox </span></span>
 <span><span class="co">#&gt;  coord. ref. : lon/lat WGS 84 (EPSG:4326)</span></span>
 <span></span>
@@ -327,7 +327,7 @@ you get a table result with the tile contents in a blob column of a
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gpkg_table.html">gpkg_tbl</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   table&lt;gpkg_contents&gt; [4 x 10]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/RtmpvJqhkn/file1d6e7d779478.gpkg]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg]</span></span></span>
 <span><span class="co">#&gt;   table_name data_type   identifier description last_change   min_x min_y  max_x</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded… DEM1       <span style="color: #949494;">""</span>          2024-03-03…    6.01  49.7   6.27</span></span>
@@ -354,12 +354,12 @@ analysis.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/gpkg_table.html">gpkg_table_pragma</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                     dsn table_name nrow table_info.cid</span></span>
-<span><span class="co">#&gt; 1 /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg       DEM1    1              0</span></span>
-<span><span class="co">#&gt; 2 /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg       DEM1    1              1</span></span>
-<span><span class="co">#&gt; 3 /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg       DEM1    1              2</span></span>
-<span><span class="co">#&gt; 4 /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg       DEM1    1              3</span></span>
-<span><span class="co">#&gt; 5 /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg       DEM1    1              4</span></span>
-<span><span class="co">#&gt; 6 /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg       DEM2    1              0</span></span>
+<span><span class="co">#&gt; 1 /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg       DEM1    1              0</span></span>
+<span><span class="co">#&gt; 2 /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg       DEM1    1              1</span></span>
+<span><span class="co">#&gt; 3 /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg       DEM1    1              2</span></span>
+<span><span class="co">#&gt; 4 /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg       DEM1    1              3</span></span>
+<span><span class="co">#&gt; 5 /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg       DEM1    1              4</span></span>
+<span><span class="co">#&gt; 6 /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg       DEM2    1              0</span></span>
 <span><span class="co">#&gt;   table_info.name table_info.type table_info.notnull table_info.dflt_value</span></span>
 <span><span class="co">#&gt; 1              id         INTEGER                  0                  &lt;NA&gt;</span></span>
 <span><span class="co">#&gt; 2      zoom_level         INTEGER                  1                  &lt;NA&gt;</span></span>
@@ -389,7 +389,7 @@ GeoPackage.</p>
 <span><span class="co">#&gt;  geometry    : polygons </span></span>
 <span><span class="co">#&gt;  dimensions  : 1, 0  (geometries, attributes)</span></span>
 <span><span class="co">#&gt;  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt;  source      : file1d6e7d779478.gpkg (bbox)</span></span>
+<span><span class="co">#&gt;  source      : file1cba35ea0acf.gpkg (bbox)</span></span>
 <span><span class="co">#&gt;  coord. ref. : lon/lat WGS 84 (EPSG:4326)</span></span></code></pre></div>
 <p>The table of interest need not have a geometry column, but this
 method does not work on GeoPackage that contain only gridded data, and
@@ -400,7 +400,7 @@ some layer in the GeoPackage must have some geometry.</p>
 <span><span class="co">#&gt;  geometry    : none </span></span>
 <span><span class="co">#&gt;  dimensions  : 0, 2  (geometries, attributes)</span></span>
 <span><span class="co">#&gt;  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt;  source      : file1d6e7d779478.gpkg (SELECT)</span></span>
+<span><span class="co">#&gt;  source      : file1cba35ea0acf.gpkg (SELECT)</span></span>
 <span><span class="co">#&gt;  coord. ref. :  </span></span>
 <span><span class="co">#&gt;  names       : table_name feature_count</span></span>
 <span><span class="co">#&gt;  type        :      &lt;chr&gt;         &lt;int&gt;</span></span></code></pre></div>
@@ -444,10 +444,10 @@ all tile/gridded datasets in a GeoPackage.</p>
 <span><span class="co">#&gt; resolution  : 0.008333333, 0.008333333  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
-<span><span class="co">#&gt; sources     : file1d6e7d779478.gpkg:DEM1  </span></span>
-<span><span class="co">#&gt;               file1d6e7d779478.gpkg:DEM2  </span></span>
-<span><span class="co">#&gt; varnames    : file1d6e7d779478 </span></span>
-<span><span class="co">#&gt;               file1d6e7d779478 </span></span>
+<span><span class="co">#&gt; sources     : file1cba35ea0acf.gpkg:DEM1  </span></span>
+<span><span class="co">#&gt;               file1cba35ea0acf.gpkg:DEM2  </span></span>
+<span><span class="co">#&gt; varnames    : file1cba35ea0acf </span></span>
+<span><span class="co">#&gt;               file1cba35ea0acf </span></span>
 <span><span class="co">#&gt; names       : DEM1, DEM2 </span></span>
 <span><span class="co">#&gt; min values  :   ? ,  195 </span></span>
 <span><span class="co">#&gt; max values  :   ? ,  500</span></span></code></pre></div>
@@ -468,7 +468,7 @@ the data contained in a GeoPackage.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gpkg_table.html">gpkg_table</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Source:   table&lt;gpkg_contents&gt; [4 x 10]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/RtmpvJqhkn/file1d6e7d779478.gpkg]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: sqlite 3.45.0 [/tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg]</span></span></span>
 <span><span class="co">#&gt;   table_name data_type   identifier description last_change   min_x min_y  max_x</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded… DEM1       <span style="color: #949494;">""</span>          2024-03-03…    6.01  49.7   6.27</span></span>
@@ -525,7 +525,7 @@ disconnecting an existing <code>geopackage</code> object
 <span><span class="co">#&gt;  sqlite_sequence</span></span>
 <span><span class="co">#&gt; --------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; &lt;SQLiteConnection&gt;</span></span>
-<span><span class="co">#&gt;   Path: /tmp/RtmpvJqhkn/file1d6e7d779478.gpkg</span></span>
+<span><span class="co">#&gt;   Path: /tmp/Rtmp2dDbAM/file1cba35ea0acf.gpkg</span></span>
 <span><span class="co">#&gt;   Extensions: TRUE</span></span>
 <span></span>
 <span><span class="co"># disconnect</span></span>

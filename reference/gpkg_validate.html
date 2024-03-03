@@ -69,19 +69,25 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
-<dd><p>Path to GeoPackages</p></dd>
+<dd><p>A <em>geopackage</em> object, or <em>character</em> path to GeoPackage</p></dd>
 
 
 <dt>diagnostics</dt>
-<dd><p>Return a list containing diagnostics (missing table names, invalid values, other errors)</p></dd>
+<dd><p>Return a list containing individual diagnostic test results (see Details)</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p><code>TRUE</code> if valid. <code>FALSE</code> if one or more problems are found. For full diagnostics run with <code>diagnostics = TRUE</code> to return a list containing results for each input GeoPackage.</p>
+<p><em>logical</em>. <code>TRUE</code> if valid. <code>FALSE</code> if one or more problems are found. For full diagnostics run with <code>diagnostics = TRUE</code> to return a list containing results for each test run on the input GeoPackage.</p>
     </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>Several tests are run on the input GeoPackage, including:</p><ul><li><p><code>required_tables</code>: <em>logical</em>. <code>TRUE</code> if <code>gpkg_contents</code> and <code>gpkg_spatial_ref_sys</code> tables exist</p></li>
+<li><p><code>has_contents</code>: <em>logical</em>. <code>TRUE</code> if the number of rows in <code>gpkg_contents</code> table is greater than <code>0</code> and all tables listed in <code>gpkg_contents</code> are in the database</p></li>
+<li><p><code>has_spatial_tables</code>: <em>logical</em>. <code>TRUE</code> if the number of tables in <code>gpkg_contents</code> with <code>data_type</code> <code>"features"</code> or <code>"2d-gridded-coverage"</code> is greater than <code>0</code></p></li>
+</ul></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
