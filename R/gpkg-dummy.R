@@ -27,7 +27,9 @@ gpkg_create_dummy_features <- function(x,
     );"))
   }
   
-  gpkg_create_spatial_ref_sys(x)
+  if (!inherits(res, 'try-error') && res == 0) {
+    gpkg_create_spatial_ref_sys(x)
+  }
   
   if (!inherits(res, 'try-error') && res == 0 && 
       !"gpkg_geometry_columns" %in% gpkg_list_tables(x)) {
