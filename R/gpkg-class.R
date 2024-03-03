@@ -1,7 +1,15 @@
 # GeoPackage class
 
 #' `geopackage` Constructors
-#'
+#' 
+#' `geopackage()` (alias `gpkg()`) creates an S3 object of class `geopackage`.
+#' 
+#' Several `geopackage()` methods are provided:
+#'  - `geopackage(x=<list>)`: creates a new GeoPackage object from a heterogeneous list of inputs
+#'  - `geopackage(x=<missing>)`: creates a new empty GeoPackage file in `tmpdir`
+#'  - `geopackage(x=<SQLiteConnection>)`: creates a GeoPackage object from an existing _SQLite_ connection
+#'  - `geopackage(x=<character>)`: creates a GeoPackage object from a path to an existing GeoPackage file
+#'  
 #' @param x list of SpatVectorProxy, SpatRaster, data.frame; or a character containing path to a GeoPackage file; or an SQLiteConnection to a GeoPackage. If missing, a temporary file with .gpkg extension is created in `tempdir`.
 #' @param dsn Path to GeoPackage File (may not exist)
 #' @param pattern used only when `x` is missing (creating temporary file GeoPackage), passed to `tempfile()`; default `"Rgpkg"`
@@ -63,6 +71,12 @@ geopackage.geopackage <- function(x, ...) {
 #' @export
 geopackage.character <- function(x, connect = FALSE, ...) {
   gpkg_read(x, connect = connect, ...)
+}
+
+#' @export
+#' @rdname geopackage-class
+gpkg <- function(x, ...) {
+  geopackage(x, ...)
 }
 
 # basic geopackage structure

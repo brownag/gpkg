@@ -2,7 +2,6 @@
 % Please edit documentation in R/gpkg-package.R
 \docType{package}
 \name{gpkg-package}
-\alias{gpkg}
 \alias{gpkg-package}
 \title{gpkg: Utilities for the Open Geospatial Consortium 'GeoPackage' Format}
 \description{

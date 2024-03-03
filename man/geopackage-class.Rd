@@ -7,6 +7,7 @@
 \alias{geopackage.SQLiteConnection}
 \alias{geopackage.geopackage}
 \alias{geopackage.character}
+\alias{gpkg}
 \title{\code{geopackage} Constructors}
 \usage{
 geopackage(x, ...)
@@ -20,6 +21,8 @@ geopackage(x, ...)
 \method{geopackage}{geopackage}(x, ...)
 
 \method{geopackage}{character}(x, connect = FALSE, ...)
+
+gpkg(x, ...)
 }
 \arguments{
 \item{x}{list of SpatVectorProxy, SpatRaster, data.frame; or a character containing path to a GeoPackage file; or an SQLiteConnection to a GeoPackage. If missing, a temporary file with .gpkg extension is created in \code{tempdir}.}
@@ -38,5 +41,14 @@ geopackage(x, ...)
 A \emph{geopackage} object
 }
 \description{
-\code{geopackage} Constructors
+\code{geopackage()} (alias \code{gpkg()}) creates an S3 object of class \code{geopackage}.
+}
+\details{
+Several \code{geopackage()} methods are provided:
+\itemize{
+\item \verb{geopackage(x=<list>)}: creates a new GeoPackage object from a heterogeneous list of inputs
+\item \verb{geopackage(x=<missing>)}: creates a new empty GeoPackage file in \code{tmpdir}
+\item \verb{geopackage(x=<SQLiteConnection>)}: creates a GeoPackage object from an existing \emph{SQLite} connection
+\item \verb{geopackage(x=<character>)}: creates a GeoPackage object from a path to an existing GeoPackage file
+}
 }
