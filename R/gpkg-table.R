@@ -185,7 +185,7 @@ gpkg_vect <- function(x, table_name, ...) {
   res <- try(terra::vect(x$dsn, layer = table_name, ...), silent = TRUE)
   if (inherits(res, 'try-error')) {
     # create features, try again with layer not specified
-    gpkg_create_dummy_features(x)
+    gpkg_create_empty_features(x, table_name = "dummy_features", contents = FALSE)
     res2 <- try(terra::vect(x$dsn, query = paste("SELECT * FROM", table_name), ...), silent = TRUE)
     if (inherits(res2, 'try-error')) {
       stop(res2[1], call. = FALSE)

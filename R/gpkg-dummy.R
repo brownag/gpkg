@@ -1,10 +1,12 @@
 #' Create a Dummy Feature Dataset in a GeoPackage
 #' 
-#' This function creates a minimal (empty) feature table and `gpkg_geometry_columns` table entry.
+#' This function has been deprecated. Please use `gpkg_create_empty_features()`.
+#' 
+#' Create a minimal (empty) feature table and `gpkg_geometry_columns` table entry.
 #' 
 #' @details This is a workaround so that `gpkg_vect()` (via `terra::vect()`) will recognize a GeoPackage as containing geometries and allow for use of OGR query utilities. The "dummy table" is not added to `gpkg_contents` and you should not try to use it for anything. The main purpose is to be able to use `gpkg_vect()` and `gpkg_ogr_query()` on a GeoPackage that contains only gridded and/or attribute data.
 #' 
-#' @seealso [gpkg_vect()] [gpkg_ogr_query()]
+#' @seealso [gpkg_create_empty_features()] [gpkg_vect()] [gpkg_ogr_query()]
 #'
 #' @param x A _geopackage_ object
 #' @param table_name A table name; default `"dummy_feature"`
@@ -15,46 +17,26 @@
 gpkg_create_dummy_features <- function(x, 
                                        table_name = "dummy_feature", 
                                        values = NULL) {
-  if (is.null(values)) {
-    values <- paste0("'", table_name, "', 'geom', 'GEOMETRY', -1, 0, 0")
-  }
   
-  res <- 0
-  if (!table_name %in% gpkg_list_tables(x)) {
-    res <- gpkg_execute(x, paste0("CREATE TABLE ", table_name, " (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      geom GEOMETRY
-    );"))
-  }
+  .Deprecated("gpkg_create_empty_features")
   
-  if (!inherits(res, 'try-error') && res == 0) {
-    gpkg_create_spatial_ref_sys(x)
-  }
-  
-  if (!inherits(res, 'try-error') && res == 0 && 
-      !"gpkg_geometry_columns" %in% gpkg_list_tables(x)) {
-    res <- gpkg_execute(x, " CREATE TABLE gpkg_geometry_columns (
-      table_name TEXT NOT NULL,
-      column_name TEXT NOT NULL,
-      geometry_type_name TEXT NOT NULL,
-      srs_id INTEGER NOT NULL,
-      z TINYINT NOT NULL,
-      m TINYINT NOT NULL,
-      CONSTRAINT pk_geom_cols PRIMARY KEY (table_name, column_name),
-      CONSTRAINT uk_gc_table_name UNIQUE (table_name),
-      CONSTRAINT fk_gc_tn FOREIGN KEY (table_name) REFERENCES gpkg_contents(table_name),
-      CONSTRAINT fk_gc_srs FOREIGN KEY (srs_id) REFERENCES gpkg_spatial_ref_sys (srs_id));")
-  }
-  
-  if (!inherits(res, 'try-error') && res == 0) {
-    if (!table_name %in% gpkg_collect(x, "gpkg_geometry_columns")$table_name) {
-      res <- gpkg_execute(x, paste0(
-        "INSERT INTO gpkg_geometry_columns (table_name, column_name, 
-                                            geometry_type_name, srs_id, z, m) 
-         VALUES (", values, ");"
-      ))
+  if (!is.null(values) && length(values) == 1 && is.character(values)) {
+    values <- strsplit(gsub("\\(|\\)|'|\"", "", values), ",")[[1]]
+    if (!length(values) == 6) {
+      stop("Invalid `values` argument. Six values are required.", call. = FALSE)
     }
+  } else {
+    values <- c(table_name, 'geom', 'GEOMETRY', '-1', '0', '0')
   }
+  
+  res <- gpkg_create_empty_features(x,
+                                    table_name = values[1],
+                                    column_name = values[2],
+                                    geometry_type_name = values[3],
+                                    srs_id = as.integer(values[4]),
+                                    z = as.integer(values[5]),
+                                    m = as.integer(values[6]),
+                                    contents = FALSE)
   
   !inherits(res, 'try-error')
 }

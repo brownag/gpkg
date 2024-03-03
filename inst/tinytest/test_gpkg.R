@@ -3,6 +3,7 @@
 if (requireNamespace("tinytest", quietly = TRUE)) library(tinytest)
 stopifnot(requireNamespace("RSQLite", quietly = TRUE))
 stopifnot(requireNamespace("terra", quietly = TRUE))
+stopifnot(requireNamespace("vapour", quietly = TRUE))
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -107,6 +108,9 @@ expect_true(inherits(g3, 'geopackage'))
 # manipulating an empty gpkg_contents table
 expect_true(gpkg_create_contents(g3))
 
+# add default SRS
+expect_equal(gpkg_create_spatial_ref_sys(g3), c(1, 1, 1))
+
 # add dummy row
 expect_true(gpkg_add_contents(g3, "foo", "bar",
                                 ext = c(0, 0, 0, 0),
@@ -117,7 +121,7 @@ expect_true(gpkg_add_contents(g3, "foo", "bar",
 expect_true(gpkg_write_attributes(g3, data.frame(id = 1), "A", "the letter A"))
 
 # try various 'lazy' accessor methods
-expect_warning({d1 <- gpkg_table_pragma(g3$dsn, "gpkg_contents")})
+expect_silent({d1 <- gpkg_table_pragma(g3$dsn, "gpkg_contents")})
 expect_true(inherits(d1, 'data.frame'))
 expect_true(inherits(gpkg_table_pragma(g3, "gpkg_contents"), 'data.frame'))
 
@@ -213,9 +217,10 @@ unlink(g$dsn)
 
 # attributes only (requires creation of "dummy" feature dataset) into temp gpkg
 expect_warning(g <- geopackage(list(bar = data.frame(b = 2))))
-gpkg_create_dummy_features(g)
+gpkg_create_empty_features(g, "dummy_features")
 expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
 
 # disconnect it
 expect_false(gpkg_is_connected(gpkg_disconnect(g)))
 unlink(g$dsn)
+

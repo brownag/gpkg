@@ -31,8 +31,10 @@ gpkg_list_srs <- function(x, column_name = "srs_id") {
 #' @rdname gpkg-srs
 gpkg_create_spatial_ref_sys <- function(x, default = TRUE, query_string = FALSE) { 
   x <- .gpkg_connection_from_x(x) 
+  qout <- character()
+  q <- character()
   if (!"gpkg_spatial_ref_sys" %in% gpkg_list_tables(x)) {
-    q <- "CREATE TABLE gpkg_spatial_ref_sys (
+    qout <- "CREATE TABLE gpkg_spatial_ref_sys (
       srs_name TEXT NOT NULL,
       srs_id INTEGER PRIMARY KEY,
       organization TEXT NOT NULL,
@@ -41,11 +43,15 @@ gpkg_create_spatial_ref_sys <- function(x, default = TRUE, query_string = FALSE)
       description TEXT
     );"
     gsrs <- data.frame(srs_id = integer(0L))
+    if (!query_string) {
+      res <- gpkg_execute(x, qout)
+    }
   } else {
-    q <- character()
     gsrs <- gpkg_spatial_ref_sys(x)
   }
-  if (isTRUE(default) || is.character(default)) {
+  res <- FALSE
+  if (!inherits(res, 'try-error') && 
+    (isTRUE(default) || is.character(default))) {
     if (is.logical(default) || length(default) == 0) {
       default <- c("cartesian", "geographic", "EPSG:4326")
     } 
@@ -72,7 +78,7 @@ gpkg_create_spatial_ref_sys <- function(x, default = TRUE, query_string = FALSE)
     }
   }
   if (query_string) {
-    return(q)
+    return(c(qout, q))
   }
   unlist(lapply(q, function(qq) gpkg_execute(x, qq)))
 }

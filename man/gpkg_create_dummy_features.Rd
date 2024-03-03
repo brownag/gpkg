@@ -17,11 +17,13 @@ gpkg_create_dummy_features(x, table_name = "dummy_feature", values = NULL)
 logical. \code{TRUE} on success.
 }
 \description{
-This function creates a minimal (empty) feature table and \code{gpkg_geometry_columns} table entry.
+This function has been deprecated. Please use \code{gpkg_create_empty_features()}.
 }
 \details{
+Create a minimal (empty) feature table and \code{gpkg_geometry_columns} table entry.
+
 This is a workaround so that \code{gpkg_vect()} (via \code{terra::vect()}) will recognize a GeoPackage as containing geometries and allow for use of OGR query utilities. The "dummy table" is not added to \code{gpkg_contents} and you should not try to use it for anything. The main purpose is to be able to use \code{gpkg_vect()} and \code{gpkg_ogr_query()} on a GeoPackage that contains only gridded and/or attribute data.
 }
 \seealso{
-\code{\link[=gpkg_vect]{gpkg_vect()}} \code{\link[=gpkg_ogr_query]{gpkg_ogr_query()}}
+\code{\link[=gpkg_create_empty_features]{gpkg_create_empty_features()}} \code{\link[=gpkg_vect]{gpkg_vect()}} \code{\link[=gpkg_ogr_query]{gpkg_ogr_query()}}
 }
