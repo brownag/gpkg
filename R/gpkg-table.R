@@ -115,11 +115,12 @@ gpkg_table.default <- function(x,
     
   con <- .gpkg_connection_from_x(x)
   
+  if (attr(con, 'disconnect')) {
+    on.exit(DBI::dbDisconnect(con))
+  }
+  
   if (isTRUE(collect) || isTRUE(query_string)) {
     
-    if (attr(con, 'disconnect')) {
-      on.exit(DBI::dbDisconnect(con))
-    }
     if (is.null(column_names) || 
         length(column_names) == 0 || 
         nchar(as.character(column_names)) == 0) {
@@ -137,8 +138,14 @@ gpkg_table.default <- function(x,
   
   tbls <- gpkg_list_tables(con)
   
-  if (missing(table_name) || length(table_name) == 0) stop("table name should be one of:", paste0(tbls, collapse = ", "), call = FALSE)
-  
+  if (length(tbls) == 0) {
+    tbls <- "<none available>"
+  }
+
+  if (missing(table_name) || length(table_name) == 0)
+    stop("table name should be one of: ",
+         paste0(tbls, collapse = ", "), call. = FALSE)
+
   dplyr::tbl(con, table_name, ...)
 }
 
