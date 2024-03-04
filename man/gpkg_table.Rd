@@ -11,6 +11,7 @@
 \alias{gpkg_tbl}
 \alias{gpkg_rast}
 \alias{gpkg_vect}
+\alias{gpkg_sf}
 \title{Lazy Access to Tables by Name}
 \usage{
 gpkg_table_pragma(x, table_name = NULL, ...)
@@ -46,6 +47,8 @@ gpkg_tbl(x, table_name, ...)
 gpkg_rast(x, table_name = NULL, ...)
 
 gpkg_vect(x, table_name, ...)
+
+gpkg_sf(x, table_name, ...)
 }
 \arguments{
 \item{x}{A \emph{geopackage} object or character path to GeoPackage file}
@@ -70,6 +73,8 @@ gpkg_vect(x, table_name, ...)
 \code{gpkg_rast()}: A 'terra' object of class \emph{SpatRaster}
 
 \code{gpkg_vect()}: A 'terra' object of class \emph{SpatVector} (may not contain geometry columns)
+
+\verb{gpkg_sf())}: An \emph{sf-tibble} object of class \code{"sf"}, \code{"tbl_df"}. If the table contains no geometry column the result is a \code{"tbl_df"}.
 }
 \description{
 \code{gpkg_table_pragma()}: Get information on a table in a GeoPackage (without returning the whole table).
@@ -82,7 +87,9 @@ gpkg_vect(x, table_name, ...)
 
 \code{gpkg_rast()}: Get a \emph{SpatRaster} object corresponding to the specified \code{table_name}
 
-\code{gpkg_rast()}: Get a \emph{SpatVector} object corresponding to the specified \code{table_name}
+\code{gpkg_vect()}: Get a \emph{SpatVector} object corresponding to the specified \code{table_name}
+
+\code{gpkg_sf()}: Get a \emph{sf-tibble} object corresponding to the specified \code{table_name}
 }
 \examples{
 \dontshow{if (!inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

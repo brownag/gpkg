@@ -175,7 +175,7 @@ gpkg_rast <- function(x, table_name = NULL, ...) {
 }
 
 
-#' @description `gpkg_rast()`: Get a _SpatVector_ object corresponding to the specified `table_name`
+#' @description `gpkg_vect()`: Get a _SpatVector_ object corresponding to the specified `table_name`
 #' @return `gpkg_vect()`: A 'terra' object of class _SpatVector_ (may not contain geometry columns)
 #' @export
 #' @rdname gpkg_table
@@ -193,4 +193,15 @@ gpkg_vect <- function(x, table_name, ...) {
     res <- res2
   }
   res
+}
+
+#' @description `gpkg_sf()`: Get a _sf-tibble_ object corresponding to the specified `table_name`
+#' @return `gpkg_sf())`: An _sf-tibble_ object of class `"sf"`, `"tbl_df"`. If the table contains no geometry column the result is a `"tbl_df"`.
+#' @export
+#' @rdname gpkg_table
+gpkg_sf <- function(x, table_name, ...) { 
+  if (!requireNamespace("sf", quietly = TRUE))
+    stop("package 'sf' is required to create 'sf' data.frame from tables in a GeoPackage", call. = FALSE)
+  x <- .gpkg_connection_from_x(x)
+  try(sf::read_sf(x$dsn, layer = table_name, ...), silent = TRUE)
 }
