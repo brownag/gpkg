@@ -60,10 +60,9 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 
 #' @export
 #' @rdname gpkg_table
-#' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
 #' @description `gpkg_table()`: Access a specific table (by name) and get a "lazy" {dbplyr} _tbl_SQLiteConnection_ object referencing that table
 #' @return `gpkg_table()`: A 'dbplyr' object of class _tbl_SQLiteConnection_
-#' @examples 
+#' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
 #' 
 #' tf <- tempfile(fileext = ".gpkg")
 #' 
@@ -80,7 +79,7 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 #'            RASTER_TABLE = "DEM2",
 #'            FIELD_NAME = "Elevation")
 #'
-#' g <- geopackage(tf)
+#' g <- geopackage(tf, connect = TRUE)
 #' 
 #' # inspect gpkg_contents table
 #' gpkg_table(g, "gpkg_contents")
@@ -136,17 +135,20 @@ gpkg_table.default <- function(x,
   
   stopifnot(requireNamespace("dbplyr", quietly = TRUE))
   
-  tbls <- gpkg_list_tables(con)
+  res <- try(dplyr::tbl(con, table_name, ...), silent = FALSE)
   
-  if (length(tbls) == 0) {
-    tbls <- "<none available>"
-  }
+  if (inherits(res, 'try-error')) {
+    tbls <- gpkg_list_tables(x)
 
-  if (missing(table_name) || length(table_name) == 0)
+    if (length(tbls) == 0) {
+      tbls <- "<none available>"
+    }
+    
     stop("table name should be one of: ",
          paste0(tbls, collapse = ", "), call. = FALSE)
-
-  dplyr::tbl(con, table_name, ...)
+  }
+  
+  res
 }
 
 #' @description `gpkg_collect()`: Alias for `gpkg_table(..., collect=TRUE)`

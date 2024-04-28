@@ -93,7 +93,6 @@ gpkg_sf(x, table_name, ...)
 }
 \examples{
 \dontshow{if (!inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontshow{\}) # examplesIf}
 
 tf <- tempfile(fileext = ".gpkg")
 
@@ -110,7 +109,7 @@ gpkg_write(r,
            RASTER_TABLE = "DEM2",
            FIELD_NAME = "Elevation")
 
-g <- geopackage(tf)
+g <- geopackage(tf, connect = TRUE)
 
 # inspect gpkg_contents table
 gpkg_table(g, "gpkg_contents")
@@ -126,4 +125,5 @@ gpkg_table(g, "gpkg_2d_gridded_tile_ancillary") \%>\%
   dplyr::collect()
 
 gpkg_disconnect(g)
+\dontshow{\}) # examplesIf}
 }
