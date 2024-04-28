@@ -57,6 +57,7 @@ gpkg_list_contents <- function(x, ogr = FALSE) {
 #'
 #' @param x A _geopackage_
 #' @param table_name Name of table to add or remove record for in _gpkg_contents_
+#' @param data_type _character_. One of: `2d-gridded-coverage`, `"features"`, `"attributes"`. Default `NULL` will attempt to auto-detect table type based on `gpkg_table_pragma()` information; falls back to `"attributes"` if raster or vector data are not detected.
 #' @param description Default: `""`
 #' @param template Deprecated. A list containing elements `"srsid"` and `"ext"`.
 #' @param srs_id _integer_. Spatial Reference System ID. Must be defined in `gpkg_spatial_ref_sys` table. 
@@ -66,9 +67,9 @@ gpkg_list_contents <- function(x, ogr = FALSE) {
 #' @return logical. TRUE on successful execution of SQL statements.
 #' @rdname gpkg-contents
 #' @export
-gpkg_add_contents <- function(x, table_name, description = "", srs_id = NULL, ext = NULL, template = NULL, query_string = FALSE) {
-  dt <- NULL
-  
+gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "", srs_id = NULL, ext = NULL, template = NULL, query_string = FALSE) {
+  dt <- data_type
+ 
   if (!missing(srs_id) && !is.null(srs_id)) {
     if (!length(srs_id) == 1 || !is.integer(as.integer(srs_id)))
       stop("`srs_id` should be an integer of length 1")

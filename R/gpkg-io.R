@@ -11,13 +11,16 @@
 #' @keywords io
 gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
   if (inherits(x, 'geopackage')) {
+    
+    if (!is.null(x$env$con) && isTRUE(attr(x$env$con, 'disconnect')))
+      gpkg_disconnect(x)
     x <- x$dsn
   }
   res <- lapply(x, function(xx) {
     res <- list()
     contents <- gpkg_contents(x, create = TRUE)
     # read grids
-    if (!any(contents$data_type %in%  c("attributes", "features"))) {
+    if (!all(contents$data_type %in% c("attributes", "features"))) {
         r <- try(terra::rast(xx), silent = TRUE)
         if (inherits(r, 'try-error')) {
           grids <- list()
@@ -38,10 +41,14 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
         names(vects) <- contents$table_name
         vects <- vects[!vapply(vects, FUN.VALUE = logical(1), inherits, 'try-error')]
     } else vects <- list()
-
-    # TODO: get table references
-    tables <- list()
-
+    
+    # get attribute tables
+    tables <- list
+    lattr <- contents$data_type == "attributes"
+    if (any(lattr)) {
+      tables <- lapply(contents$table_name[lattr], function(y) gpkg_table(x, y))
+    }
+    
     # spatial results (grid+vect+tabular) in `tables`
     res$tables <- c(grids, vects, tables)
 

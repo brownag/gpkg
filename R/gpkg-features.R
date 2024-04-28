@@ -44,7 +44,9 @@ gpkg_create_empty_features <- function(x,
   if (!inherits(res, 'try-error') && res == 0) {
     
     if (contents) {
+      
       gpkg_add_contents(x, 
+                        data_type = "features",
                         table_name = table_name, 
                         description = description,
                         srs_id = srs_id,

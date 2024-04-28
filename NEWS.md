@@ -1,3 +1,19 @@
+# gpkg 0.0.10
+
+ - Added `gpkg()` alias for `geopackage()`
+ 
+ - Added `gpkg_create_geometry_columns()`, `gpkg_geometry_columns()` and `gpkg_add_geometry_columns()`
+ 
+ - Added `gpkg_sf()` convenience method for creating an _sf_ object from tables. Defaults to a _sf_ _tbl_df_, use `as_tibble=FALSE` for _data.frame_.
+ 
+ - Now using new `gpkg_create_spatial_ref_sys()` function internally to ensure GeoPackages have the minimum required tables
+ 
+ - `gpkg_collect()` and `gpkg_table(collect=TRUE)` gain support for selecting a subset of columns of interest
+ 
+ - Deprecate `gpkg_create_dummy_features()` function name and replace with `gpkg_create_empty_features()`
+ 
+ - Deprecate `gpkg_contents(template=)` argument, provide new arguments for each data element (SRS ID and bounding box)
+
 # gpkg 0.0.9
 
  - Implemented GDAL driver detection for file paths via {vapour} for #15
