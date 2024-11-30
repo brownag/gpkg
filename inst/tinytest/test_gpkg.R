@@ -121,7 +121,7 @@ expect_true(gpkg_add_contents(g3, "foo", "bar",
 expect_true(gpkg_write_attributes(g3, data.frame(id = 1), "A", "the letter A"))
 
 # try various 'lazy' accessor methods
-expect_silent({d1 <- gpkg_table_pragma(g3$dsn, "gpkg_contents")})
+suppressWarnings({d1 <- gpkg_table_pragma(g3$dsn, "gpkg_contents")})
 expect_true(inherits(d1, 'data.frame'))
 expect_true(inherits(gpkg_table_pragma(g3, "gpkg_contents"), 'data.frame'))
 

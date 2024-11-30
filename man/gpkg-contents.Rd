@@ -10,6 +10,7 @@
 gpkg_add_contents(
   x,
   table_name,
+  data_type = NULL,
   description = "",
   srs_id = NULL,
   ext = NULL,
@@ -27,6 +28,8 @@ gpkg_create_contents(x, query_string = FALSE)
 \item{x}{A \emph{geopackage}}
 
 \item{table_name}{Name of table to add or remove record for in \emph{gpkg_contents}}
+
+\item{data_type}{\emph{character}. One of: \verb{2d-gridded-coverage}, \code{"features"}, \code{"attributes"}. Default \code{NULL} will attempt to auto-detect table type based on \code{gpkg_table_pragma()} information; falls back to \code{"attributes"} if raster or vector data are not detected.}
 
 \item{description}{Default: \code{""}}
 

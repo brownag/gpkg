@@ -29,5 +29,5 @@ gpkg_validate <- function(x, diagnostics = FALSE) {
   if (is.character(diagnostics) || isTRUE(diagnostics)) {
     return(res[diagnostics])
   }
-  all(sapply(res[diagnostics], isTRUE))
+  all(sapply(res, isTRUE))
 }
