@@ -1,3 +1,11 @@
+#' Get Geopackage Extensions
+#' @param x A `geopackage`
+#' @return a data.frame
+#' @export
+gpkg_extensions <- function(x) {
+  gpkg_collect(x, "gpkg_extensions")
+}
+
 #' Add 'Metadata' extension
 #'
 #' Adds the "Metadata" extension tables.
@@ -74,10 +82,48 @@ gpkg_add_relatedtables_extension <- function(x) {
   0
 }
 
+gpkg_add_spatial_ref_sys_extensions <- function(x) {
+  value <- data.frame(
+    table_name = "gpkg_spatial_ref_sys",
+    column_name = "definition_12_063",
+    extension_name = "gpkg_crs_wkt",
+    definition = "http://www.geopackage.org/spec120/#extension_crs_wkt",
+    scope = "read-write"
+  )
+  gpkg_append_table(x, "gpkg_extensions", value)
+}
+
+
+gpkg_add_2d_gridded_coverage_extensions <- function(x) {
+  value <- data.frame(
+    table_name = c(
+      "gpkg_2d_gridded_coverage_ancillary",
+      "gpkg_2d_gridded_tile_ancillary"
+    ),
+    column_name = NA_character_,
+    extension_name = "gpkg_2d_gridded_coverage",
+    definition = "http://docs.opengeospatial.org/is/17-066r1/17-066r1.html",
+    scope = "read-write"
+  )
+  gpkg_append_table(x, "gpkg_extensions", value)
+}
+
+
+gpkg_create_extensions <- function(x) {
+  x <- .gpkg_connection_from_x(x)
+  .gpkg_add_extensions(x)
+  if (attr(x, 'disconnect')) {
+    DBI::dbDisconnect(x)
+  }
+}
+
 .gpkg_add_extensions <- function(x, tbls = gpkg_list_tables(x)) {
   
+  if (inherits(x, 'geopackage'))
+    x <- x$env$con
+  
   if (!"gpkg_extensions" %in% tbls)
-    RSQLite::dbExecute(x$env$con, "CREATE TABLE gpkg_extensions (
+    RSQLite::dbExecute(x, "CREATE TABLE gpkg_extensions (
         table_name TEXT,
         column_name TEXT,
         extension_name TEXT NOT NULL,

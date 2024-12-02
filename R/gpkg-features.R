@@ -18,6 +18,7 @@
 #' @return _integer_ result of `gpkg_execute()`. Returns `1` if a new geometry record is appended to `gpkg_geometry_columns` table.
 #' 
 #' @export
+#' @seealso [gpkg_create_empty_grid()]
 #' @rdname gpkg-features
 gpkg_create_empty_features <- function(x, 
                                        table_name, 

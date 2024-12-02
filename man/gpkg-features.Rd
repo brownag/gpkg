@@ -44,3 +44,6 @@ gpkg_create_empty_features(
 \description{
 Create an empty feature table and associated entries for \code{gpkg_spatial_ref_sys}, and \code{gpkg_geometry_columns}.
 }
+\seealso{
+\code{\link[=gpkg_create_empty_grid]{gpkg_create_empty_grid()}}
+}

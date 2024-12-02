@@ -60,7 +60,7 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 
 #' @export
 #' @rdname gpkg_table
-#' @description `gpkg_table()`: Access a specific table (by name) and get a "lazy" {dbplyr} _tbl_SQLiteConnection_ object referencing that table
+#' @description `gpkg_table()`: Access a specific table (by name) and get a _tbl_SQLiteConnection_ object referencing that table
 #' @return `gpkg_table()`: A 'dbplyr' object of class _tbl_SQLiteConnection_
 #' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
 #' 
@@ -156,6 +156,11 @@ gpkg_table.default <- function(x,
 #' @rdname gpkg_table
 #' @export
 gpkg_collect <- function(x, table_name, query_string = FALSE, ...) {
+  
+  if (!requireNamespace("RSQLite", quietly = TRUE)) {
+    stop('package `RSQLite` is required to get the `gpkg_extensions` table', call. = FALSE)
+  }
+  
   gpkg_table(x, table_name, ..., query_string = query_string, collect = TRUE)
 }
 
@@ -213,4 +218,26 @@ gpkg_sf <- function(x, table_name, ...) {
     stop("package 'sf' is required to create 'sf' data.frame from tables in a GeoPackage", call. = FALSE)
   x <- .gpkg_connection_from_x(x)
   try(sf::read_sf(x$dsn, layer = table_name, ...), silent = TRUE)
+}
+
+gpkg_create_table <- function(x, table_name, fields, ...) {
+  x <- .gpkg_connection_from_x(x)
+  res <- try(RSQLite::dbCreateTable(x, name = table_name, fields = fields, ...))
+  
+  if (attr(x, 'disconnect')) {
+    on.exit(DBI::dbDisconnect(x))
+  }
+  
+  res
+}
+
+gpkg_append_table <- function(x, table_name, value, ...) {
+  x <- .gpkg_connection_from_x(x)
+  res <- try(RSQLite::dbAppendTable(x, name = table_name, value = value, ...))
+  
+  if (attr(x, 'disconnect')) {
+    on.exit(DBI::dbDisconnect(x))
+  }
+  
+  res
 }
