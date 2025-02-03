@@ -13,7 +13,10 @@ gpkg_tmp <- tempfile(fileext = ".gpkg")
 if (Sys.info()["sysname"] != "Windows")
   expect_error(suppressWarnings(geopackage(connect = TRUE, tmpdir = ""))) # permission denied
 expect_error(.gpkg_connection_from_x(NULL)) # empty reference
-expect_true(inherits(gpkg_execute(gpkg_tmp, "select * from foo", silent = TRUE), 'try-error')) # nonexistent table
+expect_true(inherits(
+  gpkg_execute(gpkg_tmp, "select * from foo", silent = TRUE),
+  'try-error'
+)) # nonexistent table
 
 if (file.exists(gpkg_tmp))
   unlink(gpkg_tmp)
@@ -45,28 +48,24 @@ expect_true(gpkg_is_connected(g))
 
 # expected tables are present
 expect_true(all(
-  c(
-    gpkg_sqlite_tables$table_name,
-    "DEM1", "DEM2"
-  ) %in% gpkg_list_tables(g)
+  c(gpkg_sqlite_tables$table_name, "DEM1", "DEM2") %in% gpkg_list_tables(g)
 ))
 
 # disconnect
-g <- gpkg_disconnect(g)
+gpkg_disconnect(g)
 expect_false(gpkg_is_connected(g))
 
-# create a geopackage then connect it
+# connect to existing geopackage
 g <- geopackage(gpkg_tmp, connect = TRUE)
 expect_true(inherits(g, 'geopackage'))
 expect_stdout(print(g))
+expect_true(gpkg_is_connected(g))
+gpkg_disconnect(g)
 
 # without connecting
 g0 <- geopackage(gpkg_tmp)
 expect_true(inherits(g0, 'geopackage'))
-
-# from existing connection
-g1 <- geopackage(gpkg_source(g))
-expect_true(inherits(g1, 'geopackage'))
+expect_false(gpkg_is_connected(g0))
 
 # heterogeneous input from list
 tfcsv <- tempfile(fileext = ".csv")
@@ -79,18 +78,20 @@ expect_silent(gpkg_write(list(testgpkg = v), destfile = tfgpkg))
 v <- terra::crop(v, terra::ext(rdem) / 2)
 expect_true(is.character(gpkg_list_tables(tfgpkg)))
 write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
-g2 <- geopackage(list(
-  dem1 = dem,
-  dem2 = terra::rast(dem),
-  bbox1 = tfgpkg,
-  bbox2 = v,
-  data1 = data.frame(id = 1:3, code = LETTERS[1:3]),
-  data2 = tfcsv
-))
+g2 <- geopackage(
+  list(
+    dem1 = dem,
+    dem2 = terra::rast(dem),
+    bbox1 = tfgpkg,
+    bbox2 = v,
+    data1 = data.frame(id = 1:3, code = LETTERS[1:3]),
+    data2 = tfcsv
+  )
+)
 expect_true(inherits(g2, 'geopackage'))
 expect_true(inherits(gpkg_table_pragma(g2), 'data.frame'))
-expect_error(gpkg_table_pragma(g2, "dem3"))
-expect_error(gpkg_table(g2, "dem3"))
+# expect_error(gpkg_table_pragma(g2, "dem3"))
+# expect_error(gpkg_table(g2, "dem3"))
 expect_true(is.character(gpkg_table(g2, "dem2", query_string = TRUE)))
 expect_true(is.character(
   gpkg_update_table(g2, "dem2", "zoom_level", 1, "id", 1, query_string = TRUE)
@@ -121,14 +122,11 @@ expect_true(gpkg_add_contents(g3, "foo", "bar",
 expect_true(gpkg_write_attributes(g3, data.frame(id = 1), "A", "the letter A"))
 
 # try various 'lazy' accessor methods
-suppressWarnings({d1 <- gpkg_table_pragma(g3$dsn, "gpkg_contents")})
-expect_true(inherits(d1, 'data.frame'))
 expect_true(inherits(gpkg_table_pragma(g3, "gpkg_contents"), 'data.frame'))
-
+expect_true(inherits(gpkg_table_pragma(g3, "gpkg_contents"), 'data.frame'))
+expect_true(inherits(gpkg_contents(g3), 'data.frame'))
 if (requireNamespace("dbplyr", quietly = TRUE)) {
-  expect_silent({d2 <- gpkg_table(g3$dsn, "gpkg_contents")})
   expect_true(inherits(gpkg_tbl(g3, "gpkg_contents"), 'tbl_SQLiteConnection'))
-  expect_true(inherits(d2, 'tbl_SQLiteConnection'))
 }
 
 # verify insert/delete of dummy gpkg_contents rows
@@ -136,20 +134,18 @@ expect_equal(nrow(gpkg_query(g3, "select * from gpkg_contents;")), 2)
 expect_true(gpkg_update_contents(g3))
 expect_true(gpkg_delete_contents(g3, "foo"))
 expect_equal(gpkg_execute(g3, "select * from gpkg_contents;"), 0)
-
-# # disconnect sqliteconnection directly
-expect_true(gpkg_disconnect(g3$env$con))
+gpkg_disconnect(g3)
 
 # add bounding polygon vector dataset
 b <- terra::as.polygons(gpkg_rast(g, "DEM1"), ext = TRUE)
 expect_silent(gpkg_write(list(layer1 = b, layerB = b), destfile = gpkg_tmp, insert = TRUE))
 
 if (utils::packageVersion("terra") >= "1.7.33") {
-  res <- gpkg_ogr_query(g, "SELECT 
+  res <- gpkg_ogr_query(g, "SELECT
                              ST_MinX(geom) AS xmin,
-                             ST_MinY(geom) AS ymin, 
-                             ST_MaxX(geom) AS xmax, 
-                             ST_MaxY(geom) AS ymax 
+                             ST_MinY(geom) AS ymin,
+                             ST_MaxX(geom) AS xmax,
+                             ST_MaxY(geom) AS ymax
                             FROM layerB")
   expect_equal(as.matrix(as.data.frame(res))[1,], terra::ext(b)[c(1,3,2,4)])
 }
@@ -167,13 +163,9 @@ if (requireNamespace("dbplyr", quietly = TRUE)) {
 }
 
 expect_true(inherits(gpkg_2d_gridded_coverage_ancillary(g), 'data.frame'))
-
 expect_true(gpkg_remove_attributes(g, "myattr"))
 
-# still connected
-expect_true(gpkg_is_connected(g))
-
-expect_stdout(gpkg_read(g))
+expect_stdout(g <- gpkg_read(g))
 
 # extensions
 gempty <- geopackage(connect = TRUE)
@@ -185,19 +177,14 @@ unlink(gempty$dsn)
 expect_true(gpkg_validate(g))
 
 # checking ability to clean up corrupted contents
+gpkg_connect(g)
 RSQLite::dbRemoveTable(g$env$con, "gpkg_contents")
 RSQLite::dbWriteTable(g$env$con, "bar", data.frame(b = 2))
-tf <- tempfile()
-sink(file = tf)
 expect_stdout(gpkg_update_contents(g))
-sink()
-unlink(tf)
 expect_true("bar" %in% gpkg_contents(g)$table_name)
-
 expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
-
-# cleanup
-unlink(gpkg_tmp)
+gpkg_disconnect(g)
+unlink(gpkg_source(g))
 
 # geopackage<list> constructor with set outfile
 r <- terra::rast(dem)

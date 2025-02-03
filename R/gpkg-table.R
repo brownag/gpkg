@@ -114,7 +114,7 @@ gpkg_table.default <- function(x,
     
   con <- .gpkg_connection_from_x(x)
   
-  if (attr(con, 'disconnect')) {
+  if (isTRUE(collect) && attr(con, 'disconnect')) {
     on.exit(DBI::dbDisconnect(con))
   }
   
