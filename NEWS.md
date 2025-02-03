@@ -1,3 +1,9 @@
+# gpkg 0.0.11
+
+ - Added `[` and `[[` methods for accessing/replacing tables in a `geopackage` object
+ 
+ -
+
 # gpkg 0.0.10
 
  - Added `gpkg()` alias for `geopackage()`
