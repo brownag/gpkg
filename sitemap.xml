@@ -15,14 +15,17 @@
 <url><loc>/reference/gpkg-package.html</loc></url>
 <url><loc>/reference/gpkg-srs.html</loc></url>
 <url><loc>/reference/gpkg_2d_gridded_coverage_ancillary.html</loc></url>
+<url><loc>/reference/gpkg_2d_gridded_tile_ancillary.html</loc></url>
 <url><loc>/reference/gpkg_add_metadata_extension.html</loc></url>
 <url><loc>/reference/gpkg_add_relatedtables_extension.html</loc></url>
 <url><loc>/reference/gpkg_bbox.html</loc></url>
 <url><loc>/reference/gpkg_contents.html</loc></url>
 <url><loc>/reference/gpkg_create_dummy_features.html</loc></url>
+<url><loc>/reference/gpkg_create_empty_grid.html</loc></url>
 <url><loc>/reference/gpkg_create_spatial_view.html</loc></url>
 <url><loc>/reference/gpkg_creation_options.html</loc></url>
 <url><loc>/reference/gpkg_execute.html</loc></url>
+<url><loc>/reference/gpkg_extensions.html</loc></url>
 <url><loc>/reference/gpkg_list_contents.html</loc></url>
 <url><loc>/reference/gpkg_list_tables.html</loc></url>
 <url><loc>/reference/gpkg_query.html</loc></url>
@@ -35,6 +38,7 @@
 <url><loc>/reference/gpkg_update_table.html</loc></url>
 <url><loc>/reference/gpkg_validate.html</loc></url>
 <url><loc>/reference/gpkg_write.html</loc></url>
+<url><loc>/reference/gridded-ancillary.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 </urlset>
 
