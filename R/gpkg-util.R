@@ -80,7 +80,6 @@ gpkg_list_tables <- function(x) {
 #' @param value numeric. Value to use as "NoData" (`data_null` value)
 #' @param query_string logical. Return SQLite query rather than executing it? Default: `FALSE`
 #' @return logical. `TRUE` if number of `data_null` records updated is greater than `0`.
-#' @importFrom DBI dbDisconnect
 #' @export
 gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
@@ -103,11 +102,23 @@ gpkg_tile_set_data_null <- function(x, name, value, query_string = FALSE) {
 #'
 #' @param x A _geopackage_ object, path to a GeoPackage or an _SQLiteConnection_
 #' @return a data.frame containing columns `id`, `tile_matrix_set_name`, `datatype`, `scale`, `offset`, `precision`, `data_null`, `grid_cell_encoding`, `uom`, `field_name`, `quantity_definition`
-#' @importFrom DBI dbDisconnect
 #' @export
 gpkg_2d_gridded_coverage_ancillary <- function(x) {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop('package `RSQLite` is required to get the `gpkg_2d_gridded_coverage_ancillary` table', call. = FALSE)
   }
   gpkg_table(x, "gpkg_2d_gridded_coverage_ancillary", collect = TRUE)
+}
+
+
+#' Get `gpkg_2d_gridded_tile_ancillary` Table
+#'
+#' @param x A _geopackage_ object, path to a GeoPackage or an _SQLiteConnection_
+#' @return a data.frame containing columns `id`, `tile_matrix_set_name`, `datatype`, `scale`, `offset`, `precision`, `data_null`, `grid_cell_encoding`, `uom`, `field_name`, `quantity_definition`
+#' @export
+gpkg_2d_gridded_tile_ancillary <- function(x) {
+  if (!requireNamespace("RSQLite", quietly = TRUE)) {
+    stop('package `RSQLite` is required to get the `gpkg_2d_gridded_tile_ancillary` table', call. = FALSE)
+  }
+  gpkg_table(x, "gpkg_2d_gridded_tile_ancillary", collect = TRUE)
 }
