@@ -60,7 +60,7 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 
 #' @export
 #' @rdname gpkg_table
-#' @description `gpkg_table()`: Access a specific table (by name) and get a "lazy" {dbplyr} _tbl_SQLiteConnection_ object referencing that table
+#' @description `gpkg_table()`: Access a specific table (by name) and get a "lazy" dbplyr _tbl_SQLiteConnection_ object referencing that table
 #' @return `gpkg_table()`: A 'dbplyr' object of class _tbl_SQLiteConnection_
 #' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
 #' 

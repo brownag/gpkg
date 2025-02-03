@@ -79,7 +79,7 @@ gpkg_sf(x, table_name, ...)
 \description{
 \code{gpkg_table_pragma()}: Get information on a table in a GeoPackage (without returning the whole table).
 
-\code{gpkg_table()}: Access a specific table (by name) and get a "lazy" {dbplyr} \emph{tbl_SQLiteConnection} object referencing that table
+\code{gpkg_table()}: Access a specific table (by name) and get a "lazy" dbplyr \emph{tbl_SQLiteConnection} object referencing that table
 
 \code{gpkg_collect()}: Alias for \code{gpkg_table(..., collect=TRUE)}
 
