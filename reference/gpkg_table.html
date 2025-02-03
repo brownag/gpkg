@@ -23,7 +23,7 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name'><!-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11</span>
       </span>
     </div>
 
@@ -176,12 +176,12 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name'><!-
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># inspect gpkg_contents table</span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_table</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;`gpkg_contents`&gt; [2 x 10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.47.0 [/tmp/RtmpLWuSH9/file1ac81b52b11.gpkg]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;`gpkg_contents`&gt; [?? x 10]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.47.1 [/tmp/RtmpBTBpwc/file22b6316aa3c4.gpkg]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   table_name data_type      identifier description last_change min_x min_y max_x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2024-11-30…  6.01  49.7  6.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2024-11-30…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2025-02-03…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2025-02-03…  6.01  49.7  6.27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: max_y &lt;dbl&gt;, srs_id &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_vect</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
@@ -189,12 +189,14 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name'><!-
 <span class="r-out co"><span class="r-pr">#&gt;</span>  geometry    : none </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  dimensions  : 0, 10  (geometries, attributes)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  source      : file1ac81b52b11.gpkg (SELECT)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  source      : file22b6316aa3c4.gpkg (SELECT)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  coord. ref. :  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  names       : table_name data_type identifier description last_change min_x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  type        :      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  min_y max_x max_y srs_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  &lt;num&gt; &lt;num&gt; &lt;num&gt;  &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  names       : table_name       data_type identifier description</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  type        :      &lt;chr&gt;           &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  values      :       DEM1 2d-gridded-cov~       DEM1            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          last_change min_x min_y max_x max_y srs_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;POSIXt&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;  &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2025-02-03 15:36:58 6.008 49.69 6.267 49.94   4326</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># materialize a data.frame from gpkg_2d_gridded_tile_ancillary</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
