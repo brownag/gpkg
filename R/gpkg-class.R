@@ -48,7 +48,9 @@ geopackage.list <- function(x, dsn = NULL, connect = FALSE, ...) {
 geopackage.missing <- function(x, connect = FALSE, pattern = "Rgpkg", tmpdir = tempdir(), ...) {
   tf <- tempfile(pattern = pattern, tmpdir = tmpdir, fileext = ".gpkg")
   tft <- try(file.create(tf))
-  if (inherits(tft, 'try-error')) stop('could not create temporary geopackage in ', tmpdir, call. = FALSE)
+  if (inherits(tft, 'try-error')) 
+    stop('could not create temporary geopackage in ', 
+         tmpdir, call. = FALSE)
   obj <- .geopackage(dsn = tf, connect = connect, ...)
   obj$tables <- list()
   obj
@@ -114,3 +116,24 @@ print.geopackage <- function(x, ...) {
     show(x$env$con)
   }
 }
+
+#' @export
+`[.geopackage` <- function(x, i) {
+  x$tables[i]
+}
+
+#' @export
+`[[.geopackage` <- function(x, i) {
+  x$tables[[i]]
+}
+
+#' @export
+`[<-.geopackage` <- function(x, i, value) {
+  x$tables[i] <- value
+}
+
+#' @export
+`[[<-.geopackage` <- function(x, i, value) {
+  x$tables[[i]] <- value
+}
+
