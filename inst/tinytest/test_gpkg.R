@@ -78,6 +78,7 @@ expect_silent(gpkg_write(list(testgpkg = v), destfile = tfgpkg))
 v <- terra::crop(v, terra::ext(rdem) / 2)
 expect_true(is.character(gpkg_list_tables(tfgpkg)))
 write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
+## TODO: unhandled connections
 g2 <- geopackage(
   list(
     dem1 = dem,
@@ -96,6 +97,7 @@ expect_true(is.character(gpkg_table(g2, "dem2", query_string = TRUE)))
 expect_true(is.character(
   gpkg_update_table(g2, "dem2", "zoom_level", 1, "id", 1, query_string = TRUE)
 ))
+# TODO: UNIQUE constraint failed
 expect_true(inherits(gpkg_vect(g2, 'dem2'), 'SpatVector'))
 expect_true(inherits(gpkg_vect(g2, 'gpkg_contents'), 'SpatVector'))
 gpkg_disconnect(g2)
@@ -109,6 +111,7 @@ expect_true(inherits(g3, 'geopackage'))
 # manipulating an empty gpkg_contents table
 expect_true(gpkg_create_contents(g3))
 
+## TODO: no such table gpkg_extensions
 # add default SRS
 expect_equal(gpkg_create_spatial_ref_sys(g3), c(1, 1, 1))
 
@@ -204,6 +207,7 @@ unlink(g$dsn)
 
 # attributes only (requires creation of "dummy" feature dataset) into temp gpkg
 expect_warning(g <- geopackage(list(bar = data.frame(b = 2))))
+# TODO: no gpkg_extensions, duplicate gpkg_contents
 gpkg_create_empty_features(g, "dummy_features")
 expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
 
