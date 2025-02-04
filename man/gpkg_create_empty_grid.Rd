@@ -17,8 +17,6 @@ gpkg_create_empty_grid(
   field_name = "Height",
   quantity_definition = "Height",
   srs_id = 4326,
-  z = 0L,
-  m = 0L,
   contents = TRUE,
   description = "",
   ext = c(-180, -90, 180, 90)
@@ -43,11 +41,17 @@ gpkg_create_empty_grid(
 
 \item{uom}{\emph{character}. Unit of measure. Default: \code{NULL}}
 
-\item{field_name}{\emph{character}. Default: \code{"Height"}}
+\item{field_name}{\emph{character}. Default: \code{"Height"}.}
 
 \item{quantity_definition}{\emph{character}. Default: \code{"Height"}}
 
-\item{srs_id}{\emph{integer}. Spatial Reference System ID. Must be defined in \code{gpkg_spatial_ref_sys} table.}
+\item{srs_id}{\emph{integer}. Spatial Reference System ID. Must be defined in \code{gpkg_spatial_ref_sys} table. Default: \code{4326}}
+
+\item{contents}{\emph{logical}. Include entry in \code{gpkg_contents}? Default: \code{TRUE}}
+
+\item{description}{\emph{character}. Description for \code{gpkg_contents}. Default: \code{""}}
+
+\item{ext}{\emph{numeric}. Length 4. Extent (\code{c(xmin, ymin, xmax, ymax)}) for \code{gpkg_contents}. Default: \code{c(-180, -90, 180, 90)}}
 }
 \value{
 \emph{integer}

@@ -12,9 +12,12 @@
 #' @param data_null _numeric_. Default: `NULL`
 #' @param grid_cell_encoding _character_ Default: `"grid-value-is-center"`
 #' @param uom _character_. Unit of measure. Default: `NULL`
-#' @param field_name _character_. Default: `"Height"`
+#' @param field_name _character_. Default: `"Height"`.
 #' @param quantity_definition _character_. Default: `"Height"`
-#' @param srs_id _integer_. Spatial Reference System ID. Must be defined in `gpkg_spatial_ref_sys` table. 
+#' @param srs_id _integer_. Spatial Reference System ID. Must be defined in `gpkg_spatial_ref_sys` table. Default: `4326`
+#' @param contents _logical_. Include entry in `gpkg_contents`? Default: `TRUE`
+#' @param description _character_. Description for `gpkg_contents`. Default: `""`
+#' @param ext _numeric_. Length 4. Extent (`c(xmin, ymin, xmax, ymax)`) for `gpkg_contents`. Default: `c(-180, -90, 180, 90)`
 #'
 #' @return _integer_
 #' @export
@@ -30,13 +33,13 @@ gpkg_create_empty_grid <- function(x,
                                    field_name = "Height",
                                    quantity_definition = "Height",
                                    srs_id = 4326, 
-                                   z = 0L,
-                                   m = 0L,
                                    contents = TRUE,
                                    description = "",
                                    ext = c(-180, -90, 180, 90)) {
   # create contents?
-  gpkg_create_contents(x)
+  if (isTRUE(contents)) {
+    gpkg_create_contents(x)
+  }
   
   gpkg_create_extensions(x)
   
@@ -46,22 +49,25 @@ gpkg_create_empty_grid <- function(x,
   gpkg_create_2d_gridded_tile_ancillary(x)
   gpkg_add_2d_gridded_coverage_extensions(x)
   
-  gpkg_add_contents(
-    x,
-    table_name = tile_matrix_set_name,
-    data_type = "2d-gridded-coverage",
-    description = description,
-    srs_id = srs_id,
-    ext = ext
-  )
-  
-  tb <- data.frame(
-      id = 1L,
-      zoom_level = 0L,
-      tile_column = 0L,
-      tile_row = 0L,
-      tile_data = structure(c(tile_data = raw(1)), ptype = raw(0), class = "list")
+  if (isTRUE(contents)) {
+    gpkg_add_contents(
+      x,
+      table_name = tile_matrix_set_name,
+      data_type = "2d-gridded-coverage",
+      description = description,
+      srs_id = srs_id,
+      ext = ext
     )
+  }
+  
+  # TODO: tile_data structure
+  tb <- data.frame(
+    id = 1L,
+    zoom_level = 0L,
+    tile_column = 0L,
+    tile_row = 0L,
+    tile_data = structure(c(tile_data = raw(1)), ptype = raw(0), class = "list")
+  )
   
   gpkg_create_table(x, table_name = tile_matrix_set_name, fields = tb[0,])
   
@@ -98,18 +104,18 @@ gpkg_create_empty_grid <- function(x,
       quantity_definition = quantity_definition
     )
   )
-  
 }
 
 gpkg_tile_matrix_set <- function(x) {
-  
+  # TODO: finish and export
 }
 
 gpkg_tile_matrix <- function(x) {
-  
+  # TODO: finish and export
 } 
 
 gpkg_create_tile_matrix <- function(x) {
+  # TODO: finish and export
   value <- data.frame(table_name = "test", zoom_level = 0L, matrix_width = 1L, 
                       matrix_height = 1L, tile_width = 256L, tile_height = 256L, 
                       pixel_x_size = 1, pixel_y_size = 1)
@@ -117,5 +123,5 @@ gpkg_create_tile_matrix <- function(x) {
 }
 
 gpkg_create_tile_matrix_set <- function(x) {
-  
+  # TODO: finish and export
 }
