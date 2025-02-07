@@ -31,6 +31,7 @@ gpkg_list_srs <- function(x, column_name = "srs_id") {
 #' @rdname gpkg-srs
 gpkg_create_spatial_ref_sys <- function(x, default = TRUE, query_string = FALSE) { 
   x <- .gpkg_connection_from_x(x) 
+  gpkg_create_extensions(x)
   gpkg_add_spatial_ref_sys_extensions(x)
   qout <- character()
   q <- character()
