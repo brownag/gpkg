@@ -136,30 +136,30 @@ gpkg_write <- function(x,
   pth_vector <- rep(FALSE, length(x))
   
   if (any(pth_file)) {
-    if (!requireNamespace("vapour")) {
-      stop("package 'vapour' is required to auto-detect GDAL drivers needed to read from arbitrary file paths", call. = FALSE)
+    if (!requireNamespace("gdalraster")) {
+      stop("package 'gdalraster' is required to auto-detect GDAL drivers needed to read from arbitrary file paths", call. = FALSE)
     }
     
     gdal_drv <- vapply(x, function(y) {
       if (!is.character(y)) {
         ""
       } else
-        vapour::vapour_driver(y)
+        gdalraster::identifyDriver(y)
     }, character(1))
     
-    drv <- vapour::vapour_all_drivers()
-    drm <- match(gdal_drv, drv$driver)
-    
+    drv <- gdalraster::gdal_formats()
+    drm <- match(gdal_drv, drv$short_name)
     
     pth_raster <- pth_file & drv$raster[drm]
     
+    # TODO: use gdalraster::inspectDataset()
     # TODO: how to handle GPKG as a raster and vector source?
     pth_raster[gdal_drv == "GPKG"] <- FALSE
     
     pth_vector <- pth_file & drv$vector[drm]
     
     # TODO: handling of CSV files as attributes/without GDAL
-    #       filter vapour drivers to subset that terra can readwrite
+    #       filter drivers to subset that terra can readwrite
     pth_vector[gdal_drv == "CSV"] <- FALSE
   }
   

@@ -14,7 +14,7 @@ Imports:
 Suggests: 
     RSQLite,
     terra (>= 1.6),
-    vapour,
+    gdalraster,
     tinytest,
     sf,
     dplyr,

@@ -1,9 +1,11 @@
 # RSQLite and terra used heavily in tests
 # d(b)plyr used conditionally
+
+# TODO: better conditional handling of required packages
 if (requireNamespace("tinytest", quietly = TRUE)) library(tinytest)
 stopifnot(requireNamespace("RSQLite", quietly = TRUE))
 stopifnot(requireNamespace("terra", quietly = TRUE))
-stopifnot(requireNamespace("vapour", quietly = TRUE))
+stopifnot(requireNamespace("gdalraster", quietly = TRUE))
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)

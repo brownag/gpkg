@@ -2,7 +2,7 @@
 
  - Added `[` and `[[` methods for accessing/replacing tables in a `geopackage` object
  
- -
+ - Replaced `vapour` functionality for driver detection with `gdalraster` equivalents
 
 # gpkg 0.0.10
 
