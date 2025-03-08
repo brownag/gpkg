@@ -11,7 +11,6 @@
 #' @keywords io
 gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
   if (inherits(x, 'geopackage')) {
-    
     if (!is.null(x$env$con) && isTRUE(attr(x$env$con, 'disconnect')))
       gpkg_disconnect(x)
     x <- x$dsn
@@ -142,9 +141,15 @@ gpkg_write <- function(x,
     
     gdal_drv <- vapply(x, function(y) {
       if (!is.character(y)) {
-        ""
-      } else
-        gdalraster::identifyDriver(y)
+        res <- ""
+      } else {
+        res <- gdalraster::identifyDriver(y)
+        # message(res, ":", y)
+        if (length(res) == 0) {
+          res <- ""
+        }
+        res
+      }
     }, character(1))
     
     drv <- gdalraster::gdal_formats()
