@@ -9,35 +9,53 @@
 #' @return a list of SpatVectorProxy, SpatRaster, data.frame (lazy tbl?)
 #' @export
 #' @rdname gpkg_tables
-gpkg_tables <- function(x, collect = FALSE, pragma = FALSE)
+gpkg_tables <- function(x, collect = TRUE, pragma = TRUE)
   UseMethod("gpkg_tables", x)
 
 #' @export
 #' @rdname gpkg_tables
-gpkg_tables.geopackage <- function(x, collect = FALSE, pragma = FALSE) {
-  src <- gpkg_source(x)
-  xx <- .gpkg_connection_from_x(x)
-  contents <- gpkg_contents(xx)
+gpkg_tables.default <- function(x, collect = TRUE, pragma = TRUE) {
+  con <- .gpkg_connection_from_x(x)
+  dsn <- con@dbname
+  contents <- gpkg_contents(con)
   y <- split(contents, contents$data_type)
   
-  .LAZY.FUN <- ifelse(isTRUE(pragma), gpkg_table_pragma, 
-                      function(x, ...) {
-                        gpkg_table(x, ..., collect = collect)
+  .LAZY.FUN <- ifelse(isTRUE(pragma),
+                      yes = gpkg_table_pragma, 
+                      no = function(x, ...) {
+                        gpkg_table(x, ..., collect = TRUE)
                       })
                     
-  unlist(lapply(names(y), function(z) {
-    switch(z, 
-           "2d-gridded-coverage" = { sapply(y[[z]]$table_name, function(i) terra::rast(src, i)) },
-           "features" = { sapply(y[[z]]$table_name, function(i) {
-             res <- try(terra::vect(src, proxy = !collect, layer = i), silent = TRUE)
-             if (inherits(res, 'try-error')) {
-               message(i, " : ", res[1])
-               res <- .LAZY.FUN(xx, table_name = i)
-             }
-             res
-            }) },
-           "attributes" = { sapply(y[[z]]$table_name, function(i) list(.LAZY.FUN(xx, table_name = i))) })
+  res <- unlist(lapply(names(y), function(z) {
+    switch(
+      z,
+      "2d-gridded-coverage" = {
+        sapply(y[[z]]$table_name, function(i)
+          terra::rast(dsn, i))
+      },
+      "features" = {
+        sapply(y[[z]]$table_name, function(i) {
+          res <- try(terra::vect(dsn, proxy = !collect, layer = i), silent = TRUE)
+          if (inherits(res, 'try-error')) {
+            # message(i, " : ", res[1])
+            res <- .LAZY.FUN(con, table_name = i)
+          }
+          res
+        })
+      },
+      "attributes" = {
+        sapply(y[[z]]$table_name, function(i)
+          list(.LAZY.FUN(con, table_name = i)))
+      }
+    )
   }), recursive = FALSE)
+  
+  if (attr(con, 'disconnect')) {
+    gpkg_disconnect(con)
+  }
+  
+  res
+  
 }
 
 #' Get Source File of a _geopackage_ object

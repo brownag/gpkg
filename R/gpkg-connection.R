@@ -5,6 +5,7 @@
 #' 
 #' @details The S3 method for `geopackage` objects does not require the use of assignment to create an object containing an active SQLiteConnection. e.g. `gpkg_connect(g)` connects the existing `geopackage` object `g`
 #' @param x Path to GeoPackage
+#' @param disconnect Set attribute `'disconnect'` on SQLiteConnection object to auto-disconnect? Default: `FALSE`
 #'
 #' @return A DBIConnection (SQLiteConnection) object. `NULL` on error.
 #' @export
@@ -72,20 +73,54 @@ gpkg_disconnect.geopackage <- function(x) {
 gpkg_disconnect.SQLiteConnection <- function(x) {
  return(DBI::dbDisconnect(x))
 }
- 
+
+#' @export
+#' @rdname gpkg-connection
+gpkg_disconnect.tbl_SQLiteConnection <- function(x) {
+  return(DBI::dbDisconnect(x$src$con))
+}
+
+#' @export
+#' @rdname gpkg-connection
+gpkg_disconnect.src_SQLiteConnection <- function(x) {
+  return(DBI::dbDisconnect(x$con))
+}
+
+#' @export
+#' @rdname gpkg-connection
+gpkg_connection <- function(x, disconnect = FALSE)
+  UseMethod("gpkg_connection", x)
+
+#' @export
+#' @rdname gpkg-connection
+gpkg_connection.default <- function(x, disconnect = FALSE) {
+  .gpkg_connection_from_x(x, disconnect = disconnect)
+}
+
 #' .gpkg_connection_from_x
 #'
 #' @param x A _geopackage_ object, a path to a GeoPackage or an _SQLiteConnection_
+#' @param disconnect logical. Set attribute to automatically close connection? Default: `TRUE`
 #' @return An SQLiteConnection with logical attribute `"disconnect"` indicating whether it should be disconnected after use.
 #' @noRd
 #' @importFrom DBI dbIsValid
 #' @keywords internal
-.gpkg_connection_from_x <- function(x) {
+.gpkg_connection_from_x <- function(x, disconnect = TRUE) {
   
-  disconnect <- TRUE
+  if (!is.logical(disconnect)) {
+    stop("Argument `disconnect` is not logical.", call. = FALSE)
+  }
+  
+  if (inherits(x, "tbl_SQLiteConnection")) {
+    x <- x$src
+  }
+  
+  if (inherits(x, "src_SQLiteConnection")) {
+    x <- x$con
+  }
   
   if (is.character(x)) {
-    con <- gpkg_connect(x)$env$con
+    con <- DBI::dbConnect(RSQLite::SQLite(), x)
   } else if (inherits(x, 'geopackage')) {
     if (!gpkg_is_connected(x)) {
       p <- x$dsn
@@ -97,7 +132,7 @@ gpkg_disconnect.SQLiteConnection <- function(x) {
   } else if (inherits(x, 'SQLiteConnection')) {
     con <- x
     disconnect <- FALSE
-  } else stop('`x` should be `geopackage` object, a path to a GeoPackage or an _SQLiteConnection_')
+  } else stop('`x` should be `geopackage` object, a path to a GeoPackage, or an _SQLiteConnection_')
   
   if (!DBI::dbIsValid(con)) {
     attr(con, 'disconnect') <- TRUE

@@ -13,20 +13,38 @@
 #' @param query_string _logical_. Return SQLite query rather than executing it? Default: `FALSE`
 #' @return _integer_. Number of rows updated by executing `UPDATE` query. Or `character` SQL query string if `query_string=TRUE`.
 #' @export
-gpkg_update_table <- function(x, table_name, 
-                              updatecol, updatevalue, 
-                              wherecol = NULL, 
-                              wherevector = NULL, 
+gpkg_update_table <- function(x,
+                              table_name,
+                              updatecol,
+                              updatevalue,
+                              wherecol = NULL,
+                              wherevector = NULL,
                               query_string = FALSE) {
-  con <- .gpkg_connection_from_x(x)
-  q <- sprintf("UPDATE %s SET %s = %s %s",
-               table_name, updatecol, updatevalue, 
-               ifelse(!is.null(wherecol), sprintf("WHERE %s IN %s", wherecol,
-                                                  paste0("(", paste0(paste0("'", wherevector, "'"), collapse = ","), ")")), ""))
-  if (query_string) return(q)
-  res <- RSQLite::dbExecute(con, q)
-  if (attr(con, 'disconnect')) {
-    DBI::dbDisconnect(con)
+  q <- sprintf(
+    "UPDATE %s SET %s = %s %s",
+    table_name,
+    updatecol,
+    updatevalue,
+    ifelse(
+      !is.null(wherecol),
+      sprintf("WHERE %s IN %s", wherecol, paste0("(", paste0(
+        paste0("'", wherevector, "'"), collapse = ","
+      ), ")")),
+      ""
+    )
+  )
+  
+  if (query_string) {
+    return(q)
   }
+  
+  con <- .gpkg_connection_from_x(x)
+  
+  res <- RSQLite::dbExecute(con, q)
+  
+  if (attr(con, 'disconnect')) {
+    gpkg_disconnect(con)
+  }
+  
   res
 }

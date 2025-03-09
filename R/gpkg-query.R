@@ -15,8 +15,8 @@ gpkg_query <- function(x, query, ogr = FALSE, ...) {
   if (isTRUE(ogr)) {
     if (!requireNamespace("terra") && utils::packageVersion("terra") < "1.7.33")
       stop("terra version 1.7-33 or higher is required to use `ogr=TRUE`")
-    con <- .gpkg_proxy_from_x(x)
-    res <- terra::query(con, ..., sql = query)
+    prx <- .gpkg_proxy_from_x(x)
+    res <- terra::query(prx, ..., sql = query)
   } else {
     con <- .gpkg_connection_from_x(x)
     res <- RSQLite::dbGetQuery(con, query)

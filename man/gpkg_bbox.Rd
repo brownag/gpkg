@@ -21,7 +21,6 @@ This function applies an OGR SQL query to obtain bounding coordinates of a table
 }
 \examples{
 \dontshow{if (!inherits(try(requireNamespace("terra", quietly=TRUE), silent=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-
 \donttest{
 tf <- tempfile(fileext = ".gpkg")
 

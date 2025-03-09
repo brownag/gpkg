@@ -26,15 +26,31 @@ gpkg_write_attributes <-  function(x,
   
   # write new table
   if (!is.null(con)) {
-    RSQLite::dbWriteTable(con, table_name, table, overwrite = overwrite, append = !overwrite && append)
-    res <- gpkg_delete_contents(x, table_name = table_name) + 
-            gpkg_add_contents(x, table_name = table_name, description = description, template = template)
+    RSQLite::dbWriteTable(con,
+                          table_name,
+                          table,
+                          overwrite = overwrite,
+                          append = !overwrite && append)
+    
+    if (!"gpkg_contents" %in% gpkg_list_tables(con)) {
+      res0 <- gpkg_create_contents(con)
+    }
+    
+    res1 <- gpkg_delete_contents(con, 
+                                 table_name = table_name)
+    
+    res2 <- gpkg_add_contents(con,
+                              table_name = table_name,
+                              description = description,
+                              template = template)
+    res <- res1 + res2
   }
-
+  
   # close connection if needed
   if (attr(con, 'disconnect')) {
-    gpkg_disconnect(x)
+    gpkg_disconnect(con)
   }
+  
   (res == 2)
 }
 
@@ -54,8 +70,8 @@ gpkg_remove_attributes <- function(x, table_name) {
       i <- RSQLite::dbRemoveTable(con, y)
       
       # remove gpkg_contents record
-      if (y %in% gpkg_contents(x)$table_name) {
-        gpkg_delete_contents(x, y)
+      if (y %in% gpkg_contents(con)$table_name) {
+        gpkg_delete_contents(con, y)
       }
       i
     })
@@ -63,7 +79,7 @@ gpkg_remove_attributes <- function(x, table_name) {
   
   # close connection if needed
   if (attr(con, 'disconnect')) {
-    gpkg_disconnect(x)
+    gpkg_disconnect(con)
   }
   
   (sum(sapply(res, sum)) > 0)

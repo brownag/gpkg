@@ -68,7 +68,10 @@ gpkg_list_contents <- function(x, ogr = FALSE) {
 #' @rdname gpkg-contents
 #' @export
 gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "", srs_id = NULL, ext = NULL, template = NULL, query_string = FALSE) {
+  
+  con <- .gpkg_connection_from_x(x)
   dt <- data_type
+  
   if (!missing(srs_id) && !is.null(srs_id)) {
     if (!length(srs_id) == 1 || !is.integer(as.integer(srs_id)))
       stop("`srs_id` should be an integer of length 1")
@@ -111,7 +114,7 @@ gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "",
   }
 
   if (is.null(dt)) {
-    gtp <- try(gpkg_table_pragma(x, table_name), silent = TRUE)
+    gtp <- try(suppressWarnings(gpkg_table_pragma(con, table_name)), silent = TRUE)
     if (inherits(gtp, 'try-error')) {
       gtp <- NULL
     }
@@ -135,10 +138,11 @@ gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "",
     }
   }
 
-  # create gpkg_contents empty table if needed
-  if (!"gpkg_contents" %in% gpkg_list_tables(x)) {
-    x <- gpkg_create_contents(x)
+  # create empty gpkg_contents table if needed
+  if (!"gpkg_contents" %in% gpkg_list_tables(con)) {
+    x <- gpkg_create_contents(con)
   }
+  
   q <- paste0(
     "INSERT INTO gpkg_contents (table_name, data_type, identifier,
                                   description, last_change,
@@ -161,9 +165,13 @@ gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "",
   }
 
   # append to gpkg_contents
-  x <- gpkg_execute(x, q)
+  res <- gpkg_execute(con, q)
 
-  !inherits(x, 'try-error')
+  if (attr(con, 'disconnect')) {
+    gpkg_disconnect(con)
+  }
+  
+  !inherits(res, 'try-error')
 }
 
 #' @description `gpkg_update_contents()`: Add and remove `gpkg_contents` records to match existing tables
