@@ -2,9 +2,7 @@
 % Please edit documentation in R/gpkg-table.R
 \name{gpkg_table_pragma}
 \alias{gpkg_table_pragma}
-\alias{gpkg_table_pragma.character}
-\alias{gpkg_table_pragma.SQLiteConnection}
-\alias{gpkg_table_pragma.geopackage}
+\alias{gpkg_table_pragma.default}
 \alias{gpkg_table}
 \alias{gpkg_table.default}
 \alias{gpkg_collect}
@@ -16,11 +14,7 @@
 \usage{
 gpkg_table_pragma(x, table_name = NULL, ...)
 
-\method{gpkg_table_pragma}{character}(x, table_name = NULL, ...)
-
-\method{gpkg_table_pragma}{SQLiteConnection}(x, table_name, ...)
-
-\method{gpkg_table_pragma}{geopackage}(x, table_name = NULL, ...)
+\method{gpkg_table_pragma}{default}(x, table_name = NULL, ...)
 
 gpkg_table(
   x,
@@ -114,7 +108,7 @@ g <- geopackage(tf, connect = TRUE)
 # inspect gpkg_contents table
 gpkg_table(g, "gpkg_contents")
 
-gpkg_vect(g, "gpkg_contents")
+gpkg_contents(g)
 
 # materialize a data.frame from gpkg_2d_gridded_tile_ancillary
 library(dplyr, warn.conflicts = FALSE)

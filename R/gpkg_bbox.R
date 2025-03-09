@@ -10,7 +10,6 @@
 #' @keywords internal
 #' @export
 #' @examplesIf !inherits(try(requireNamespace("terra", quietly=TRUE), silent=TRUE), 'try-error')
-#' 
 #' \donttest{
 #' tf <- tempfile(fileext = ".gpkg")
 #' 

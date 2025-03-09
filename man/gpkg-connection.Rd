@@ -9,6 +9,10 @@
 \alias{gpkg_disconnect}
 \alias{gpkg_disconnect.geopackage}
 \alias{gpkg_disconnect.SQLiteConnection}
+\alias{gpkg_disconnect.tbl_SQLiteConnection}
+\alias{gpkg_disconnect.src_SQLiteConnection}
+\alias{gpkg_connection}
+\alias{gpkg_connection.default}
 \title{Create SQLite Connection to GeoPackage}
 \usage{
 gpkg_connect(x)
@@ -26,9 +30,19 @@ gpkg_disconnect(x)
 \method{gpkg_disconnect}{geopackage}(x)
 
 \method{gpkg_disconnect}{SQLiteConnection}(x)
+
+\method{gpkg_disconnect}{tbl_SQLiteConnection}(x)
+
+\method{gpkg_disconnect}{src_SQLiteConnection}(x)
+
+gpkg_connection(x, disconnect = FALSE)
+
+\method{gpkg_connection}{default}(x, disconnect = FALSE)
 }
 \arguments{
 \item{x}{A \emph{geopackage} or \emph{SQLiteConnection} object}
+
+\item{disconnect}{Set attribute \code{'disconnect'} on SQLiteConnection object to auto-disconnect? Default: \code{FALSE}}
 }
 \value{
 A DBIConnection (SQLiteConnection) object. \code{NULL} on error.

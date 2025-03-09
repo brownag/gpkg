@@ -11,6 +11,7 @@
 gpkg_execute <- function(x, statement, ..., silent = FALSE) {
   con <- .gpkg_connection_from_x(x)
   res <- try(RSQLite::dbExecute(con, statement, ...), silent = silent)
-  if (attr(con, 'disconnect')) DBI::dbDisconnect(con)
+  if (attr(con, 'disconnect')) 
+    gpkg_disconnect(con)
   invisible(res)
 }

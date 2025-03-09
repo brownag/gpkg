@@ -1,3 +1,11 @@
+# gpkg 0.0.12
+ 
+ - Major cleanup and more consistent use of internal _SQLiteConnection_ usage to ensure open connections don't get garbage collected
+ 
+ - Added `gpkg_disconnect()` convenience methods for `tbl_SQLiteConnection` and `src_SQLiteConnection` 
+ 
+ - Added `gpkg_connection()` a user-level function for accessing or creating SQLiteConnections given a `geopackage` object or a path to GeoPackage file
+
 # gpkg 0.0.11
 
  - Added `[` and `[[` methods for accessing/replacing tables in a `geopackage` object

@@ -4,21 +4,6 @@
 gpkg_table_pragma <- function(x, table_name = NULL, ...)
   UseMethod("gpkg_table_pragma", x)
 
-#' @rdname gpkg_table
-#' @export
-gpkg_table_pragma.character <- function(x, table_name = NULL, ...) {
-  g <- geopackage(x, connect = TRUE)
-  res <- gpkg_table_pragma(g, table_name = table_name, ...)
-  gpkg_disconnect(g)
-  res
-}
-
-#' @rdname gpkg_table
-#' @export
-gpkg_table_pragma.SQLiteConnection <- function(x, table_name, ...) {
-  gpkg_table_pragma(geopackage(x), table_name, ...)
-}
-
 #' Lazy Access to Tables by Name
 #' 
 #' `gpkg_table_pragma()`: Get information on a table in a GeoPackage (without returning the whole table).
@@ -32,15 +17,17 @@ gpkg_table_pragma.SQLiteConnection <- function(x, table_name, ...) {
 #' @export
 #' @rdname gpkg_table
 #' @importFrom DBI dbGetQuery dbDisconnect
-gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
+gpkg_table_pragma.default <- function(x, table_name = NULL, ...) {
   con <- .gpkg_connection_from_x(x)
-  tbls <- gpkg_list_tables(con)
-  dsn <- gpkg_source(x)
+  tbls <- gpkg_list_tables(x)
+  dsn <- con@dbname
+  
   if (is.null(table_name)) {
     table_name <- tbls
   }
   
-  if (!all(table_name %in% tbls)) stop("no table with name: '", paste0(table_name[!table_name %in% tbls], collapse = "', '"), "' in ", dsn)
+  if (!all(table_name %in% tbls)) 
+    stop("no table with name: '", paste0(table_name[!table_name %in% tbls], collapse = "', '"), "' in ", dsn)
   
   res <- do.call('rbind', lapply(table_name, function(xx) {
     data.frame(dsn = dsn, 
@@ -84,7 +71,7 @@ gpkg_table_pragma.geopackage <- function(x, table_name = NULL, ...) {
 #' # inspect gpkg_contents table
 #' gpkg_table(g, "gpkg_contents")
 #' 
-#' gpkg_vect(g, "gpkg_contents")
+#' gpkg_contents(g)
 #' 
 #' # materialize a data.frame from gpkg_2d_gridded_tile_ancillary
 #' library(dplyr, warn.conflicts = FALSE)
@@ -111,26 +98,29 @@ gpkg_table.default <- function(x,
                                column_names = "*",
                                query_string = FALSE,
                                ...) {
-    
-  con <- .gpkg_connection_from_x(x)
   
-  if (isTRUE(collect) && attr(con, 'disconnect')) {
-    on.exit(DBI::dbDisconnect(con))
+  if (is.null(column_names) ||
+      length(column_names) == 0 ||
+      nchar(as.character(column_names)) == 0) {
+    column_names <- "*"
   }
   
-  if (isTRUE(collect) || isTRUE(query_string)) {
-    
-    if (is.null(column_names) || 
-        length(column_names) == 0 || 
-        nchar(as.character(column_names)) == 0) {
-      column_names <- "*"
+  q <- sprintf("SELECT %s FROM %s",
+               paste0(column_names, collapse = ", "),
+               table_name)
+  
+  if (isTRUE(query_string)) {
+    return(q)
+  }
+  
+  con <- .gpkg_connection_from_x(x)
+  
+  if (isTRUE(collect)) { 
+    res <- gpkg_query(con, q)
+    if (attr(con, 'disconnect')) {
+      gpkg_disconnect(con)
     }
-    q <- sprintf("SELECT %s FROM %s", paste0(column_names, collapse = ", "), table_name)
-    if (query_string) {
-      return(q)
-    }
-    
-    return(gpkg_query(con, q))
+    return(res)
   }
   
   stopifnot(requireNamespace("dbplyr", quietly = TRUE))
@@ -138,7 +128,7 @@ gpkg_table.default <- function(x,
   res <- try(dplyr::tbl(con, table_name, ...), silent = FALSE)
   
   if (inherits(res, 'try-error')) {
-    tbls <- gpkg_list_tables(x)
+    tbls <- gpkg_list_tables(con)
 
     if (length(tbls) == 0) {
       tbls <- "<none available>"
@@ -146,6 +136,11 @@ gpkg_table.default <- function(x,
     
     stop("table name should be one of: ",
          paste0(tbls, collapse = ", "), call. = FALSE)
+  }
+  
+  # keep tbl_SQLiteconnection open
+  if (attr(con, 'disconnect')) {
+    attr(con, 'disconnect') <-  FALSE
   }
   
   res
@@ -221,22 +216,22 @@ gpkg_sf <- function(x, table_name, ...) {
 }
 
 gpkg_create_table <- function(x, table_name, fields, ...) {
-  x <- .gpkg_connection_from_x(x)
-  res <- try(RSQLite::dbCreateTable(x, name = table_name, fields = fields, ...))
+  con <- .gpkg_connection_from_x(x)
+  res <- try(RSQLite::dbCreateTable(con, name = table_name, fields = fields, ...))
   
-  if (attr(x, 'disconnect')) {
-    on.exit(DBI::dbDisconnect(x))
+  if (attr(con, 'disconnect')) {
+    gpkg_disconnect(con) 
   }
   
   res
 }
 
 gpkg_append_table <- function(x, table_name, value, ...) {
-  x <- .gpkg_connection_from_x(x)
-  res <- try(RSQLite::dbAppendTable(x, name = table_name, value = value, ...))
+  con <- .gpkg_connection_from_x(x)
+  res <- try(RSQLite::dbAppendTable(con, name = table_name, value = value, ...))
   
-  if (attr(x, 'disconnect')) {
-    on.exit(DBI::dbDisconnect(x))
+  if (attr(con, 'disconnect')) {
+    gpkg_disconnect(con) 
   }
   
   res

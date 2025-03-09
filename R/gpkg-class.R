@@ -29,18 +29,14 @@ geopackage.list <- function(x, dsn = NULL, connect = FALSE, ...) {
   if (is.null(dsn)) {
     dsn <- tempfile("Rgpkg", fileext = ".gpkg")
   }
-  
   if (is.character(dsn) && !file.exists(dsn)) {
-    gpkg_write(x, destfile = dsn, ...)
-    dsn <- .gpkg_connection_from_x(dsn)
+    res <- gpkg_write(x, destfile = dsn, ...)
   } else {
     if (!all(names(x) %in% gpkg_list_tables(dsn))) {
       stop("File (", dsn, ") already exists! `geopackage(<list>)` should only be used when the GeoPackage `dsn` needs to be created. See the `geopackage(<character>)` and `geopackage(<SQLiteConnection>)` methods (without list input) to use existing databases.", call. = FALSE)
     }
   }
-  obj <- .geopackage(dsn = dsn, connect = connect, ...)
-  obj$tables <- x
-  obj
+  geopackage(dsn)
 }
 
 #' @rdname geopackage-class
@@ -94,6 +90,9 @@ gpkg <- function(x, ...) {
       con <- RSQLite::dbConnect(RSQLite::SQLite(), dsn)
     } else stop('package `RSQLite` is required to connect to GeoPackages', call. = FALSE)
   }
+  if (!connect && inherits(con, 'SQLiteConnection') && isTRUE(attr(con, 'disconnect'))) {
+    gpkg_disconnect(con)
+  }
   obj <- structure(list(
     tables = list(),
     env = list2env(list(con = con)),
@@ -137,3 +136,8 @@ print.geopackage <- function(x, ...) {
   x$tables[[i]] <- value
 }
 
+# TODO: consider what "names" should be exposed to user, in light of [[]]
+#       consider defining $ method (how will access the env/table components internally?) 
+# names.geopackage <- function(x) {
+#   gpkg_list_tables(x)
+# }

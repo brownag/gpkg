@@ -10,60 +10,67 @@
 #' @seealso [gpkg_tables()]
 #' @keywords io
 gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
-  if (inherits(x, 'geopackage')) {
-    if (!is.null(x$env$con) && isTRUE(attr(x$env$con, 'disconnect')))
-      gpkg_disconnect(x)
-    x <- x$dsn
-  }
-  res <- lapply(x, function(xx) {
-    res <- list()
-    contents <- gpkg_contents(x, create = TRUE)
-    # read grids
-    if (!all(contents$data_type %in% c("attributes", "features"))) {
-        r <- try(terra::rast(xx), silent = TRUE)
-        if (inherits(r, 'try-error')) {
-          grids <- list()
-        } else {
-          # convert to list of single-layer SpatRaster
-          grids <- as.list(r)
-          # assign raster table names
-          names(grids) <- names(r)
-        }
-    } else grids <- list()
-
-    # read vector layers (error if there aren't any)
-    if (any(contents$data_type == "features")) {
-        vects <- lapply(contents$table_name, function(xxx){
-            # create SpatVectorProxy
-            try(terra::vect(path.expand(xx), xxx, proxy = TRUE), silent = quiet)
-          })
-        names(vects) <- contents$table_name
-        vects <- vects[!vapply(vects, FUN.VALUE = logical(1), inherits, 'try-error')]
-    } else vects <- list()
-    
-    # get attribute tables
-    tables <- list
-    lattr <- contents$data_type == "attributes"
-    if (any(lattr)) {
-      tables <- lapply(contents$table_name[lattr], function(y) gpkg_table(x, y))
-    }
-    
-    # spatial results (grid+vect+tabular) in `tables`
-    res$tables <- c(grids, vects, tables)
-
-    # descriptions in `gdalinfo`
-    res$gdalinfo <- terra::describe(xx)
-
-    # verbose gdalinfo output
-    if (!quiet) cat(res$gdalinfo, sep = "\n")
-    res
-  })
-
-  res2 <- do.call('c', lapply(res, function(x) x$tables))
-  names(res2) <- do.call('c', lapply(res, function(x) names(x$tables)))
   
-  obj <- .geopackage(dsn = x, connect = connect)
-  obj$tables <- gpkg_tables(obj) 
+  stopifnot(length(x) == 1)
+  
+  con <- .gpkg_connection_from_x(x)
+  
+  dsn <- path.expand(con@dbname)
+  res <- list()
+  contents <- gpkg_contents(con, create = TRUE)
+  
+  # read grids
+  if (!all(contents$data_type %in% c("attributes", "features"))) {
+    r <- try(terra::rast(dsn), silent = TRUE)
+    if (inherits(r, 'try-error')) {
+      grids <- list()
+    } else {
+      # convert to list of single-layer SpatRaster
+      grids <- as.list(r)
+      # assign raster table names
+      names(grids) <- names(r)
+    }
+  } else {
+    grids <- list()
+  }
+  
+  # read vector layers (error if there aren't any)
+  if (any(contents$data_type == "features")) {
+    vects <- lapply(contents$table_name, function(xxx) {
+      # create SpatVectorProxy
+      try(terra::vect(dsn, xxx, proxy = TRUE), silent = quiet)
+    })
+    names(vects) <- contents$table_name
+    vects <- vects[!vapply(vects, FUN.VALUE = logical(1), inherits, 'try-error')]
+  } else {
+    vects <- list()
+  }
+  
+  # get attribute tables
+  tables <- list()
+  lattr <- contents$data_type == "attributes"
+  if (any(lattr)) {
+    tables <- lapply(contents$table_name[lattr], function(y) {
+      gpkg_table_pragma(con, y)
+    })
+  }
+  
+  # spatial results (grid+vect+tabular) in `tables`
+  res$tables <- c(grids, vects, tables)
+  
+  # descriptions in `gdalinfo`
+  res$gdalinfo <- terra::describe(x)
+  
+  # verbose gdalinfo output
+  if (!quiet)
+    cat(res$gdalinfo, sep = "\n")
+  
+  if (attr(con, 'disconnect')) {
+    gpkg_disconnect(con)
+  }
+
+  obj <- .geopackage(dsn = dsn, connect = connect)
+  obj$tables <- res$tables
   obj  
 }
 
@@ -185,16 +192,14 @@ gpkg_write <- function(x,
     if (!inherits(ldsn[[x]], 'data.frame')) {
       ldsn[[x]] <- utils::read.csv(ldsn[[x]])
     }
-    g <- geopackage(destfile, connect = TRUE)
-    on.exit(gpkg_disconnect(g))
-    x <- gpkg_write_attributes(
-      g,
+    y <- gpkg_write_attributes(
+      destfile,
       ldsn[[x]],
       table_name = x,
       overwrite = overwrite,
       append = append
     )
-    return(inherits(x, 'try-error'))
+    return(inherits(y, 'try-error'))
   })
 }
     

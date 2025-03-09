@@ -2,12 +2,12 @@
 % Please edit documentation in R/gpkg-util.R
 \name{gpkg_tables}
 \alias{gpkg_tables}
-\alias{gpkg_tables.geopackage}
+\alias{gpkg_tables.default}
 \title{Get Tables from a \emph{geopackage} object}
 \usage{
-gpkg_tables(x, collect = FALSE, pragma = FALSE)
+gpkg_tables(x, collect = TRUE, pragma = TRUE)
 
-\method{gpkg_tables}{geopackage}(x, collect = FALSE, pragma = FALSE)
+\method{gpkg_tables}{default}(x, collect = TRUE, pragma = TRUE)
 }
 \arguments{
 \item{x}{A \emph{geopackage} object}

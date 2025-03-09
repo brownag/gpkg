@@ -30,23 +30,20 @@ gpkg_create_empty_features <- function(x,
                                        contents = TRUE,
                                        description = "",
                                        ext = c(-180, -90, 180, 90)) {
-  
-  # gpkg_create_contents(x)
-  gpkg_create_spatial_ref_sys(x)
-  gpkg_create_geometry_columns(x)
+  con <- .gpkg_connection_from_x(x)
+  gpkg_create_spatial_ref_sys(con)
+  gpkg_create_geometry_columns(con)
   
   res <- 0
-  if (!table_name %in% gpkg_list_tables(x)) {
-    res <- gpkg_execute(x, paste0("CREATE TABLE ", table_name, " (
+  if (!table_name %in% gpkg_list_tables(con)) {
+    res <- gpkg_execute(con, paste0("CREATE TABLE ", table_name, " (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         geom ", geometry_type_name, ");"))
   }
   
   if (!inherits(res, 'try-error') && res == 0) {
-    
     if (contents) {
-      
-      gpkg_add_contents(x, 
+      gpkg_add_contents(con, 
                         data_type = "features",
                         table_name = table_name, 
                         description = description,
@@ -55,7 +52,7 @@ gpkg_create_empty_features <- function(x,
     }
     
     res <- gpkg_add_geometry_columns(
-      x,
+      con,
       table_name = table_name,
       column_name = column_name,
       geometry_type_name = geometry_type_name,
@@ -64,5 +61,10 @@ gpkg_create_empty_features <- function(x,
       m = m
     )
   }
+  
+  if (attr(con, 'disconnect')) {
+    gpkg_disconnect(con)
+  }
+  
   res
 }
