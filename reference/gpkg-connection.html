@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.12</span>
       </span>
     </div>
 
@@ -82,7 +82,18 @@
 <span><span class="fu">gpkg_disconnect</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'SQLiteConnection'</span></span>
-<span><span class="fu">gpkg_disconnect</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gpkg_disconnect</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'tbl_SQLiteConnection'</span></span>
+<span><span class="fu">gpkg_disconnect</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'src_SQLiteConnection'</span></span>
+<span><span class="fu">gpkg_disconnect</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gpkg_connection</span><span class="op">(</span><span class="va">x</span>, disconnect <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">gpkg_connection</span><span class="op">(</span><span class="va">x</span>, disconnect <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -91,6 +102,10 @@
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A <em>geopackage</em> or <em>SQLiteConnection</em> object</p></dd>
+
+
+<dt id="arg-disconnect">disconnect<a class="anchor" aria-label="anchor" href="#arg-disconnect"></a></dt>
+<dd><p>Set attribute <code>'disconnect'</code> on SQLiteConnection object to auto-disconnect? Default: <code>FALSE</code></p></dd>
 
 </dl></div>
     <div id="value">
