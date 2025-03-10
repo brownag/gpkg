@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# gpkg - Utilities for the OGC 'GeoPackage' Format
+# gpkg - Utilities for the Open Geospatial Consortium 'GeoPackage' Format
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml/badge.svg?branch=main)](https://github.com/brownag/gpkg/actions/workflows/R-CMD-check.yml)
@@ -128,7 +128,7 @@ g2
 class(g2)
 ```
 
-Note that a temporary GeoPackage (`r gpkg_source(g2)`) is automatically created when using the `geopackage(<list>)` constructor. 
+Note that a temporary GeoPackage (`{r, eval=exists(g2)} gpkg_source(g2)`) is automatically created when using the `geopackage(<list>)` constructor. 
 
 You also may have a _DBIConnection_ to a GeoPackage database already opened that you want to use. In any case (_character_, _list_, _SQLiteConnection_) there is an S3 method to facilitate creating the basic _geopackage_ class provided by {gpkg}. All other methods are designed to be able to work smoothly with _geopackage_ class input.
 

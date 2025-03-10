@@ -20,7 +20,7 @@ a \emph{data.frame} containing columns \code{"xmin"}, \code{"ymin"}, \code{"xmax
 This function applies an OGR SQL query to obtain bounding coordinates of a table containing a geometry column. \url{https://gdal.org/user/sql_sqlite_dialect.html} and \url{https://gdal.org/user/ogr_sql_dialect.html}
 }
 \examples{
-\dontshow{if (!inherits(try(requireNamespace("terra", quietly=TRUE), silent=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("terra", quietly=TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 tf <- tempfile(fileext = ".gpkg")
 

@@ -49,7 +49,7 @@ gpkg_table_pragma.default <- function(x, table_name = NULL, ...) {
 #' @rdname gpkg_table
 #' @description `gpkg_table()`: Access a specific table (by name) and get a _tbl_SQLiteConnection_ object referencing that table
 #' @return `gpkg_table()`: A 'dbplyr' object of class _tbl_SQLiteConnection_
-#' @examplesIf !inherits(try(requireNamespace("RSQLite", quietly = TRUE)), 'try-error') &&!inherits(try(requireNamespace("dbplyr", quietly = TRUE)), 'try-error') && !inherits(try(requireNamespace("terra", quietly = TRUE)), 'try-error')
+#' @examplesIf requireNamespace("RSQLite", quietly = TRUE) && requireNamespace("dbplyr", quietly = TRUE) && requireNamespace("terra", quietly = TRUE)
 #' 
 #' tf <- tempfile(fileext = ".gpkg")
 #' 

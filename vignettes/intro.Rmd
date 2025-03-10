@@ -10,11 +10,16 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = requireNamespace("terra", quietly = TRUE) && 
+    requireNamespace("dbplyr", quietly = TRUE)
 )
 ```
 
 ## Background
+
+`gpkg` provides high-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://www.geopackage.org/). [GDAL](https://gdal.org/) utilities for read and write of spatial data ([vector](https://gdal.org/drv_geopackage.html) and [gridded](https://gdal.org/drv_geopackage_raster.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
+
 ### What is a GeoPackage?
 
 [GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standard/geopackage/) describes a set of conventions for storing the following within an SQLite database:
@@ -66,9 +71,9 @@ We can also write vector data to GeoPackage. Here we use `gpkg_write()` to add a
 
 ```{r}
 # add bounding polygon vector layer via named list
-r <- gpkg_tables(geopackage(gpkg_tmp))[['DEM1']]
+r <- gpkg_tables(gpkg_tmp)[['DEM1']]
 v <- terra::as.polygons(r, ext = TRUE)
-gpkg_write(list(bbox = v), destfile = gpkg_tmp, append = TRUE)
+gpkg_write(list(bbox = v), destfile = gpkg_tmp)
 ```
 
 ## Insert Attribute Table
@@ -77,7 +82,7 @@ Similarly, `data.frame`-like objects (non-spatial "attributes") can be written t
 
 ```{r}
 z <- data.frame(a = 1:10, b = LETTERS[1:10])
-gpkg_write(list(myattr = z), destfile = gpkg_tmp, append = TRUE)
+gpkg_write(list(myattr = z), destfile = gpkg_tmp)
 ```
 
 ## Read a GeoPackage
@@ -98,7 +103,7 @@ g2
 class(g2)
 ```
 
-Note that a temporary GeoPackage (`r g2$dsn`) is automatically created when using the `geopackage(<list>)` constructor. 
+Note that a temporary GeoPackage (`{r, eval=exists(g2)} gpkg_source(g2)`) is automatically created when using the `geopackage(<list>)` constructor. 
 
 You also may have a _DBIConnection_ to a GeoPackage database already opened that you want to use. In any case (_character_, _list_, _SQLiteConnection_) there is an S3 method to facilitate creating the basic _geopackage_ class provided by {gpkg}. All other methods are designed to be able to work smoothly with _geopackage_ class input.
 
@@ -130,11 +135,27 @@ Note that with grid data returned from `gpkg_collect()` you get a table result w
 The inverse function of `gpkg_collect()` is `gpkg_tbl()` which always returns a _tbl_SQLiteConnection_.
 
 ```{r}
-gpkg_tbl(g, "gpkg_contents")
+tb <- gpkg_tbl(g, "gpkg_contents")
+tb
 ```
 
-More on how to use this type of result next.
- 
+Note that with this lazy reference to table, the internal _SQLiteConnection_ in `g` is the same as the source in `tb`:
+
+```{r}
+gpkg_connection(g)@ptr
+gpkg_connection(tb)@ptr
+```
+
+This means that you can handle all of your connections via the `connect` argument when creating a geopackage object, along with the `gpkg_connect()` and `gpkg_disconnect()` commands.
+
+There are also a variety of convenience functions for the standard required tables in a geopackage. 
+
+For instance, `gpkg_contents()` collects the `"gpkg_contents"` table.
+
+```{r}
+gpkg_contents(g)
+```
+
 ### Lazy Data Access
 
 There are several other methods that can be used for working with tabular data in a GeoPackage in a "lazy" fashion.
@@ -219,7 +240,7 @@ Several helper methods are available for checking GeoPackage `SQLiteConnection` 
 # still connected
 gpkg_is_connected(g)
 
-# disconnect geopackage
+# disconnect 
 gpkg_disconnect(g)
 
 # reconnect

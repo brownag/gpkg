@@ -9,7 +9,7 @@
 #' @return a _data.frame_ containing columns `"xmin"`, `"ymin"`, `"xmax"`, `"ymax"`
 #' @keywords internal
 #' @export
-#' @examplesIf !inherits(try(requireNamespace("terra", quietly=TRUE), silent=TRUE), 'try-error')
+#' @examplesIf requireNamespace("terra", quietly=TRUE)
 #' \donttest{
 #' tf <- tempfile(fileext = ".gpkg")
 #' 
