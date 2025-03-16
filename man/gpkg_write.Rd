@@ -17,23 +17,29 @@ gpkg_write(
 )
 }
 \arguments{
-\item{x}{Vector of source file path(s), or a list containing one or more SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.}
+\item{x}{Vector of source file path(s), or a list containing one or more
+SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.}
 
 \item{destfile}{Character. Path to output GeoPackage}
 
-\item{table_name}{Character. Default \code{NULL} name is derived from source file. Required if \code{x} is a \emph{data.frame}.}
+\item{table_name}{Character. Default \code{NULL} name is derived from source file.
+Required if \code{x} is a \emph{data.frame}.}
 
-\item{datatype}{Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"} otherwise. See documentation for \code{terra::writeRaster()}.}
+\item{datatype}{Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"}
+otherwise. See documentation for \code{terra::writeRaster()}.}
 
-\item{append}{Append to existing data source? Default: \code{FALSE}. Setting \code{append=TRUE} overrides \code{overwrite=TRUE}}
+\item{append}{Append to existing data source? Default: \code{FALSE}. Setting
+\code{append=TRUE} overrides \code{overwrite=TRUE}}
 
 \item{overwrite}{Overwrite existing data source? Default \code{FALSE}.}
 
 \item{NoData}{Value to use as GDAL \code{NoData} Value}
 
-\item{gdal_options}{Additional \code{gdal_options}, passed to \code{terra::writeRaster()}}
+\item{gdal_options}{Additional \code{gdal_options}, passed to
+\code{terra::writeRaster()}}
 
-\item{...}{Additional arguments are passed as GeoPackage "creation options." See Details.}
+\item{...}{Additional arguments are passed as GeoPackage "creation options."
+See Details.}
 }
 \value{
 Logical. \code{TRUE} on successful write of at least one grid.
@@ -42,9 +48,24 @@ Logical. \code{TRUE} on successful write of at least one grid.
 Write data to a GeoPackage
 }
 \details{
-Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed \href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{here} or in the \code{gpkg_creation_options} dataset. The name of the argument is \code{creation_option} and the value is selected from one of the elements of \code{values} for that option.
+Additional, non-default GeoPackage creation options can be specified
+as arguments to this function. The full list of creation options can be
+viewed
+\href{https://gdal.org/en/stable/drivers/raster/gpkg.html#creation-options}{here}
+or in the \code{gpkg_creation_options} dataset. The name of the argument is
+\code{creation_option} and the value is selected from one of the elements of
+\code{values} for that option.
 
-If \code{x} contains source file paths, any comma-separated value (CSV) files are treated as attribute data--even if they contain a geometry column. GeoPackage source file paths are always treated as vector data sources, and only one layer will be read from the source and written to the target. If you need to read raster data from a GeoPackage first create a \code{SpatRaster}  from the layer of interest (see \code{gpkg_rast()}) before passing to \code{gpkg_write()}. If you need to read multiple layers from any multi-layer source read them individually into suitable objects. For a source GeoPackage containing multiple layers you can use \code{gpkg_read()} (returns a \emph{geopackage} object) or \code{gpkg_tables()} (returns a \emph{list} object).
+If \code{x} contains source file paths, any comma-separated value (CSV) files
+are treated as attribute data--even if they contain a geometry column.
+GeoPackage source file paths are always treated as vector data sources, and
+only one layer will be read from the source and written to the target. If
+you need to read raster data from a GeoPackage first create a \code{SpatRaster}
+from the layer of interest (see \code{gpkg_rast()}) before passing to
+\code{gpkg_write()}. If you need to read multiple layers from any multi-layer
+source read them individually into suitable objects. For a source
+GeoPackage containing multiple layers you can use \code{gpkg_read()} (returns a
+\emph{geopackage} object) or \code{gpkg_tables()} (returns a \emph{list} object).
 }
 \seealso{
 \link{gpkg_creation_options}

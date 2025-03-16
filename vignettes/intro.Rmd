@@ -18,11 +18,11 @@ knitr::opts_chunk$set(
 
 ## Background
 
-`gpkg` provides high-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://www.geopackage.org/). [GDAL](https://gdal.org/) utilities for read and write of spatial data ([vector](https://gdal.org/drv_geopackage.html) and [gridded](https://gdal.org/drv_geopackage_raster.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
+`gpkg` provides high-level wrapper functions to build [Open Geospatial Consortium (OGC) 'GeoPackage' files](https://www.geopackage.org/). [GDAL](https://gdal.org/) utilities for read and write of spatial data ([vector](https://gdal.org/en/stable/drivers/vector/gpkg.html) and [gridded](https://gdal.org/en/stable/drivers/raster/gpkg.html)) are provided via the {[terra](https://cran.r-project.org/package=terra)} package. Additional 'GeoPackage' and 'SQLite' specific functions manipulate attributes and tabular data via the {[RSQLite](https://cran.r-project.org/package=RSQLite)} package.
 
 ### What is a GeoPackage?
 
-[GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/standard/geopackage/) describes a set of conventions for storing the following within an SQLite database:
+[GeoPackage](https://www.geopackage.org/) is an open, standards-based, platform-independent, portable, self-describing, compact format for transferring geospatial information. The [GeoPackage Encoding Standard](https://www.ogc.org/publications/standard/geopackage/)) describes a set of conventions for storing the following within an SQLite database:
 
   *  vector features
   
@@ -183,7 +183,7 @@ gpkg_vect(g, 'gpkg_ogr_contents')
 
 The _SpatVectorProxy_ is used for "lazy" references to of vector and attribute contents of a GeoPackage; this object for vector data is analogous to the _SpatRaster_ for gridded data. The 'terra' package provides "GDAL plumbing" for filter and query utilities. 
 
-`gpkg_query()` by default uses the 'RSQLite' driver, but the richer capabilities of OGR data sources can be harnessed with [SQLite SQL dialect](https://gdal.org/user/sql_sqlite_dialect.html). These additional features can be utilized with the `ogr=TRUE` argument to `gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that GDAL is built with support for SQLite (and ideally also with support for Spatialite).
+`gpkg_query()` by default uses the 'RSQLite' driver, but the richer capabilities of OGR data sources can be harnessed with [SQLite SQL dialect](https://gdal.org/en/stable/user/sql_sqlite_dialect.html). These additional features can be utilized with the `ogr=TRUE` argument to `gpkg_query()`, or `gpkg_ogr_query()` for short. This assumes that GDAL is built with support for SQLite (and ideally also with support for Spatialite).
 
 For example, we use built-in functions such as `ST_MinX()` to calculate summaries for `"bbox"` table, geometry column `"geom"`. In this case we expect the calculated quantities to match the coordinates/boundaries of the bounding box:
 

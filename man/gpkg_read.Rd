@@ -9,7 +9,8 @@ gpkg_read(x, connect = FALSE, quiet = TRUE)
 \arguments{
 \item{x}{Path to GeoPackage}
 
-\item{connect}{Connect to database and store connection in result? Default: \code{FALSE}}
+\item{connect}{Connect to database and store connection in result? Default:
+\code{FALSE}}
 
 \item{quiet}{Hide printing of gdalinfo description to stdout. Default: \code{TRUE}}
 }
@@ -17,7 +18,9 @@ gpkg_read(x, connect = FALSE, quiet = TRUE)
 A \emph{geopackage} object (list containing tables, grids and vector data)
 }
 \description{
-This function creates a \emph{geopackage} object with references to all tables from the GeoPackage source specified in \code{x}. For a simple list of tables see \code{gpkg_tables()}.
+This function creates a \emph{geopackage} object with references to all tables
+from the GeoPackage source specified in \code{x}. For a simple list of tables see
+\code{gpkg_tables()}.
 }
 \seealso{
 \code{\link[=gpkg_tables]{gpkg_tables()}}

@@ -1,9 +1,12 @@
 #' Read data from a GeoPackage
 #'
-#' This function creates a _geopackage_ object with references to all tables from the GeoPackage source specified in `x`. For a simple list of tables see `gpkg_tables()`.
+#' This function creates a _geopackage_ object with references to all tables
+#' from the GeoPackage source specified in `x`. For a simple list of tables see
+#' `gpkg_tables()`.
 #'
 #' @param x Path to GeoPackage
-#' @param connect Connect to database and store connection in result? Default: `FALSE`
+#' @param connect Connect to database and store connection in result? Default:
+#'   `FALSE`
 #' @param quiet Hide printing of gdalinfo description to stdout. Default: `TRUE`
 #' @return A _geopackage_ object (list containing tables, grids and vector data)
 #' @export
@@ -75,19 +78,40 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 }
 
 #' Write data to a GeoPackage
-#' @param x Vector of source file path(s), or a list containing one or more SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.
+#' @param x Vector of source file path(s), or a list containing one or more
+#'   SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.
 #' @param destfile Character. Path to output GeoPackage
-#' @param table_name Character. Default `NULL` name is derived from source file. Required if `x` is a _data.frame_.
-#' @param datatype Data type. Defaults to `"FLT4S"` for GeoTIFF files, `"INT2U"` otherwise. See documentation for `terra::writeRaster()`.
-#' @param append Append to existing data source? Default: `FALSE`. Setting `append=TRUE` overrides `overwrite=TRUE`
+#' @param table_name Character. Default `NULL` name is derived from source file.
+#'   Required if `x` is a _data.frame_.
+#' @param datatype Data type. Defaults to `"FLT4S"` for GeoTIFF files, `"INT2U"`
+#'   otherwise. See documentation for `terra::writeRaster()`.
+#' @param append Append to existing data source? Default: `FALSE`. Setting
+#'   `append=TRUE` overrides `overwrite=TRUE`
 #' @param overwrite Overwrite existing data source? Default `FALSE`.
 #' @param NoData Value to use as GDAL `NoData` Value
-#' @param gdal_options Additional `gdal_options`, passed to `terra::writeRaster()`
-#' @param ... Additional arguments are passed as GeoPackage "creation options." See Details.
-#' @details Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed [here](https://gdal.org/drivers/raster/gpkg.html#creation-options) or in the `gpkg_creation_options` dataset. The name of the argument is `creation_option` and the value is selected from one of the elements of `values` for that option.
-#' 
-#' If `x` contains source file paths, any comma-separated value (CSV) files are treated as attribute data--even if they contain a geometry column. GeoPackage source file paths are always treated as vector data sources, and only one layer will be read from the source and written to the target. If you need to read raster data from a GeoPackage first create a `SpatRaster`  from the layer of interest (see `gpkg_rast()`) before passing to `gpkg_write()`. If you need to read multiple layers from any multi-layer source read them individually into suitable objects. For a source GeoPackage containing multiple layers you can use `gpkg_read()` (returns a _geopackage_ object) or `gpkg_tables()` (returns a _list_ object).
-#' 
+#' @param gdal_options Additional `gdal_options`, passed to
+#'   `terra::writeRaster()`
+#' @param ... Additional arguments are passed as GeoPackage "creation options."
+#'   See Details.
+#' @details Additional, non-default GeoPackage creation options can be specified
+#'   as arguments to this function. The full list of creation options can be
+#'   viewed
+#'   [here](https://gdal.org/en/stable/drivers/raster/gpkg.html#creation-options)
+#'   or in the `gpkg_creation_options` dataset. The name of the argument is
+#'   `creation_option` and the value is selected from one of the elements of
+#'   `values` for that option.
+#'
+#'   If `x` contains source file paths, any comma-separated value (CSV) files
+#'   are treated as attribute data--even if they contain a geometry column.
+#'   GeoPackage source file paths are always treated as vector data sources, and
+#'   only one layer will be read from the source and written to the target. If
+#'   you need to read raster data from a GeoPackage first create a `SpatRaster`
+#'   from the layer of interest (see `gpkg_rast()`) before passing to
+#'   `gpkg_write()`. If you need to read multiple layers from any multi-layer
+#'   source read them individually into suitable objects. For a source
+#'   GeoPackage containing multiple layers you can use `gpkg_read()` (returns a
+#'   _geopackage_ object) or `gpkg_tables()` (returns a _list_ object).
+#'
 #' @return Logical. `TRUE` on successful write of at least one grid.
 #' @seealso [gpkg_creation_options]
 #' @export

@@ -1,13 +1,23 @@
 #' Query a GeoPackage for Tabular Result
 #'
 #' @param x A _geopackage_ object
-#' @param query _character_. An SQLite/Spatialite/GeoPackage query. The `query` argument is forwarded to `sql` argument when `ogr=TRUE`.
-#' @param ogr _logical_. Use the OGR query interface (via `terra::query()`). See details. Default: `FALSE` uses 'RSQLite' driver instead of 'terra'.
-#' @param ... Additional arguments to `terra::query()` (such as  `start`, `n`, `vars`, `where`, `extent`, `filter`) are passed when `ogr=TRUE` (or using alias `gpkg_ogr_query()`). Otherwise not used.
-#' 
-#' @details The GeoPackage driver supports OGR attribute filters. Provide filters in the SQLite dialect, as they will be executed directly against the database. If Spatialite is used, a recent version (4.2.0) is needed and cast operators are required to transform GeoPackage geometries to Spatialite geometries. A variety of SQL functions are available, see: <https://gdal.org/drivers/vector/gpkg.html#sql-functions>
+#' @param query _character_. An SQLite/Spatialite/GeoPackage query. The `query`
+#'   argument is forwarded to `sql` argument when `ogr=TRUE`.
+#' @param ogr _logical_. Use the OGR query interface (via `terra::query()`). See
+#'   details. Default: `FALSE` uses 'RSQLite' driver instead of 'terra'.
+#' @param ... Additional arguments to `terra::query()` (such as  `start`, `n`,
+#'   `vars`, `where`, `extent`, `filter`) are passed when `ogr=TRUE` (or using
+#'   alias `gpkg_ogr_query()`). Otherwise not used.
 #'
-#' @return a _data.frame_ result of `RSQLite::dbGetQuery()` or _SpatVector_ result from `terra::query()`.
+#' @details The GeoPackage driver supports OGR attribute filters. Provide
+#'   filters in the SQLite dialect, as they will be executed directly against
+#'   the database. If Spatialite is used, a recent version (4.2.0) is needed and
+#'   cast operators are required to transform GeoPackage geometries to
+#'   Spatialite geometries. A variety of SQL functions are available, see: <
+#'   https://gdal.org/en/stable/drivers/vector/gpkg.html#sql-functions>
+#'
+#' @return a _data.frame_ result of `RSQLite::dbGetQuery()` or _SpatVector_
+#'   result from `terra::query()`.
 #' @export
 #' @importFrom utils packageVersion
 gpkg_query <- function(x, query, ogr = FALSE, ...) {

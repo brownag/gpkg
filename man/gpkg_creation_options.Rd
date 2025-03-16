@@ -8,7 +8,7 @@
 An object of class \code{data.frame} with 32 rows and 4 columns.
 }
 \source{
-\href{https://gdal.org/drivers/raster/gpkg.html#creation-options}{GDAL - GPKG – GeoPackage raster}, \href{https://gdal.org/drivers/vector/gpkg.html}{GDAL - GPKG – GeoPackage vector}
+\href{https://gdal.org/en/stable/drivers/raster/gpkg.html}{GDAL - GPKG – GeoPackage raster}, \href{https://gdal.org/en/stable/drivers/vector/gpkg.html}{GDAL - GPKG – GeoPackage vector}
 }
 \usage{
 gpkg_creation_options

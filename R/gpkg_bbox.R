@@ -1,22 +1,26 @@
 #' Get Bounding Box of a GeoPackage Layer
-#' 
-#' This function applies an OGR SQL query to obtain bounding coordinates of a table containing a geometry column. <https://gdal.org/user/sql_sqlite_dialect.html> and <https://gdal.org/user/ogr_sql_dialect.html>
-#' 
+#'
+#' This function applies an OGR SQL query to obtain bounding coordinates of a
+#' table containing a geometry column.
+#' <https://gdal.org/en/stable/user/sql_sqlite_dialect.html> and
+#' <https://gdal.org/en/stable/user/ogr_sql_dialect.html>
+#'
 #' @param x A _geopackage_ object
 #' @param table_name character. One or more table names.
 #' @param geom_column character. Geometry column name, default `"geom"`
 #'
-#' @return a _data.frame_ containing columns `"xmin"`, `"ymin"`, `"xmax"`, `"ymax"`
+#' @return a _data.frame_ containing columns `"xmin"`, `"ymin"`, `"xmax"`,
+#'   `"ymax"`
 #' @keywords internal
 #' @export
 #' @examplesIf requireNamespace("terra", quietly=TRUE)
 #' \donttest{
 #' tf <- tempfile(fileext = ".gpkg")
-#' 
+#'
 #' r <- terra::rast(system.file("extdata", "dem.tif", package = "gpkg"))
 #' v <- terra::as.polygons(r, ext = TRUE)
 #' g <- geopackage(list(bbox = v))
-#' 
+#'
 #' gpkg_bbox(g, 'bbox')
 #' }
 gpkg_bbox <- function(x, table_name, geom_column = "geom") {

@@ -8,7 +8,7 @@
 a \code{data.frame} with 1 column (\code{"table_name"}) and 10 rows
 }
 \source{
-\href{https://gdal.org/drivers/raster/gpkg.html}{GDAL - GPKG – GeoPackage raster}, \href{https://gdal.org/drivers/vector/gpkg.html}{GDAL - GPKG – GeoPackage vector}
+\href{https://gdal.org/en/stable/drivers/raster/gpkg.html}{GDAL - GPKG – GeoPackage raster}, \href{https://gdal.org/en/stable/drivers/vector/gpkg.html}{GDAL - GPKG – GeoPackage vector}
 }
 \usage{
 gpkg_sqlite_tables

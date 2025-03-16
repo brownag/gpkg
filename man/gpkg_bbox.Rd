@@ -14,10 +14,14 @@ gpkg_bbox(x, table_name, geom_column = "geom")
 \item{geom_column}{character. Geometry column name, default \code{"geom"}}
 }
 \value{
-a \emph{data.frame} containing columns \code{"xmin"}, \code{"ymin"}, \code{"xmax"}, \code{"ymax"}
+a \emph{data.frame} containing columns \code{"xmin"}, \code{"ymin"}, \code{"xmax"},
+\code{"ymax"}
 }
 \description{
-This function applies an OGR SQL query to obtain bounding coordinates of a table containing a geometry column. \url{https://gdal.org/user/sql_sqlite_dialect.html} and \url{https://gdal.org/user/ogr_sql_dialect.html}
+This function applies an OGR SQL query to obtain bounding coordinates of a
+table containing a geometry column.
+\url{https://gdal.org/en/stable/user/sql_sqlite_dialect.html} and
+\url{https://gdal.org/en/stable/user/ogr_sql_dialect.html}
 }
 \examples{
 \dontshow{if (requireNamespace("terra", quietly=TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
