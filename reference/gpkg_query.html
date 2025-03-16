@@ -77,24 +77,34 @@
 
 
 <dt id="arg-query">query<a class="anchor" aria-label="anchor" href="#arg-query"></a></dt>
-<dd><p><em>character</em>. An SQLite/Spatialite/GeoPackage query. The <code>query</code> argument is forwarded to <code>sql</code> argument when <code>ogr=TRUE</code>.</p></dd>
+<dd><p><em>character</em>. An SQLite/Spatialite/GeoPackage query. The <code>query</code>
+argument is forwarded to <code>sql</code> argument when <code>ogr=TRUE</code>.</p></dd>
 
 
 <dt id="arg-ogr">ogr<a class="anchor" aria-label="anchor" href="#arg-ogr"></a></dt>
-<dd><p><em>logical</em>. Use the OGR query interface (via <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code>). See details. Default: <code>FALSE</code> uses 'RSQLite' driver instead of 'terra'.</p></dd>
+<dd><p><em>logical</em>. Use the OGR query interface (via <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code>). See
+details. Default: <code>FALSE</code> uses 'RSQLite' driver instead of 'terra'.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments to <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code> (such as  <code>start</code>, <code>n</code>, <code>vars</code>, <code>where</code>, <code>extent</code>, <code>filter</code>) are passed when <code>ogr=TRUE</code> (or using alias <code>gpkg_ogr_query()</code>). Otherwise not used.</p></dd>
+<dd><p>Additional arguments to <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code> (such as  <code>start</code>, <code>n</code>,
+<code>vars</code>, <code>where</code>, <code>extent</code>, <code>filter</code>) are passed when <code>ogr=TRUE</code> (or using
+alias <code>gpkg_ogr_query()</code>). Otherwise not used.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <em>data.frame</em> result of <code>RSQLite::dbGetQuery()</code> or <em>SpatVector</em> result from <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code>.</p>
+    <p>a <em>data.frame</em> result of <code>RSQLite::dbGetQuery()</code> or <em>SpatVector</em>
+result from <code><a href="https://rspatial.github.io/terra/reference/query.html" class="external-link">terra::query()</a></code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The GeoPackage driver supports OGR attribute filters. Provide filters in the SQLite dialect, as they will be executed directly against the database. If Spatialite is used, a recent version (4.2.0) is needed and cast operators are required to transform GeoPackage geometries to Spatialite geometries. A variety of SQL functions are available, see: <a href="https://gdal.org/drivers/vector/gpkg.html#sql-functions" class="external-link">https://gdal.org/drivers/vector/gpkg.html#sql-functions</a></p>
+    <p>The GeoPackage driver supports OGR attribute filters. Provide
+filters in the SQLite dialect, as they will be executed directly against
+the database. If Spatialite is used, a recent version (4.2.0) is needed and
+cast operators are required to transform GeoPackage geometries to
+Spatialite geometries. A variety of SQL functions are available, see: &lt;
+https://gdal.org/en/stable/drivers/vector/gpkg.html#sql-functions&gt;</p>
     </div>
 
   </div>

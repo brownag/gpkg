@@ -81,7 +81,8 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>Vector of source file path(s), or a list containing one or more SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.</p></dd>
+<dd><p>Vector of source file path(s), or a list containing one or more
+SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.</p></dd>
 
 
 <dt id="arg-destfile">destfile<a class="anchor" aria-label="anchor" href="#arg-destfile"></a></dt>
@@ -89,15 +90,18 @@
 
 
 <dt id="arg-table-name">table_name<a class="anchor" aria-label="anchor" href="#arg-table-name"></a></dt>
-<dd><p>Character. Default <code>NULL</code> name is derived from source file. Required if <code>x</code> is a <em>data.frame</em>.</p></dd>
+<dd><p>Character. Default <code>NULL</code> name is derived from source file.
+Required if <code>x</code> is a <em>data.frame</em>.</p></dd>
 
 
 <dt id="arg-datatype">datatype<a class="anchor" aria-label="anchor" href="#arg-datatype"></a></dt>
-<dd><p>Data type. Defaults to <code>"FLT4S"</code> for GeoTIFF files, <code>"INT2U"</code> otherwise. See documentation for <code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">terra::writeRaster()</a></code>.</p></dd>
+<dd><p>Data type. Defaults to <code>"FLT4S"</code> for GeoTIFF files, <code>"INT2U"</code>
+otherwise. See documentation for <code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">terra::writeRaster()</a></code>.</p></dd>
 
 
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>
-<dd><p>Append to existing data source? Default: <code>FALSE</code>. Setting <code>append=TRUE</code> overrides <code>overwrite=TRUE</code></p></dd>
+<dd><p>Append to existing data source? Default: <code>FALSE</code>. Setting
+<code>append=TRUE</code> overrides <code>overwrite=TRUE</code></p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
@@ -109,11 +113,13 @@
 
 
 <dt id="arg-gdal-options">gdal_options<a class="anchor" aria-label="anchor" href="#arg-gdal-options"></a></dt>
-<dd><p>Additional <code>gdal_options</code>, passed to <code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">terra::writeRaster()</a></code></p></dd>
+<dd><p>Additional <code>gdal_options</code>, passed to
+<code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">terra::writeRaster()</a></code></p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments are passed as GeoPackage "creation options." See Details.</p></dd>
+<dd><p>Additional arguments are passed as GeoPackage "creation options."
+See Details.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -122,8 +128,23 @@
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>Additional, non-default GeoPackage creation options can be specified as arguments to this function. The full list of creation options can be viewed <a href="https://gdal.org/drivers/raster/gpkg.html#creation-options" class="external-link">here</a> or in the <code>gpkg_creation_options</code> dataset. The name of the argument is <code>creation_option</code> and the value is selected from one of the elements of <code>values</code> for that option.</p>
-<p>If <code>x</code> contains source file paths, any comma-separated value (CSV) files are treated as attribute data–even if they contain a geometry column. GeoPackage source file paths are always treated as vector data sources, and only one layer will be read from the source and written to the target. If you need to read raster data from a GeoPackage first create a <code>SpatRaster</code>  from the layer of interest (see <code><a href="gpkg_table.html">gpkg_rast()</a></code>) before passing to <code>gpkg_write()</code>. If you need to read multiple layers from any multi-layer source read them individually into suitable objects. For a source GeoPackage containing multiple layers you can use <code><a href="gpkg_read.html">gpkg_read()</a></code> (returns a <em>geopackage</em> object) or <code><a href="gpkg_tables.html">gpkg_tables()</a></code> (returns a <em>list</em> object).</p>
+    <p>Additional, non-default GeoPackage creation options can be specified
+as arguments to this function. The full list of creation options can be
+viewed
+<a href="https://gdal.org/en/stable/drivers/raster/gpkg.html#creation-options" class="external-link">here</a>
+or in the <code>gpkg_creation_options</code> dataset. The name of the argument is
+<code>creation_option</code> and the value is selected from one of the elements of
+<code>values</code> for that option.</p>
+<p>If <code>x</code> contains source file paths, any comma-separated value (CSV) files
+are treated as attribute data–even if they contain a geometry column.
+GeoPackage source file paths are always treated as vector data sources, and
+only one layer will be read from the source and written to the target. If
+you need to read raster data from a GeoPackage first create a <code>SpatRaster</code>
+from the layer of interest (see <code><a href="gpkg_table.html">gpkg_rast()</a></code>) before passing to
+<code>gpkg_write()</code>. If you need to read multiple layers from any multi-layer
+source read them individually into suitable objects. For a source
+GeoPackage containing multiple layers you can use <code><a href="gpkg_read.html">gpkg_read()</a></code> (returns a
+<em>geopackage</em> object) or <code><a href="gpkg_tables.html">gpkg_tables()</a></code> (returns a <em>list</em> object).</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
