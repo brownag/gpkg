@@ -8,7 +8,7 @@ if (file.exists(gpkg_tmp))
 
 v <- vect(system.file("ex", "lux.shp", package = "terra"))
 
-gpkg_write(list(lux = v), destfile = gpkg_tmp, append = TRUE)
+gpkg_write(list(lux = v), gpkg_tmp, append = TRUE)
 
 g <- geopackage(gpkg_tmp, connect = TRUE)
 

@@ -70,7 +70,7 @@ start by adding two DEM (GeoTIFF) files.
 ``` r
 library(gpkg)
 library(terra)
-#> terra 1.8.35
+#> terra 1.8.56
 
 dem <- system.file("extdata", "dem.tif", package = "gpkg")
 stopifnot(nchar(dem) > 0)
@@ -81,16 +81,14 @@ if (file.exists(gpkg_tmp))
 
 # write a gpkg with two DEMs in it
 gpkg_write(
-  dem,
-  destfile = gpkg_tmp,
+  dem, gpkg_tmp,
   RASTER_TABLE = "DEM1",
   FIELD_NAME = "Elevation"
 )
 #> Loading required namespace: gdalraster
 
 gpkg_write(
-  dem,
-  destfile = gpkg_tmp,
+  dem, gpkg_tmp,
   append = TRUE,
   RASTER_TABLE = "DEM2",
   FIELD_NAME = "Elevation",
@@ -107,7 +105,7 @@ to add a bounding box polygon layer derived from extent of `"DEM1"`.
 # add bounding polygon vector layer via named list
 r <- gpkg_tables(gpkg_tmp)[['DEM1']]
 v <- terra::as.polygons(r, ext = TRUE)
-gpkg_write(list(bbox = v), destfile = gpkg_tmp)
+gpkg_write(list(bbox = v), gpkg_tmp)
 ```
 
 ## Insert Attribute Table
@@ -117,7 +115,7 @@ written to GeoPackage.
 
 ``` r
 z <- data.frame(a = 1:10, b = LETTERS[1:10])
-gpkg_write(list(myattr = z), destfile = gpkg_tmp)
+gpkg_write(list(myattr = z), gpkg_tmp)
 ```
 
 ## Read a GeoPackage
@@ -141,7 +139,7 @@ g
 #>  rtree_bbox_geom_parent, rtree_bbox_geom_rowid, sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg
+#>   Path: /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg
 #>   Extensions: TRUE
 class(g)
 #> [1] "geopackage"
@@ -204,32 +202,32 @@ gpkg_list_tables(g)
 gpkg_tables(g)
 #> $DEM1
 #> class       : SpatRaster 
-#> dimensions  : 30, 31, 1  (nrow, ncol, nlyr)
+#> size        : 30, 31, 1  (nrow, ncol, nlyr)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file1a1bd14d1754e.gpkg:DEM1 
-#> varname     : file1a1bd14d1754e 
+#> source      : filedd0d473fa3bd.gpkg:DEM1 
+#> varname     : filedd0d473fa3bd 
 #> name        : DEM1 
 #> min value   :  195 
 #> max value   :  500 
 #> 
 #> $DEM2
 #> class       : SpatRaster 
-#> dimensions  : 30, 31, 1  (nrow, ncol, nlyr)
+#> size        : 30, 31, 1  (nrow, ncol, nlyr)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> source      : file1a1bd14d1754e.gpkg:DEM2 
-#> varname     : file1a1bd14d1754e 
+#> source      : filedd0d473fa3bd.gpkg:DEM2 
+#> varname     : filedd0d473fa3bd 
 #> name        : DEM2 
 #> min value   :  195 
 #> max value   :  500 
 #> 
 #> $myattr
-#>                                      dsn table_name nrow table_info.cid
-#> 1 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg     myattr   10              0
-#> 2 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg     myattr   10              1
+#>                                     dsn table_name nrow table_info.cid
+#> 1 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg     myattr   10              0
+#> 2 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg     myattr   10              1
 #>   table_info.name table_info.type table_info.notnull table_info.dflt_value
 #> 1               a         INTEGER                  0                    NA
 #> 2               b            TEXT                  0                    NA
@@ -242,7 +240,7 @@ gpkg_tables(g)
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file1a1bd14d1754e.gpkg (bbox)
+#>  source      : filedd0d473fa3bd.gpkg (bbox)
 #>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 
 # inspect a specific table
@@ -287,13 +285,13 @@ returns a *tbl_SQLiteConnection*.
 tb <- gpkg_tbl(g, "gpkg_contents")
 tb
 #> # Source:   table<`gpkg_contents`> [?? x 10]
-#> # Database: sqlite 3.47.1 [/tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg]
+#> # Database: sqlite 3.50.0 [/tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg]
 #>   table_name data_type   identifier description last_change   min_x min_y  max_x
 #>   <chr>      <chr>       <chr>      <chr>       <chr>         <dbl> <dbl>  <dbl>
-#> 1 DEM1       2d-gridded… DEM1       ""          2025-03-16…    6.01  49.7   6.27
-#> 2 DEM2       2d-gridded… DEM2       ""          2025-03-16…    6.01  49.7   6.27
-#> 3 bbox       features    bbox       ""          2025-03-16…    6.01  49.7   6.27
-#> 4 myattr     attributes  myattr     ""          2025-03-16… -180    -90   180   
+#> 1 DEM1       2d-gridded… DEM1       ""          2025-07-18…    6.01  49.7   6.27
+#> 2 DEM2       2d-gridded… DEM2       ""          2025-07-18…    6.01  49.7   6.27
+#> 3 bbox       features    bbox       ""          2025-07-18…    6.01  49.7   6.27
+#> 4 myattr     attributes  myattr     ""          2025-07-17… -180    -90   180   
 #> # ℹ 2 more variables: max_y <dbl>, srs_id <int>
 ```
 
@@ -302,9 +300,9 @@ Note that with this lazy reference to table, the internal
 
 ``` r
 gpkg_connection(g)@ptr
-#> <pointer: 0x59e83cdb9210>
+#> <pointer: 0x5d8d438b22b0>
 gpkg_connection(tb)@ptr
-#> <pointer: 0x59e83cdb9210>
+#> <pointer: 0x5d8d438b22b0>
 ```
 
 This means that you can handle all of your connections via the `connect`
@@ -324,10 +322,10 @@ gpkg_contents(g)
 #> 3       bbox            features       bbox            
 #> 4     myattr          attributes     myattr            
 #>                last_change       min_x     min_y      max_x    max_y srs_id
-#> 1 2025-03-16T17:34:06.422Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 2 2025-03-16T17:34:06.505Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 3 2025-03-16T17:34:06.716Z    6.008333  49.69167   6.266667 49.94167   4326
-#> 4 2025-03-16T10:34:06.753Z -180.000000 -90.00000 180.000000 90.00000   4326
+#> 1 2025-07-18T04:17:52.309Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 2 2025-07-18T04:17:52.421Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 3 2025-07-18T04:17:52.651Z    6.008333  49.69167   6.266667 49.94167   4326
+#> 4 2025-07-17T21:17:52.692Z -180.000000 -90.00000 180.000000 90.00000   4326
 ```
 
 ### Lazy Data Access
@@ -346,13 +344,13 @@ analysis.
 
 ``` r
 head(gpkg_table_pragma(g))
-#>                                      dsn table_name nrow table_info.cid
-#> 1 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg       DEM1    1              0
-#> 2 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg       DEM1    1              1
-#> 3 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg       DEM1    1              2
-#> 4 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg       DEM1    1              3
-#> 5 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg       DEM1    1              4
-#> 6 /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg       DEM2    1              0
+#>                                     dsn table_name nrow table_info.cid
+#> 1 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg       DEM1    1              0
+#> 2 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg       DEM1    1              1
+#> 3 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg       DEM1    1              2
+#> 4 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg       DEM1    1              3
+#> 5 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg       DEM1    1              4
+#> 6 /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg       DEM2    1              0
 #>   table_info.name table_info.type table_info.notnull table_info.dflt_value
 #> 1              id         INTEGER                  0                  <NA>
 #> 2      zoom_level         INTEGER                  1                  <NA>
@@ -380,7 +378,7 @@ gpkg_vect(g, 'bbox')
 #>  geometry    : polygons 
 #>  dimensions  : 1, 0  (geometries, attributes)
 #>  extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
-#>  source      : file1a1bd14d1754e.gpkg (bbox)
+#>  source      : filedd0d473fa3bd.gpkg (bbox)
 #>  coord. ref. : lon/lat WGS 84 (EPSG:4326)
 ```
 
@@ -394,7 +392,7 @@ gpkg_vect(g, 'gpkg_ogr_contents')
 #>  geometry    : none 
 #>  dimensions  : 0, 2  (geometries, attributes)
 #>  extent      : 0, 0, 0, 0  (xmin, xmax, ymin, ymax)
-#>  source      : file1a1bd14d1754e.gpkg (SELECT)
+#>  source      : filedd0d473fa3bd.gpkg (SELECT)
 #>  coord. ref. :  
 #>  names       : table_name feature_count
 #>  type        :      <chr>         <num>
@@ -441,14 +439,14 @@ For example:
 ``` r
 gpkg_rast(g)
 #> class       : SpatRaster 
-#> dimensions  : 30, 31, 2  (nrow, ncol, nlyr)
+#> size        : 30, 31, 2  (nrow, ncol, nlyr)
 #> resolution  : 0.008333333, 0.008333333  (x, y)
 #> extent      : 6.008333, 6.266667, 49.69167, 49.94167  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
-#> sources     : file1a1bd14d1754e.gpkg:DEM1  
-#>               file1a1bd14d1754e.gpkg:DEM2  
-#> varnames    : file1a1bd14d1754e 
-#>               file1a1bd14d1754e 
+#> sources     : filedd0d473fa3bd.gpkg:DEM1  
+#>               filedd0d473fa3bd.gpkg:DEM2  
+#> varnames    : filedd0d473fa3bd 
+#>               filedd0d473fa3bd 
 #> names       : DEM1, DEM2 
 #> min values  :  195,  195 
 #> max values  :  500,  500
@@ -470,13 +468,13 @@ contains critical information on the data contained in a GeoPackage.
 ``` r
 gpkg_table(g, "gpkg_contents")
 #> # Source:   table<`gpkg_contents`> [?? x 10]
-#> # Database: sqlite 3.47.1 [/tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg]
+#> # Database: sqlite 3.50.0 [/tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg]
 #>   table_name data_type   identifier description last_change   min_x min_y  max_x
 #>   <chr>      <chr>       <chr>      <chr>       <chr>         <dbl> <dbl>  <dbl>
-#> 1 DEM1       2d-gridded… DEM1       ""          2025-03-16…    6.01  49.7   6.27
-#> 2 DEM2       2d-gridded… DEM2       ""          2025-03-16…    6.01  49.7   6.27
-#> 3 bbox       features    bbox       ""          2025-03-16…    6.01  49.7   6.27
-#> 4 myattr     attributes  myattr     ""          2025-03-16… -180    -90   180   
+#> 1 DEM1       2d-gridded… DEM1       ""          2025-07-18…    6.01  49.7   6.27
+#> 2 DEM2       2d-gridded… DEM2       ""          2025-07-18…    6.01  49.7   6.27
+#> 3 bbox       features    bbox       ""          2025-07-18…    6.01  49.7   6.27
+#> 4 myattr     attributes  myattr     ""          2025-07-17… -180    -90   180   
 #> # ℹ 2 more variables: max_y <dbl>, srs_id <int>
 ```
 
@@ -529,7 +527,7 @@ gpkg_connect(g)
 #>  rtree_bbox_geom_parent, rtree_bbox_geom_rowid, sqlite_sequence
 #> --------------------------------------------------------------------------------
 #> <SQLiteConnection>
-#>   Path: /tmp/RtmpgHnmwl/file1a1bd14d1754e.gpkg
+#>   Path: /tmp/RtmpDk7Fhe/filedd0d473fa3bd.gpkg
 #>   Extensions: TRUE
 
 # disconnect

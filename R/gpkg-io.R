@@ -79,19 +79,20 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 
 #' Write data to a GeoPackage
 #' @param x Vector of source file path(s), or a list containing one or more
-#'   SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.
-#' @param destfile Character. Path to output GeoPackage
-#' @param table_name Character. Default `NULL` name is derived from source file.
+#'   SpatRaster, SpatRasterCollection, SpatVectorProxy, or data.frame objects.
+#' @param y _character_, _geopackage_, or _DBIConnection_. 
+#' @param destfile _character_. Path to output GeoPackage
+#' @param table_name _character_. Default `NULL` name is derived from source file.
 #'   Required if `x` is a _data.frame_.
-#' @param datatype Data type. Defaults to `"FLT4S"` for GeoTIFF files, `"INT2U"`
+#' @param datatype _character_. Data type. Defaults to `"FLT4S"` for GeoTIFF files, `"INT2U"`
 #'   otherwise. See documentation for `terra::writeRaster()`.
-#' @param append Append to existing data source? Default: `FALSE`. Setting
+#' @param append _logical_. Append to existing data source? Default: `FALSE`. Setting
 #'   `append=TRUE` overrides `overwrite=TRUE`
-#' @param overwrite Overwrite existing data source? Default `FALSE`.
-#' @param NoData Value to use as GDAL `NoData` Value
-#' @param gdal_options Additional `gdal_options`, passed to
+#' @param overwrite _logical_. Overwrite existing data source? Default `FALSE`.
+#' @param NoData _numeric_. Value to use as GDAL `NoData` Value
+#' @param gdal_options _character_. Additional `gdal_options`, passed to
 #'   `terra::writeRaster()`
-#' @param ... Additional arguments are passed as GeoPackage "creation options."
+#' @param ... Additional arguments are passed as GeoPackage creation options.
 #'   See Details.
 #' @details Additional, non-default GeoPackage creation options can be specified
 #'   as arguments to this function. The full list of creation options can be
@@ -117,16 +118,30 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #' @export
 #' @keywords io
 gpkg_write <- function(x,
-                       destfile,
+                       y = NULL,
                        table_name = NULL,
                        datatype = "FLT4S",
                        append = FALSE,
                        overwrite = FALSE,
                        NoData = NULL,
                        gdal_options = NULL,
+                       destfile = NULL,
                        ...) {
-  res <- .gpkg_process_sources(x, 
-                               destfile,
+  
+  if (!missing(destfile)) {
+    .Deprecated(msg = "Argument `destfile` is deprecated; use `y`")
+    y <- destfile
+  }
+  
+  if (inherits(y, 'geopackage')) {
+    y <- gpkg_connection(y)
+  }
+  
+  if (inherits(y, 'DBIConnection')) {
+    y <- DBI::dbGetInfo(y)$dbname
+  }
+  
+  res <- .gpkg_process_sources(x, y,
                                table_name = table_name,
                                datatype = datatype,
                                append = append,
