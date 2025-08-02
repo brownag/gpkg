@@ -23,7 +23,7 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name"><!-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name"><!-
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Lazy Access to Tables by Name</h1>
-    <small class="dont-index">Source: <a href="https://github.com/brownag/gpkg/blob/0.0.12/R/gpkg-table.R" class="external-link"><code>R/gpkg-table.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/brownag/gpkg/blob/main/R/gpkg-table.R" class="external-link"><code>R/gpkg-table.R</code></a></small>
     <div class="hidden name"><code>gpkg_table.Rd</code></div>
     </div>
 
@@ -155,13 +155,11 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name"><!-
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"dem.tif"</span>, package <span class="op">=</span> <span class="st">"gpkg"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="va">r</span>,</span></span>
-<span class="r-in"><span>           destfile <span class="op">=</span> <span class="va">tf</span>,</span></span>
+<span class="r-in"><span><span class="fu"><a href="gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">tf</span>,</span></span>
 <span class="r-in"><span>           RASTER_TABLE <span class="op">=</span> <span class="st">"DEM1"</span>,</span></span>
 <span class="r-in"><span>           FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="va">r</span>,</span></span>
-<span class="r-in"><span>           destfile <span class="op">=</span> <span class="va">tf</span>,</span></span>
+<span class="r-in"><span><span class="fu"><a href="gpkg_write.html">gpkg_write</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">tf</span>,</span></span>
 <span class="r-in"><span>           append <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>           RASTER_TABLE <span class="op">=</span> <span class="st">"DEM2"</span>,</span></span>
 <span class="r-in"><span>           FIELD_NAME <span class="op">=</span> <span class="st">"Elevation"</span><span class="op">)</span></span></span>
@@ -171,11 +169,11 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name"><!-
 <span class="r-in"><span><span class="co"># inspect gpkg_contents table</span></span></span>
 <span class="r-in"><span><span class="fu">gpkg_table</span><span class="op">(</span><span class="va">g</span>, <span class="st">"gpkg_contents"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Source:   table&lt;`gpkg_contents`&gt; [?? x 10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.47.1 [/tmp/RtmpNWZURM/file1f9431a52e1b.gpkg]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Database: sqlite 3.50.3 [/tmp/RtmpVinOuA/file212444c769cc.gpkg]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   table_name data_type      identifier description last_change min_x min_y max_x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2025-03-16…  6.01  49.7  6.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2025-03-16…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> DEM1       2d-gridded-co… DEM1       <span style="color: #949494;">""</span>          2025-08-02…  6.01  49.7  6.27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> DEM2       2d-gridded-co… DEM2       <span style="color: #949494;">""</span>          2025-08-02…  6.01  49.7  6.27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: max_y &lt;dbl&gt;, srs_id &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="gpkg_contents.html">gpkg_contents</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></span>
@@ -183,8 +181,8 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name"><!-
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       DEM1 2d-gridded-coverage       DEM1            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       DEM2 2d-gridded-coverage       DEM2            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                last_change    min_x    min_y    max_x    max_y srs_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2025-03-16T19:10:54.530Z 6.008333 49.69167 6.266667 49.94167   4326</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2025-03-16T19:10:54.566Z 6.008333 49.69167 6.266667 49.94167   4326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2025-08-02T04:08:01.884Z 6.008333 49.69167 6.266667 49.94167   4326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2025-08-02T04:08:01.920Z 6.008333 49.69167 6.266667 49.94167   4326</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># materialize a data.frame from gpkg_2d_gridded_tile_ancillary</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
@@ -213,7 +211,7 @@ gpkg_sf(): Get a sf-tibble object corresponding to the specified table_name"><!-
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer></div>

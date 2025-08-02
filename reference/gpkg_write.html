@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Write data to a GeoPackage</h1>
-    <small class="dont-index">Source: <a href="https://github.com/brownag/gpkg/blob/0.0.12/R/gpkg-io.R" class="external-link"><code>R/gpkg-io.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/brownag/gpkg/blob/main/R/gpkg-io.R" class="external-link"><code>R/gpkg-io.R</code></a></small>
     <div class="hidden name"><code>gpkg_write.Rd</code></div>
     </div>
 
@@ -65,13 +65,14 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gpkg_write</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
-<span>  <span class="va">destfile</span>,</span>
+<span>  y <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  table_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  datatype <span class="op">=</span> <span class="st">"FLT4S"</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  NoData <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  gdal_options <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  destfile <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -82,43 +83,47 @@
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>Vector of source file path(s), or a list containing one or more
-SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.</p></dd>
+SpatRaster, SpatRasterCollection, SpatVectorProxy, or data.frame objects.</p></dd>
 
 
-<dt id="arg-destfile">destfile<a class="anchor" aria-label="anchor" href="#arg-destfile"></a></dt>
-<dd><p>Character. Path to output GeoPackage</p></dd>
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
+<dd><p><em>character</em>, <em>geopackage</em>, or <em>DBIConnection</em>.</p></dd>
 
 
 <dt id="arg-table-name">table_name<a class="anchor" aria-label="anchor" href="#arg-table-name"></a></dt>
-<dd><p>Character. Default <code>NULL</code> name is derived from source file.
+<dd><p><em>character</em>. Default <code>NULL</code> name is derived from source file.
 Required if <code>x</code> is a <em>data.frame</em>.</p></dd>
 
 
 <dt id="arg-datatype">datatype<a class="anchor" aria-label="anchor" href="#arg-datatype"></a></dt>
-<dd><p>Data type. Defaults to <code>"FLT4S"</code> for GeoTIFF files, <code>"INT2U"</code>
+<dd><p><em>character</em>. Data type. Defaults to <code>"FLT4S"</code> for GeoTIFF files, <code>"INT2U"</code>
 otherwise. See documentation for <code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">terra::writeRaster()</a></code>.</p></dd>
 
 
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>
-<dd><p>Append to existing data source? Default: <code>FALSE</code>. Setting
+<dd><p><em>logical</em>. Append to existing data source? Default: <code>FALSE</code>. Setting
 <code>append=TRUE</code> overrides <code>overwrite=TRUE</code></p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p>Overwrite existing data source? Default <code>FALSE</code>.</p></dd>
+<dd><p><em>logical</em>. Overwrite existing data source? Default <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-nodata">NoData<a class="anchor" aria-label="anchor" href="#arg-nodata"></a></dt>
-<dd><p>Value to use as GDAL <code>NoData</code> Value</p></dd>
+<dd><p><em>numeric</em>. Value to use as GDAL <code>NoData</code> Value</p></dd>
 
 
 <dt id="arg-gdal-options">gdal_options<a class="anchor" aria-label="anchor" href="#arg-gdal-options"></a></dt>
-<dd><p>Additional <code>gdal_options</code>, passed to
+<dd><p><em>character</em>. Additional <code>gdal_options</code>, passed to
 <code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">terra::writeRaster()</a></code></p></dd>
 
 
+<dt id="arg-destfile">destfile<a class="anchor" aria-label="anchor" href="#arg-destfile"></a></dt>
+<dd><p><em>character</em>. Path to output GeoPackage</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments are passed as GeoPackage "creation options."
+<dd><p>Additional arguments are passed as GeoPackage creation options.
 See Details.</p></dd>
 
 </dl></div>
@@ -163,7 +168,7 @@ GeoPackage containing multiple layers you can use <code><a href="gpkg_read.html"
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer></div>
