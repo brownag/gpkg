@@ -31,8 +31,7 @@ if (file.exists(gpkg_tmp))
 
 # write a gpkg with two DEMs in it
 gpkg_write(
-  dem,
-  destfile = gpkg_tmp,
+  dem, gpkg_tmp,
   RASTER_TABLE = "DEM1",
   FIELD_NAME = "Elevation"
 )
@@ -41,8 +40,7 @@ gpkg_write(
 expect_error(gpkg_write(dem, gpkg_tmp))
 
 gpkg_write(
-  dem,
-  destfile = gpkg_tmp,
+  dem, gpkg_tmp,
   append = TRUE,
   RASTER_TABLE = "DEM2",
   FIELD_NAME = "Elevation",
@@ -80,8 +78,8 @@ tfgpkg <- tempfile(fileext = ".gpkg")
 rdem <- terra::rast(dem)
 v <- terra::as.polygons(rdem, ext = TRUE)
 
-# expect_error(gpkg_write(list(testgpkg = tfgpkg), destfile = tfgpkg))
-expect_silent(gpkg_write(list(testgpkg = v), destfile = tfgpkg))
+# expect_error(gpkg_write(list(testgpkg = tfgpkg), tfgpkg))
+expect_silent(gpkg_write(list(testgpkg = v), tfgpkg))
 v <- terra::crop(v, terra::ext(rdem) / 2)
 expect_true(is.character(gpkg_list_tables(tfgpkg)))
 write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
@@ -148,7 +146,7 @@ gpkg_disconnect(g4)
 
 # add bounding polygon vector dataset
 b <- terra::as.polygons(gpkg_rast(g, "DEM1"), ext = TRUE)
-expect_silent(gpkg_write(list(layer1 = b, layerB = b), destfile = gpkg_tmp, append = TRUE))
+expect_silent(gpkg_write(list(layer1 = b, layerB = b), gpkg_tmp, append = TRUE))
 
 if (utils::packageVersion("terra") >= "1.7.33") {
   res <- gpkg_ogr_query(g, "SELECT
@@ -164,7 +162,7 @@ gpkg_disconnect(g)
 
 # TODO: writing attributes leaves connection open
 d  <- data.frame(a = 1:10, b = LETTERS[1:10])
-expect_silent(gpkg_write(list(myattr = d), destfile = gpkg_tmp))
+expect_silent(gpkg_write(list(myattr = d), gpkg_tmp))
 
 # enumerate tables
 tl <- gpkg_list_tables(g)

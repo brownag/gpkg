@@ -55,13 +55,11 @@ gpkg_table_pragma.default <- function(x, table_name = NULL, ...) {
 #' 
 #' r <- terra::rast(system.file("extdata", "dem.tif", package = "gpkg"))
 #'
-#' gpkg_write(r,
-#'            destfile = tf,
+#' gpkg_write(r, tf,
 #'            RASTER_TABLE = "DEM1",
 #'            FIELD_NAME = "Elevation")
 #' 
-#' gpkg_write(r,
-#'            destfile = tf,
+#' gpkg_write(r, tf,
 #'            append = TRUE,
 #'            RASTER_TABLE = "DEM2",
 #'            FIELD_NAME = "Elevation")

@@ -35,13 +35,13 @@ r <- terra::classify(r,
 
 gpkg_write(
   list(bar = terra::rast("foo.tif")),
+  "test.gpkg",
   NoData = -9999,
-  destfile = "test.gpkg",
   overwrite = TRUE
 )
 
 gpkg_write(list(foo = terra::vect("test.shp", proxy = TRUE)),
-           destfile = "test.gpkg",
+           "test.gpkg",
            append = TRUE)
 
 x2 <- terra::rast("test.gpkg")

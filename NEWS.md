@@ -1,3 +1,7 @@
+# gpkg 0.0.13
+
+ - Deprecated `destfile` argument to `gpkg_write()` and replaced with `y`, which now accepts _geopackage_ or _DBIConnection_ objects
+ 
 # gpkg 0.0.12
  
  - Major cleanup and more consistent use of internal _SQLiteConnection_ usage to ensure open connections don't get garbage collected

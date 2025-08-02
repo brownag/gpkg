@@ -6,39 +6,42 @@
 \usage{
 gpkg_write(
   x,
-  destfile,
+  y = NULL,
   table_name = NULL,
   datatype = "FLT4S",
   append = FALSE,
   overwrite = FALSE,
   NoData = NULL,
   gdal_options = NULL,
+  destfile = NULL,
   ...
 )
 }
 \arguments{
 \item{x}{Vector of source file path(s), or a list containing one or more
-SpatRaster, SpatRasterCollection, or SpatVectorProxy objects.}
+SpatRaster, SpatRasterCollection, SpatVectorProxy, or data.frame objects.}
 
-\item{destfile}{Character. Path to output GeoPackage}
+\item{y}{\emph{character}, \emph{geopackage}, or \emph{DBIConnection}.}
 
-\item{table_name}{Character. Default \code{NULL} name is derived from source file.
+\item{table_name}{\emph{character}. Default \code{NULL} name is derived from source file.
 Required if \code{x} is a \emph{data.frame}.}
 
-\item{datatype}{Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"}
+\item{datatype}{\emph{character}. Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"}
 otherwise. See documentation for \code{terra::writeRaster()}.}
 
-\item{append}{Append to existing data source? Default: \code{FALSE}. Setting
+\item{append}{\emph{logical}. Append to existing data source? Default: \code{FALSE}. Setting
 \code{append=TRUE} overrides \code{overwrite=TRUE}}
 
-\item{overwrite}{Overwrite existing data source? Default \code{FALSE}.}
+\item{overwrite}{\emph{logical}. Overwrite existing data source? Default \code{FALSE}.}
 
-\item{NoData}{Value to use as GDAL \code{NoData} Value}
+\item{NoData}{\emph{numeric}. Value to use as GDAL \code{NoData} Value}
 
-\item{gdal_options}{Additional \code{gdal_options}, passed to
+\item{gdal_options}{\emph{character}. Additional \code{gdal_options}, passed to
 \code{terra::writeRaster()}}
 
-\item{...}{Additional arguments are passed as GeoPackage "creation options."
+\item{destfile}{\emph{character}. Path to output GeoPackage}
+
+\item{...}{Additional arguments are passed as GeoPackage creation options.
 See Details.}
 }
 \value{
