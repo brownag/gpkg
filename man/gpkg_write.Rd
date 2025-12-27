@@ -13,6 +13,7 @@ gpkg_write(
   overwrite = FALSE,
   NoData = NULL,
   gdal_options = NULL,
+  auto_nodata = TRUE,
   destfile = NULL,
   ...
 )
@@ -38,6 +39,11 @@ otherwise. See documentation for \code{terra::writeRaster()}.}
 
 \item{gdal_options}{\emph{character}. Additional \code{gdal_options}, passed to
 \code{terra::writeRaster()}}
+
+\item{auto_nodata}{logical. If TRUE (default), automatically select a datatype-appropriate
+default NoData value when \code{NoData = NULL}, determined by \code{\link[=gpkg_default_nodata]{gpkg_default_nodata()}}.
+Set to FALSE to use terra's default behavior (NaN for floats), which may trigger GDAL
+warnings.  Ignored if \code{NoData} is explicitly specified.}
 
 \item{destfile}{\emph{character}. Path to output GeoPackage}
 
@@ -71,6 +77,6 @@ GeoPackage containing multiple layers you can use \code{gpkg_read()} (returns a
 \emph{geopackage} object) or \code{gpkg_tables()} (returns a \emph{list} object).
 }
 \seealso{
-\link{gpkg_creation_options}
+\link{gpkg_creation_options} \code{\link[=gpkg_default_nodata]{gpkg_default_nodata()}}
 }
 \keyword{io}

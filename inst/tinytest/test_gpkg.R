@@ -30,22 +30,23 @@ if (file.exists(gpkg_tmp))
   unlink(gpkg_tmp)
 
 # write a gpkg with two DEMs in it
-gpkg_write(
+# message about default NoData 65535
+expect_message(gpkg_write(
   dem, gpkg_tmp,
   RASTER_TABLE = "DEM1",
   FIELD_NAME = "Elevation"
-)
+))
 
 # overwrite=FALSE default
-expect_error(gpkg_write(dem, gpkg_tmp))
+expect_message(expect_error(gpkg_write(dem, gpkg_tmp)))
 
-gpkg_write(
+expect_silent(gpkg_write(
   dem, gpkg_tmp,
   append = TRUE,
   RASTER_TABLE = "DEM2",
   FIELD_NAME = "Elevation",
   NoData = -9999
-)
+))
 
 # create geopackage object
 g <- gpkg_connect(gpkg_tmp)
@@ -84,7 +85,8 @@ v <- terra::crop(v, terra::ext(rdem) / 2)
 expect_true(is.character(gpkg_list_tables(tfgpkg)))
 write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
 
-g3 <- geopackage(
+# expect A NaN nodata value cannot be recorded in gpkg_2d_gridded_coverage_ancillary table
+expect_stdout(g3 <- geopackage(
   list(
     dem1 = dem,
     dem2 = terra::rast(dem),
@@ -92,8 +94,9 @@ g3 <- geopackage(
     bbox2 = v,
     data1 = data.frame(id = 1:3, code = LETTERS[1:3]),
     data2 = tfcsv
-  )
-)
+  ),
+  auto_nodata = FALSE
+))
 expect_true(inherits(g3, 'geopackage'))
 expect_true(inherits(gpkg_table_pragma(g3), 'data.frame'))
 expect_true(is.character(gpkg_table(g3, "dem2", query_string = TRUE)))
@@ -201,7 +204,16 @@ unlink(gpkg_source(g))
 
 # geopackage<list> constructor with set outfile
 r <- terra::rast(dem)
-g <- geopackage(list(DEM1 = r, DEM2 = r, bar = data.frame(b = 2)), connect = FALSE, dsn = gpkg_tmp)
+expect_silent(g <- geopackage(
+  list(
+    DEM1 = r,
+    DEM2 = r,
+    bar = data.frame(b = 2)
+  ),
+  connect = FALSE,
+  dsn = gpkg_tmp,
+  NoData = 65535
+))
 expect_equal(names(gpkg_rast(g)), c("DEM1", "DEM2"))
 expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
 expect_false(gpkg_is_connected(gpkg_disconnect(g)))
@@ -209,18 +221,25 @@ unlink(gpkg_source(g))
 
 # # two grids + attributes into temp gpkg
 r <- terra::rast(dem)
-g <- geopackage(list(DEM1 = r, DEM2 = r, bar = data.frame(b = 2)))
+expect_silent(g <- geopackage(list(
+  DEM1 = r,
+  DEM2 = r,
+  bar = data.frame(b = 2)
+), NoData = 65535))
 expect_equal(names(gpkg_rast(g)), c("DEM1", "DEM2"))
 expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
 expect_false(gpkg_is_connected(gpkg_disconnect(g)))
 unlink(gpkg_source(g))
 
 # attributes only (requires creation of "dummy" feature dataset) into temp gpkg
-expect_warning(g <- geopackage(list(bar = data.frame(b = 2))))
-expect_equal(gpkg_create_empty_features(g, "dummy_features"), 1)
-expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
-expect_false(gpkg_is_connected(gpkg_disconnect(g)))
-unlink(gpkg_source(g))
+sink(tf <- tempfile())
+  expect_warning(g <- geopackage(list(bar = data.frame(b = 2))))
+  expect_equal(gpkg_create_empty_features(g, "dummy_features"), 1)
+  expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
+  expect_false(gpkg_is_connected(gpkg_disconnect(g)))
+  unlink(gpkg_source(g))
+sink()
+unlink(tf)
 
 # trigger warnings for garbage collection of any open connections 
 expect_silent(gc())
