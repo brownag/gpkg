@@ -86,7 +86,7 @@ gpkg_sf(x, table_name, ...)
 \code{gpkg_sf()}: Get a \emph{sf-tibble} object corresponding to the specified \code{table_name}
 }
 \examples{
-\dontshow{if (requireNamespace("RSQLite", quietly = TRUE) && requireNamespace("dbplyr", quietly = TRUE) && requireNamespace("terra", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("RSQLite", quietly = TRUE) && requireNamespace("dbplyr", quietly = TRUE) && requireNamespace("terra", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 tf <- tempfile(fileext = ".gpkg")
 

@@ -24,7 +24,7 @@ table containing a geometry column.
 \url{https://gdal.org/en/stable/user/ogr_sql_dialect.html}
 }
 \examples{
-\dontshow{if (requireNamespace("terra", quietly=TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("terra", quietly=TRUE)) withAutoprint(\{ # examplesIf}
 \donttest{
 tf <- tempfile(fileext = ".gpkg")
 
