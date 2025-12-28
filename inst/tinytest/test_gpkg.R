@@ -1,7 +1,8 @@
 library(gpkg)
 
 if (requireNamespace("tinytest", quietly = TRUE)) {
-  library(tinytest)}
+  library(tinytest)
+}
 
 if (!requireNamespace("RSQLite", quietly = TRUE) ||
     !requireNamespace("terra", quietly = TRUE) ||
