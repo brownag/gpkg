@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.13</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.14</span>
       </span>
     </div>
 
@@ -72,6 +72,7 @@
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  NoData <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  gdal_options <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  auto_nodata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  destfile <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -118,6 +119,13 @@ otherwise. See documentation for <code><a href="https://rspatial.github.io/terra
 <code><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">terra::writeRaster()</a></code></p></dd>
 
 
+<dt id="arg-auto-nodata">auto_nodata<a class="anchor" aria-label="anchor" href="#arg-auto-nodata"></a></dt>
+<dd><p>logical. If TRUE (default), automatically select a datatype-appropriate
+default NoData value when <code>NoData = NULL</code>, determined by <code><a href="gpkg_default_nodata.html">gpkg_default_nodata()</a></code>.
+Set to FALSE to use terra's default behavior (NaN for floats), which may trigger GDAL
+warnings.  Ignored if <code>NoData</code> is explicitly specified.</p></dd>
+
+
 <dt id="arg-destfile">destfile<a class="anchor" aria-label="anchor" href="#arg-destfile"></a></dt>
 <dd><p><em>character</em>. Path to output GeoPackage</p></dd>
 
@@ -153,7 +161,7 @@ GeoPackage containing multiple layers you can use <code><a href="gpkg_read.html"
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><a href="gpkg_creation_options.html">gpkg_creation_options</a></p></div>
+    <div class="dont-index"><p><a href="gpkg_creation_options.html">gpkg_creation_options</a> <code><a href="gpkg_default_nodata.html">gpkg_default_nodata()</a></code></p></div>
     </div>
 
   </div>
@@ -168,7 +176,7 @@ GeoPackage containing multiple layers you can use <code><a href="gpkg_read.html"
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
