@@ -1,3 +1,11 @@
+# gpkg 0.0.14
+  
+  * Added  `auto_nodata` argument for `gpkg_write()`  automatic selection of a appropriate NoData value when `NoData = NULL`
+    
+    * Default NoData values are now set using the new `gpkg_default_nodata()` function when `auto_nodata = TRUE` and no explicit NoData value is provided
+  
+  * Added `gpkg_default_nodata()` to return appropriate default NoData values for supported raster datatypes, following GDAL and terra conventions. This function is documented and exported for user access
+  
 # gpkg 0.0.13
 
  - Deprecated `destfile` argument to `gpkg_write()` and replaced with `y`, which now accepts _geopackage_ or _DBIConnection_ objects
