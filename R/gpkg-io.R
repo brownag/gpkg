@@ -90,6 +90,10 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #'   `append=TRUE` overrides `overwrite=TRUE`
 #' @param overwrite _logical_. Overwrite existing data source? Default `FALSE`.
 #' @param NoData _numeric_. Value to use as GDAL `NoData` Value
+#' @param auto_nodata logical. If TRUE (default), automatically select a datatype-appropriate
+#'   default NoData value when `NoData = NULL`, determined by [gpkg_default_nodata()].
+#'   Set to FALSE to use terra's default behavior (NaN for floats), which may trigger GDAL
+#'   warnings.  Ignored if `NoData` is explicitly specified.
 #' @param gdal_options _character_. Additional `gdal_options`, passed to
 #'   `terra::writeRaster()`
 #' @param ... Additional arguments are passed as GeoPackage creation options.
@@ -114,7 +118,7 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #'   _geopackage_ object) or `gpkg_tables()` (returns a _list_ object).
 #'
 #' @return Logical. `TRUE` on successful write of at least one grid.
-#' @seealso [gpkg_creation_options]
+#' @seealso [gpkg_creation_options] [gpkg_default_nodata()]
 #' @export
 #' @keywords io
 gpkg_write <- function(x,
@@ -125,6 +129,7 @@ gpkg_write <- function(x,
                        overwrite = FALSE,
                        NoData = NULL,
                        gdal_options = NULL,
+                       auto_nodata = TRUE,
                        destfile = NULL,
                        ...) {
   
@@ -148,6 +153,7 @@ gpkg_write <- function(x,
                                overwrite = overwrite,
                                NoData = NoData,
                                gdal_options = gdal_options,
+                               auto_nodata = auto_nodata,
                                ...)
   invisible(.gpkg_postprocess_sources(res))
 }
@@ -333,6 +339,7 @@ gpkg_write <- function(x,
                                               overwrite = FALSE,
                                               NoData = NULL,
                                               gdal_options = NULL,
+                                              auto_nodata = TRUE,
                                               ...) {
   res <- NULL
   if (!requireNamespace('terra', quietly = TRUE)) stop('the `terra` package is required to write gridded data to GeoPackage', call. = FALSE)
@@ -353,12 +360,33 @@ gpkg_write <- function(x,
     }
   }
   
+  nodata_unset <- missing(NoData) || is.null(NoData)
+  if (is.nan(terra::NAflag(r)) && is.null(NoData) && isTRUE(auto_nodata)) {
+    NoData <- gpkg_default_nodata(terra::datatype(r))
+  }
+  
+  # warn about setting data_null
+  terra_naflag <- terra::NAflag(r)
+  if (((!is.null(NoData) && is.finite(NoData)) ||
+        is.nan(terra_naflag)) && 
+      isTRUE(auto_nodata)) {
+    if (nodata_unset && is.nan(terra_naflag)) {
+      message(
+        "gpkg_write: setting NoData to ",
+        NoData,
+        "; specify NoData argument explicitly to override, or auto_nodata=FALSE to explicitly use SQL NULL in gpkg_2d_gridded_coverage_ancillary.data_null"
+      )
+    }
+    terra_naflag <- NoData
+  }
+  
   res <- terra::writeRaster(
     x = r,
     filename = destfile,
     datatype = datatype,
     overwrite = overwrite,
-    gdal = gdal_options
+    gdal = gdal_options,
+    NAflag = terra_naflag
   )
 
   if (!is.null(NoData)) {
