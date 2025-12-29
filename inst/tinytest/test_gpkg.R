@@ -41,13 +41,17 @@ expect_message(gpkg_write(
 # overwrite=FALSE default
 expect_message(expect_error(gpkg_write(dem, gpkg_tmp)))
 
-expect_silent(gpkg_write(
+suppressWarnings(suppressMessages(sentinel <- try(gpkg_write(
   dem, gpkg_tmp,
   append = TRUE,
   RASTER_TABLE = "DEM2",
   FIELD_NAME = "Elevation",
   NoData = -9999
-))
+))))
+
+if (inherits(sentinel, 'try-error')) {
+  exit_file("failed writing GPKG file (GDAL or PROJ error)")
+}
 
 # create geopackage object
 g <- gpkg_connect(gpkg_tmp)
