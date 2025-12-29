@@ -41,7 +41,7 @@ jobs:
       EXTRA_REPOS: "https://rspatial.r-universe.dev/ https://r-spatial.r-universe.dev/"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
 
       - uses: r-lib/actions/setup-pandoc@v2
       
