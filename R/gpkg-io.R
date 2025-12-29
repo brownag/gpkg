@@ -420,15 +420,20 @@ gpkg_write <- function(x,
   }
   
   if (!inherits(x, 'SpatVector')) {
-    x <- terra::vect(x)
+    x <- try(terra::vect(x), silent = TRUE)
   }
   
-  res <- terra::writeVector(x,
-            destfile,
-            layer = layername,
-            insert = insert,
-            overwrite = overwrite,
-            options = gdal_options
-          )
+  if (inherits(x, 'try-error')) {
+    res <- x
+  } else {
+    res <- terra::writeVector(
+      x,
+      destfile,
+      layer = layername,
+      insert = insert,
+      overwrite = overwrite,
+      options = gdal_options
+    )
+  }
   invisible(res)
 }

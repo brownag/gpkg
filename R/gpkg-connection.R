@@ -160,5 +160,5 @@ gpkg_connection.default <- function(x, disconnect = FALSE) {
     table_name <- ""
   }
   
-  suppressWarnings(terra::vect(con, layer = table_name, proxy = TRUE))
+  try(terra::vect(con, layer = table_name, proxy = TRUE), silent = TRUE)
 }
