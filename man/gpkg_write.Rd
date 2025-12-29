@@ -30,10 +30,19 @@ Required if \code{x} is a \emph{data.frame}.}
 \item{datatype}{\emph{character}. Data type. Defaults to \code{"FLT4S"} for GeoTIFF files, \code{"INT2U"}
 otherwise. See documentation for \code{terra::writeRaster()}.}
 
-\item{append}{\emph{logical}. Append to existing data source? Default: \code{FALSE}. Setting
-\code{append=TRUE} overrides \code{overwrite=TRUE}}
+\item{append}{\emph{logical}. Append to existing data source? Default: \code{FALSE}.
+When \code{TRUE}, new data are added to the existing table(s) if they exist.
+For raster data, this adds a new subdataset (layer) to the GeoPackage
+(via \code{APPEND_SUBDATASET=YES} creation option). For attribute tables,
+this appends rows to the existing table. For vector data, this
+maps to the \code{insert} argument of \code{terra::writeVector()}.
+Setting \code{append=TRUE} overrides \code{overwrite=TRUE}.}
 
-\item{overwrite}{\emph{logical}. Overwrite existing data source? Default \code{FALSE}.}
+\item{overwrite}{\emph{logical}. Overwrite existing data source? Default \code{FALSE}.
+When \code{TRUE}, existing table(s) with the same name are dropped and recreated.
+Note that this only affects the specific tables being written; it does not
+delete other existing tables in the GeoPackage file. To completely
+overwrite an entire GeoPackage file, delete it first using \code{unlink()}.}
 
 \item{NoData}{\emph{numeric}. Value to use as GDAL \code{NoData} Value}
 
@@ -57,6 +66,13 @@ Logical. \code{TRUE} on successful write of at least one grid.
 Write data to a GeoPackage
 }
 \details{
+\code{gpkg_write()} can write multiple layers of different types (raster,
+vector, and attributes) in a single call when \code{x} is a list. If calling
+\code{gpkg_write()} multiple times to build a GeoPackage, use \code{append=TRUE}
+to add additional layers. To replace a specific table while preserving
+others, use \code{overwrite=TRUE}. Note that \code{overwrite=TRUE} only drops the
+specified \code{table_name} and does not affect other tables in the file.
+
 Additional, non-default GeoPackage creation options can be specified
 as arguments to this function. The full list of creation options can be
 viewed

@@ -21,8 +21,10 @@ numeric. The default NoData value for the given datatype, or
 }
 \description{
 Returns a default NoData value for a given raster datatype, following GDAL
-and terra conventions, and avoiding \code{NaN} values passed to GDAL GeoPackage
-driver.
+and terra conventions, and avoiding \code{NaN} values which produce a warning when
+passed as \code{data_null} to GDAL. NOTE: at this time (GDAL 3.12) only Byte
+(INT1U), Int16 (INT2S), UInt16 (INT2U) or Float32 (INT4S) datatypes are
+supported in the \href{https://gdal.org/en/stable/drivers/raster/gpkg.html}{GPKG raster driver}.
 }
 \details{
 While \code{NaN} is technically a valid value for grids stored in a
@@ -55,9 +57,6 @@ Note: The INT8U default (\code{18446744073709549568}) is \code{UINT64_MAX - 1101
 account for floating-point precision loss when converting to double,
 following terra's convention. R does not have a native unsigned 64-bit
 integer type.
-
-Note: at this time (GDAL 3.12) only Byte (INT1U), Int16 (INT2S), UInt16
-(INT2U) or Float32 (INT4S) datatypes are supported in the GPKG raster driver
 }
 \examples{
 gpkg_default_nodata("FLT4S")

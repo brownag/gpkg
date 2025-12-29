@@ -17,7 +17,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Andrew Brown \email{brown.andrewg@gmail.com}
+\strong{Maintainer}: Andrew Brown \email{brown.andrewg@gmail.com} (\href{https://orcid.org/0000-0002-4565-533X}{ORCID})
 
 }
 \keyword{internal}

@@ -28,9 +28,10 @@ gpkg_remove_attributes(x, table_name)
 
 \item{template}{A \code{list} (containing elements \code{"ext"} and \code{"crs"}, or a \code{terra} object. These objects defining xmin/ymin/xmax/ymax and spatial reference system for the attribute table.}
 
-\item{overwrite}{Overwrite? Default \code{FALSE}}
+\item{overwrite}{Overwrite existing table? Default \code{FALSE}}
 
-\item{append}{Append? Default \code{FALSE}}
+\item{append}{Append rows to existing table? Default \code{FALSE}.
+Setting \code{append=TRUE} overrides \code{overwrite=TRUE}.}
 }
 \value{
 \code{logical}. \code{TRUE} on successful table write or remove.

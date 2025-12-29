@@ -7,8 +7,9 @@
 #' @param table_name `character`. The name for `table` in `x`
 #' @param description Optional description. Default `""`
 #' @param template A `list` (containing elements `"ext"` and `"crs"`, or a `terra` object. These objects defining xmin/ymin/xmax/ymax and spatial reference system for the attribute table.
-#' @param overwrite Overwrite? Default `FALSE`
-#' @param append Append? Default `FALSE`
+#' @param overwrite Overwrite existing table? Default `FALSE`
+#' @param append Append rows to existing table? Default `FALSE`. 
+#'   Setting `append=TRUE` overrides `overwrite=TRUE`.
 #' @return `logical`. `TRUE` on successful table write or remove.
 #' @rdname gpkg-attributes
 #' @export
