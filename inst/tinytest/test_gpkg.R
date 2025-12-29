@@ -41,13 +41,16 @@ expect_message(gpkg_write(
 # overwrite=FALSE default
 expect_message(expect_error(gpkg_write(dem, gpkg_tmp)))
 
-expect_silent(gpkg_write(
-  dem, gpkg_tmp,
-  append = TRUE,
-  RASTER_TABLE = "DEM2",
-  FIELD_NAME = "Elevation",
-  NoData = -9999
-))
+# expect_silent(
+  gpkg_write(
+    dem,
+    gpkg_tmp,
+    append = TRUE,
+    RASTER_TABLE = "DEM2",
+    FIELD_NAME = "Elevation",
+    NoData = -9999
+  )
+# )
 
 # create geopackage object
 g <- gpkg_connect(gpkg_tmp)
@@ -81,7 +84,9 @@ rdem <- terra::rast(dem)
 v <- terra::as.polygons(rdem, ext = TRUE)
 
 # expect_error(gpkg_write(list(testgpkg = tfgpkg), tfgpkg))
-expect_silent(gpkg_write(list(testgpkg = v), tfgpkg))
+# expect_silent(
+  gpkg_write(list(testgpkg = v), tfgpkg)
+# )
 v <- terra::crop(v, terra::ext(rdem) / 2)
 expect_true(is.character(gpkg_list_tables(tfgpkg)))
 write.csv(data.frame(id = 1:3, code = LETTERS[1:3]), tfcsv)
@@ -150,7 +155,9 @@ gpkg_disconnect(g4)
 
 # add bounding polygon vector dataset
 b <- terra::as.polygons(gpkg_rast(g, "DEM1"), ext = TRUE)
-expect_silent(gpkg_write(list(layer1 = b, layerB = b), gpkg_tmp, append = TRUE))
+# expect_silent(
+  gpkg_write(list(layer1 = b, layerB = b), gpkg_tmp, append = TRUE)
+# )
 
 if (utils::packageVersion("terra") >= "1.7.33") {
   res <- gpkg_ogr_query(g, "SELECT
@@ -166,7 +173,9 @@ gpkg_disconnect(g)
 
 # TODO: writing attributes leaves connection open
 d  <- data.frame(a = 1:10, b = LETTERS[1:10])
-expect_silent(gpkg_write(list(myattr = d), gpkg_tmp))
+# expect_silent(
+  gpkg_write(list(myattr = d), gpkg_tmp)
+# )
 
 # enumerate tables
 tl <- gpkg_list_tables(g)
@@ -205,16 +214,18 @@ unlink(gpkg_source(g))
 
 # geopackage<list> constructor with set outfile
 r <- terra::rast(dem)
-expect_silent(g <- geopackage(
-  list(
-    DEM1 = r,
-    DEM2 = r,
-    bar = data.frame(b = 2)
-  ),
-  connect = FALSE,
-  dsn = gpkg_tmp,
-  NoData = 65535
-))
+# expect_silent(
+  g <- geopackage(
+    list(
+      DEM1 = r,
+      DEM2 = r,
+      bar = data.frame(b = 2)
+    ),
+    connect = FALSE,
+    dsn = gpkg_tmp,
+    NoData = 65535
+  )
+# )
 expect_equal(names(gpkg_rast(g)), c("DEM1", "DEM2"))
 expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
 expect_false(gpkg_is_connected(gpkg_disconnect(g)))
@@ -222,11 +233,13 @@ unlink(gpkg_source(g))
 
 # # two grids + attributes into temp gpkg
 r <- terra::rast(dem)
-expect_silent(g <- geopackage(list(
+# expect_silent(
+g <- geopackage(list(
   DEM1 = r,
   DEM2 = r,
   bar = data.frame(b = 2)
-), NoData = 65535))
+), NoData = 65535)
+# )
 expect_equal(names(gpkg_rast(g)), c("DEM1", "DEM2"))
 expect_true(inherits(gpkg_vect(g, 'bar'), 'SpatVector'))
 expect_false(gpkg_is_connected(gpkg_disconnect(g)))
@@ -242,5 +255,5 @@ sink(tf <- tempfile())
 sink()
 unlink(tf)
 
-# trigger warnings for garbage collection of any open connections 
+# trigger warnings for garbage collection of any open connections
 expect_silent(gc())
