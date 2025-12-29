@@ -27,6 +27,7 @@ jobs:
           
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          extra-repositories: https://rspatial.r-universe.dev/
           extra-packages: any::rcmdcheck, any::covr, local::.
           needs: check
 
