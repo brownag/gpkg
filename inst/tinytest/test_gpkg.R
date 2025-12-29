@@ -255,8 +255,105 @@ sink(tf <- tempfile())
 sink()
 unlink(tf)
 
-# trigger warnings for garbage collection of any open connections
-expect_silent(gc())
+f <- tempfile(fileext = ".gpkg")
+v <- terra::vect("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", crs = "OGC:CRS84")
+gpkg_write(v, f, table_name = "my_poly", append = FALSE)
+
+g <- gpkg_connect(f)
+con <- gpkg_connection(g)
+
+res <- gpkg_query(con, "SELECT * FROM gpkg_contents WHERE table_name = 'my_poly'")
+expect_equal(nrow(res), 1)
+expect_equivalent(c(res$min_x, res$min_y, res$max_x, res$max_y), c(0, 0, 10, 10))
+
+gpkg_execute(con, "DELETE FROM gpkg_contents WHERE table_name = 'my_poly'")
+expect_equal(nrow(gpkg_query(con, "SELECT * FROM gpkg_contents WHERE table_name = 'my_poly'")), 0)
+
+added <- gpkg_add_contents(g, "my_poly", data_type = "features")
+expect_true(added)
+
+res <- gpkg_query(con, "SELECT * FROM gpkg_contents WHERE table_name = 'my_poly'")
+expect_equal(nrow(res), 1)
+expect_equal(res$data_type, "features")
+expect_equivalent(c(res$min_x, res$min_y, res$max_x, res$max_y), c(0, 0, 10, 10))
+expect_equal(res$srs_id, 4326)
+
+geom_col <- "geom"
+rtree_table <- paste0("rtree_my_poly_", geom_col)
+
+tables_before <- gpkg_list_tables(g)
+if (rtree_table %in% tables_before) {
+  gpkg_execute(con, paste0("DROP TABLE ", rtree_table))
+}
+
+gpkg_execute(con, "DELETE FROM gpkg_contents WHERE table_name = 'my_poly'")
+
+gpkg_add_contents(g, "my_poly", data_type = "features")
+
+res <- gpkg_query(con, "SELECT * FROM gpkg_contents WHERE table_name = 'my_poly'")
+expect_equal(nrow(res), 1)
+expect_equivalent(c(res$min_x, res$min_y, res$max_x, res$max_y), c(0, 0, 10, 10))
+
+gpkg_disconnect(g)
+unlink(f)
+
+f2 <- tempfile(fileext = ".gpkg")
+r <- terra::rast(
+  nrows = 10,
+  ncols = 10,
+  xmin = 0,
+  xmax = 10,
+  ymin = 0,
+  ymax = 10,
+  crs = "OGC:CRS84"
+)
+terra::values(r) <- 1:100
+gpkg_write(
+  r,
+  f2,
+  RASTER_TABLE = "my_rast",
+  append = FALSE,
+  NoData = -9999
+)
+g <- gpkg_connect(f2)
+con <- gpkg_connection(g)
+
+res <- gpkg_query(con, "SELECT * FROM gpkg_contents WHERE table_name = 'my_rast'")
+expect_equal(nrow(res), 1)
+expect_equivalent(c(res$min_x, res$min_y, res$max_x, res$max_y), c(0, 0, 10, 10))
+
+gpkg_execute(con, "DELETE FROM gpkg_contents WHERE table_name = 'my_rast'")
+gpkg_add_contents(g, "my_rast", data_type = "2d-gridded-coverage")
+
+tms <- gpkg_query(con, "SELECT min_x, min_y, max_x, max_y FROM gpkg_tile_matrix_set WHERE table_name = 'my_rast'")
+expected_ext <- as.numeric(tms[1,])
+
+res <- gpkg_query(con, "SELECT * FROM gpkg_contents WHERE table_name = 'my_rast'")
+expect_equal(nrow(res), 1)
+expect_equal(res$data_type, "2d-gridded-coverage")
+expect_equivalent(c(res$min_x, res$min_y, res$max_x, res$max_y), expected_ext)
+expect_equal(res$srs_id, 4326)
+
+gpkg_disconnect(g)
+unlink(f2)
+
+f3 <- tempfile(fileext = ".gpkg")
+v <- terra::vect("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", crs = "OGC:CRS84")
+gpkg_write(v, f3, table_name = "auto_poly", append = FALSE)
+
+g <- gpkg_connect(f3)
+con <- gpkg_connection(g)
+gpkg_execute(con, "DELETE FROM gpkg_contents WHERE table_name = 'auto_poly'")
+
+gpkg_add_contents(g, "auto_poly")
+
+res3 <- gpkg_query(con, "SELECT * FROM gpkg_contents WHERE table_name = 'auto_poly'")
+expect_equal(nrow(res3), 1)
+expect_equal(res3$data_type, "features")
+expect_equivalent(c(res3$min_x, res3$min_y, res3$max_x, res3$max_y), c(0, 0, 10, 10))
+
+gpkg_disconnect(g)
+unlink(f3)
 
 # Test for gpkg_write table_name argument handling
 tf <- tempfile(fileext = ".gpkg")
@@ -276,3 +373,5 @@ res <- gpkg_query(g, "SELECT val FROM test_na WHERE id = 1")
 expect_true(is.na(res$val))
 gpkg_disconnect(g)
 unlink(tf)
+
+expect_silent(gc())
