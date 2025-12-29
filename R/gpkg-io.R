@@ -86,9 +86,18 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #'   Required if `x` is a _data.frame_.
 #' @param datatype _character_. Data type. Defaults to `"FLT4S"` for GeoTIFF files, `"INT2U"`
 #'   otherwise. See documentation for `terra::writeRaster()`.
-#' @param append _logical_. Append to existing data source? Default: `FALSE`. Setting
-#'   `append=TRUE` overrides `overwrite=TRUE`
+#' @param append _logical_. Append to existing data source? Default: `FALSE`.
+#'   When `TRUE`, new data are added to the existing table(s) if they exist.
+#'   For raster data, this adds a new subdataset (layer) to the GeoPackage
+#'   (via `APPEND_SUBDATASET=YES` creation option). For attribute tables,
+#'   this appends rows to the existing table. For vector data, this 
+#'   maps to the `insert` argument of `terra::writeVector()`.
+#'   Setting `append=TRUE` overrides `overwrite=TRUE`.
 #' @param overwrite _logical_. Overwrite existing data source? Default `FALSE`.
+#'   When `TRUE`, existing table(s) with the same name are dropped and recreated.
+#'   Note that this only affects the specific tables being written; it does not 
+#'   delete other existing tables in the GeoPackage file. To completely 
+#'   overwrite an entire GeoPackage file, delete it first using `unlink()`.
 #' @param NoData _numeric_. Value to use as GDAL `NoData` Value
 #' @param auto_nodata logical. If TRUE (default), automatically select a datatype-appropriate
 #'   default NoData value when `NoData = NULL`, determined by [gpkg_default_nodata()].
@@ -98,7 +107,14 @@ gpkg_read <- function(x, connect = FALSE, quiet = TRUE) {
 #'   `terra::writeRaster()`
 #' @param ... Additional arguments are passed as GeoPackage creation options.
 #'   See Details.
-#' @details Additional, non-default GeoPackage creation options can be specified
+#' @details `gpkg_write()` can write multiple layers of different types (raster,
+#'   vector, and attributes) in a single call when `x` is a list. If calling
+#'   `gpkg_write()` multiple times to build a GeoPackage, use `append=TRUE`
+#'   to add additional layers. To replace a specific table while preserving 
+#'   others, use `overwrite=TRUE`. Note that `overwrite=TRUE` only drops the
+#'   specified `table_name` and does not affect other tables in the file.
+#'
+#'   Additional, non-default GeoPackage creation options can be specified
 #'   as arguments to this function. The full list of creation options can be
 #'   viewed
 #'   [here](https://gdal.org/en/stable/drivers/raster/gpkg.html#creation-options)
