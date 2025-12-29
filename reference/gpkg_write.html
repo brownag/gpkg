@@ -102,12 +102,21 @@ otherwise. See documentation for <code><a href="https://rspatial.github.io/terra
 
 
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>
-<dd><p><em>logical</em>. Append to existing data source? Default: <code>FALSE</code>. Setting
-<code>append=TRUE</code> overrides <code>overwrite=TRUE</code></p></dd>
+<dd><p><em>logical</em>. Append to existing data source? Default: <code>FALSE</code>.
+When <code>TRUE</code>, new data are added to the existing table(s) if they exist.
+For raster data, this adds a new subdataset (layer) to the GeoPackage
+(via <code>APPEND_SUBDATASET=YES</code> creation option). For attribute tables,
+this appends rows to the existing table. For vector data, this
+maps to the <code>insert</code> argument of <code><a href="https://rspatial.github.io/terra/reference/writeVector.html" class="external-link">terra::writeVector()</a></code>.
+Setting <code>append=TRUE</code> overrides <code>overwrite=TRUE</code>.</p></dd>
 
 
 <dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
-<dd><p><em>logical</em>. Overwrite existing data source? Default <code>FALSE</code>.</p></dd>
+<dd><p><em>logical</em>. Overwrite existing data source? Default <code>FALSE</code>.
+When <code>TRUE</code>, existing table(s) with the same name are dropped and recreated.
+Note that this only affects the specific tables being written; it does not
+delete other existing tables in the GeoPackage file. To completely
+overwrite an entire GeoPackage file, delete it first using <code><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink()</a></code>.</p></dd>
 
 
 <dt id="arg-nodata">NoData<a class="anchor" aria-label="anchor" href="#arg-nodata"></a></dt>
@@ -141,7 +150,13 @@ See Details.</p></dd>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>Additional, non-default GeoPackage creation options can be specified
+    <p><code>gpkg_write()</code> can write multiple layers of different types (raster,
+vector, and attributes) in a single call when <code>x</code> is a list. If calling
+<code>gpkg_write()</code> multiple times to build a GeoPackage, use <code>append=TRUE</code>
+to add additional layers. To replace a specific table while preserving
+others, use <code>overwrite=TRUE</code>. Note that <code>overwrite=TRUE</code> only drops the
+specified <code>table_name</code> and does not affect other tables in the file.</p>
+<p>Additional, non-default GeoPackage creation options can be specified
 as arguments to this function. The full list of creation options can be
 viewed
 <a href="https://gdal.org/en/stable/drivers/raster/gpkg.html#creation-options" class="external-link">here</a>
