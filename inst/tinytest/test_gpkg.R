@@ -256,7 +256,7 @@ sink()
 unlink(tf)
 
 f <- tempfile(fileext = ".gpkg")
-v <- terra::vect("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", crs = "OGC:CRS84")
+v <- terra::vect("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", crs = "EPSG:4326")
 gpkg_write(v, f, table_name = "my_poly", append = FALSE)
 
 g <- gpkg_connect(f)
@@ -305,7 +305,7 @@ r <- terra::rast(
   xmax = 10,
   ymin = 0,
   ymax = 10,
-  crs = "OGC:CRS84"
+  crs = "EPSG:4326"
 )
 terra::values(r) <- 1:100
 gpkg_write(
@@ -338,7 +338,7 @@ gpkg_disconnect(g)
 unlink(f2)
 
 f3 <- tempfile(fileext = ".gpkg")
-v <- terra::vect("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", crs = "OGC:CRS84")
+v <- terra::vect("POLYGON ((0 0, 10 0, 10 10, 0 10, 0 0))", crs = "EPSG:4326")
 gpkg_write(v, f3, table_name = "auto_poly", append = FALSE)
 
 g <- gpkg_connect(f3)
