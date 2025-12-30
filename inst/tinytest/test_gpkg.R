@@ -257,3 +257,22 @@ unlink(tf)
 
 # trigger warnings for garbage collection of any open connections
 expect_silent(gc())
+
+# Test for gpkg_write table_name argument handling
+tf <- tempfile(fileext = ".gpkg")
+d <- data.frame(a = 1:5)
+gpkg_write(d, tf, table_name = "custom_table")
+g <- gpkg_connect(tf)
+expect_true("custom_table" %in% gpkg_list_tables(g))
+gpkg_disconnect(g)
+unlink(tf)
+
+# Test for gpkg_update_table handling of NA updatevalue
+tf <- tempfile(fileext = ".gpkg")
+gpkg_write(data.frame(id = 1, val = "A"), tf, table_name = "test_na")
+g <- gpkg_connect(tf)
+expect_silent(gpkg_update_table(g, "test_na", "val", NA, "id", 1))
+res <- gpkg_query(g, "SELECT val FROM test_na WHERE id = 1")
+expect_true(is.na(res$val))
+gpkg_disconnect(g)
+unlink(tf)

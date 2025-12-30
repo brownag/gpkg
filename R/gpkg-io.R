@@ -180,8 +180,16 @@ gpkg_write <- function(x,
 
 .gpkg_process_sources <- function(x, ...) {
   
+  args <- list(...)
+  
   if (!is.list(x) || is.data.frame(x)) {
     x <- list(x)
+    if (!is.null(args$table_name) && nchar(args$table_name) > 0) {
+      names(x) <- args$table_name
+    }
+  } else if (length(x) == 1 && is.null(names(x)) && 
+             !is.null(args$table_name) && nchar(args$table_name) > 0) {
+    names(x) <- args$table_name
   }
   
   # objects with a file source
