@@ -82,8 +82,11 @@ gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "",
     if (!length(ext) == 4 || !is.numeric(ext))
       stop("`ext` should be a numeric vector of length 4")
     ex <- ext
+  } else {
+    ex <- NULL
   }
 
+  cr <- NULL
   if (!missing(template) && !is.null(template)) {
     .Deprecated(msg = "`template` argument is deprecated, use `ext` and `srs_id` arguments directly")
     # template as a list
@@ -91,26 +94,7 @@ gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "",
       ex <- template$ext
       cr <- as.integer(template$srsid)
       dt <- template$data_type
-    } else {
-      ## TODO: calculate ext from object, calculate srsid from WKT (?)
-      # if (!requireNamespace("terra", quietly = TRUE)) {
-      #   stop("package `terra` is required to add contents with a custom extent", call. = FALSE)
-      # }
-      #
-      # # convert sf object to SpatVector
-      # if (inherits(template, 'sf')) {
-      #   template <- terra::vect(template)
-      # }
-      #
-      # # template as terra object
-      # if (inherits(template, c("SpatRaster", "SpatVector", "SpatVectorProxy"))){
-      #   ex <- as.numeric(terra::ext(template))
-      #   cr <- as.character(terra::crs(template))
-      # }
     }
-  } else {
-    ex <- c(-180, -90, 180, 90)
-    cr <- 4326
   }
 
   if (is.null(dt)) {
@@ -137,6 +121,49 @@ gpkg_add_contents <- function(x, table_name, data_type = NULL, description = "",
       dt <- "attributes"
     }
   }
+
+  if (dt == "features") {
+    
+    if (is.null(cr)) {
+      gc <- try(gpkg_query(con, paste0("SELECT srs_id FROM gpkg_geometry_columns WHERE table_name = '", table_name, "'")), silent = TRUE)
+      if (!inherits(gc, 'try-error') && nrow(gc) > 0) {
+        cr <- gc$srs_id[1]
+      }
+    }
+    
+    if (is.null(ex)) {
+      geom_col <- "geom" # default
+      gc <- try(gpkg_query(con, paste0("SELECT column_name FROM gpkg_geometry_columns WHERE table_name = '", table_name, "'")), silent = TRUE)
+      if (!inherits(gc, 'try-error') && nrow(gc) > 0) {
+        geom_col <- gc$column_name[1]
+      }
+      
+      rtree_table <- paste0("rtree_", table_name, "_", geom_col)
+      
+      if (rtree_table %in% gpkg_list_tables(con)) {
+        res <- try(gpkg_query(con, paste0("SELECT MIN(minx), MIN(miny), MAX(maxx), MAX(maxy) FROM ", rtree_table)), silent = TRUE)
+        if (!inherits(res, 'try-error') && nrow(res) > 0 && !any(is.na(res[1,]))) {
+          ex <- as.numeric(res[1,])
+        }
+      }
+      
+      if (is.null(ex) && requireNamespace("terra", quietly = TRUE)) {
+        bbox <- try(gpkg_bbox(x, table_name, geom_column = geom_col), silent = TRUE)
+        if (!inherits(bbox, 'try-error') && nrow(bbox) > 0) {
+          ex <- as.numeric(bbox[1,])
+        }
+      }
+    }
+  } else if (dt == "2d-gridded-coverage") {
+    tms <- try(gpkg_query(con, paste0("SELECT srs_id, min_x, min_y, max_x, max_y FROM gpkg_tile_matrix_set WHERE table_name = '", table_name, "'")), silent = TRUE)
+    if (!inherits(tms, 'try-error') && nrow(tms) > 0) {
+      if (is.null(cr)) cr <- tms$srs_id[1]
+      if (is.null(ex)) ex <- as.numeric(tms[1, c("min_x", "min_y", "max_x", "max_y")])
+    }
+  }
+  
+  if (is.null(ex)) ex <- c(-180, -90, 180, 90)
+  if (is.null(cr)) cr <- 4326
 
   # create empty gpkg_contents table if needed
   if (!"gpkg_contents" %in% gpkg_list_tables(con)) {
