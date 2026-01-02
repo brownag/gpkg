@@ -31,6 +31,10 @@ jobs:
           extra-packages: any::rcmdcheck, any::covr, local::.
           needs: check
 
+      - name: Inspect terra GDAL/PROJ/GEOS library versions
+        run: terra::libVersion()
+        shell: Rscript {0}
+
       - name: Test coverage
         run: covr::codecov()
         shell: Rscript {0}
